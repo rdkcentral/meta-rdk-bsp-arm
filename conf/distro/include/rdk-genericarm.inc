@@ -147,8 +147,8 @@ DISTRO_FEATURES_append_broadband = " HOSTAPD_2_10"
 # OneWifi feature
 DISTRO_FEATURES:append:broadband = " OneWifi"
 
-# MacFilter Feature
-DISTRO_FEATURES_append_broadband = " acl_nl_support"
+# 2025-07-10: Disable 802.11ACL feature due to MT7915/6 problem
+DISTRO_FEATURES:append:broadband = " disable_nl80211_acl"
 
 # RDKBDEV-942 RdkGponManager: Modify as per new WAN Manager Design
 DISTRO_FEATURES_append_broadband = " WanManagerUnificationEnable"
