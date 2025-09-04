@@ -13,9 +13,6 @@ SRC_URI_append = " \
     file://0007-igd-place-IGD-temporary-files-under-var-volatile.patch;apply=no \
     file://0008-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch;apply=no \
     file://0009-service-dhcpv6_client-log-to-syslog-instead-of-console.patch;apply=no \
-    file://0010-utopia-remove-potd-service.patch;apply=no \
-    file://0011-remove-dead-code-from-service-wan.patch;apply=no \
-    file://0012-firewall-check-for-mac-filter-script-first.patch;apply=no \
     file://system_defaults \
 "
 
@@ -48,12 +45,6 @@ do_genericarm_patches() {
         patch -p1 -i "${WORKDIR}/0008-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch"
         bbnote "Patching 0009-service-dhcpv6_client-log-to-syslog-instead-of-console.patch"
         patch -p1 -i "${WORKDIR}/0009-service-dhcpv6_client-log-to-syslog-instead-of-console.patch"
-        bbnote "Patching 0010-utopia-remove-potd-service.patch"
-        patch -p1 -i "${WORKDIR}/0010-utopia-remove-potd-service.patch"
-        bbnote "Patching 0011-remove-dead-code-from-service-wan.patch"
-        patch -p1 -i "${WORKDIR}/0011-remove-dead-code-from-service-wan.patch"
-        bbnote "Patching 0012-firewall-check-for-mac-filter-script-first.patch"
-        patch -p1 -i "${WORKDIR}/0012-firewall-check-for-mac-filter-script-first.patch"
         touch genericarm_patch_applied
     fi
 }
