@@ -1,7 +1,7 @@
-From 3922104dee4964e7ad900f2cf69fb4b26c702cdc Mon Sep 17 00:00:00 2001
+From 90b4bd197afc823ba2fd9991e58bb41ec9a7aef1 Mon Sep 17 00:00:00 2001
 From: Simon Chung <simon.c.chung@accenture.com>
 Date: Wed, 10 Mar 2021 10:11:41 +0000
-Subject: [PATCH 02/11] lan_handler: refresh "fix-lan-handler-for-rpi.patch"
+Subject: [PATCH 2/9] lan_handler: refresh "fix-lan-handler-for-rpi.patch"
 
 Refresh of the patch originally added by:
 
@@ -27,7 +27,7 @@ Signed-off-by: Mathew McBride <matt@traverse.com.au>
  1 file changed, 18 insertions(+)
 
 diff --git a/source/scripts/init/service.d/lan_handler.sh b/source/scripts/init/service.d/lan_handler.sh
-index 27886455..9d6519dd 100755
+index d18877a..1c4f862 100755
 --- a/source/scripts/init/service.d/lan_handler.sh
 +++ b/source/scripts/init/service.d/lan_handler.sh
 @@ -304,6 +304,24 @@ case "$1" in
@@ -56,5 +56,5 @@ index 27886455..9d6519dd 100755
  	t2CountNotify "RF_INFO_RDKB_FIREWALL_RESTART"
          sysevent set firewall-restart
 -- 
-2.39.5
+2.51.0
 
