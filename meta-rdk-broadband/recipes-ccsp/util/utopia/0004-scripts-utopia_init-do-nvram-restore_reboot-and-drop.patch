@@ -1,7 +1,7 @@
-From 4795fc3b98df650b903dc827ba9bbbd8c4286e34 Mon Sep 17 00:00:00 2001
+From 86b70340dc04be84a27f46542628a1288a101d64 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Mon, 1 Jul 2024 14:35:10 +1000
-Subject: [PATCH 04/11] scripts: utopia_init: do nvram restore_reboot and
+Subject: [PATCH 4/9] scripts: utopia_init: do nvram restore_reboot and
  dropbear on genericarm
 
 For the rpi these were implemented as a sed hack in the utopia.bbappend.
@@ -12,10 +12,10 @@ Change-Id: Ib7d16fd7595d3b11c1a3f7af64dc571c75b82f99
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/source/scripts/init/system/utopia_init.sh b/source/scripts/init/system/utopia_init.sh
-index fb52107d..92059b23 100755
+index fca3533..de2c064 100755
 --- a/source/scripts/init/system/utopia_init.sh
 +++ b/source/scripts/init/system/utopia_init.sh
-@@ -696,7 +696,7 @@ else
+@@ -757,7 +757,7 @@ else
        fi
  fi
  
@@ -24,7 +24,7 @@ index fb52107d..92059b23 100755
      if [ -f /nvram/restore_reboot ];then
  	syscfg set X_RDKCENTRAL-COM_LastRebootReason "restore-reboot"
  	syscfg set X_RDKCENTRAL-COM_LastRebootCounter "1"
-@@ -765,7 +765,7 @@ syscfg set ntp_status 2
+@@ -826,7 +826,7 @@ syscfg set ntp_status 2
  echo_t "[utopia][init] setting Multicast MAC before any switch configs"
  $UTOPIA_PATH/service_multinet_exec set_multicast_mac &
  
@@ -34,5 +34,5 @@ index fb52107d..92059b23 100755
  	/etc/utopia/service.d/service_sshd.sh sshd-start &
  fi
 -- 
-2.39.5
+2.51.0
 
