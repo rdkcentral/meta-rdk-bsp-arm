@@ -1,0 +1,2 @@
+# Test value only, users must change this value
+rpi_wifi_password=rdk@1234

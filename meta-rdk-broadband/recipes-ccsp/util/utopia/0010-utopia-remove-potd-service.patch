@@ -1,0 +1,34 @@
+From c5b2a01d96312d7a8ea722060b62e59254bc5106 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Tue, 12 Nov 2024 11:29:45 +1100
+Subject: [PATCH 10/11] utopia: remove potd ("Password of the Day") service
+ registration
+
+The binary required (sa_potd) is not present in RDK-B open source.
+---
+ source/scripts/init/c_registration/Makefile.am | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/source/scripts/init/c_registration/Makefile.am b/source/scripts/init/c_registration/Makefile.am
+index 9e96e206..4999b2a2 100644
+--- a/source/scripts/init/c_registration/Makefile.am
++++ b/source/scripts/init/c_registration/Makefile.am
+@@ -58,7 +58,6 @@ bin_PROGRAMS = \
+     15_ssh_server \
+     20_routing \
+     25_crond \
+-    26_potd \
+     33_cosa
+ 
+ if FEATURE_RDKB_EXTENDER
+@@ -113,7 +112,6 @@ endif
+ 20_gwreset_SOURCES = 20_gwreset.c
+ 20_routing_SOURCES = 20_routing.c
+ 25_crond_SOURCES = 25_crond.c
+-26_potd_SOURCES = 26_potd.c
+ 33_cosa_SOURCES = 33_cosa.c
+ 
+ if FEATURE_RDKB_EXTENDER
+-- 
+2.39.5
+

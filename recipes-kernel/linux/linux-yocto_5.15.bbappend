@@ -1,0 +1,2 @@
+SRCREV_machine:armefi64 = "5a4667da1ebc1750b1ddaaf93a1f3f98634360e3"
+LINUX_VERSION = "5.15.162"

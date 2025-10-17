@@ -1,0 +1,1 @@
+rdk-generic-broadband-image.bbappend

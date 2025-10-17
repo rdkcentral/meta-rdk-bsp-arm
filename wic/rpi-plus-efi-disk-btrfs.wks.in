@@ -1,0 +1,8 @@
+# short-description: Create an EFI disk image with Raspberry Pi firmware files in /boot
+# long-description: Creates a partitioned EFI disk image that the user
+# can directly dd to boot media.
+
+part /boot --source rpi-plus-efi --sourceparams="loader=${EFI_PROVIDER},extra_files=${DEPLOY_DIR_IMAGE}/${BOOTFILES_DIR_NAME}" --label boot --size 256M --active --align 1024 --use-uuid --fsoptions "ro"
+part / --source rootfs --fstype=btrfs --label root --align 1024 --use-uuid
+
+bootloader --ptable gpt --timeout=5 --append="rootwait rootfstype=btrfs"

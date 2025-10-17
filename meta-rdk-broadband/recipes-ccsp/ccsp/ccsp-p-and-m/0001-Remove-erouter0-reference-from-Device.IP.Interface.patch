@@ -1,0 +1,53 @@
+From cf026187b3b3dde07b29a9a4e42445022168eb75 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Tue, 19 Nov 2024 16:34:16 +1100
+Subject: [PATCH] Remove erouter0 reference from Device.IP.Interface.
+
+The generic Arm BSP uses WAN Manager exclusively and
+does not support erouter0.
+It was found that other applications enumerating
+Device.IP.Interface. in the abscence of erouter0
+was causing instances of high CPU load and
+startup delays.
+
+For the sake of code clarity, all other DOCSIS specific
+names are removed as well.
+
+Change-Id: Ic251ea8ff5fbfab6e085f885843437612e8a3b71
+---
+ source-arm/TR-181/board_sbapi/cosa_ip_apis.c | 19 +------------------
+ 1 file changed, 1 insertion(+), 18 deletions(-)
+
+diff --git a/source-arm/TR-181/board_sbapi/cosa_ip_apis.c b/source-arm/TR-181/board_sbapi/cosa_ip_apis.c
+index 652d17d6..a7eae7c8 100644
+--- a/source-arm/TR-181/board_sbapi/cosa_ip_apis.c
++++ b/source-arm/TR-181/board_sbapi/cosa_ip_apis.c
+@@ -325,24 +325,7 @@ typedef struct USG_IF_CFG
+ }USG_IF_CFG_T;
+ 
+ static USG_IF_CFG_T g_usg_if_cfg[] =
+-{
+-#ifndef _WNXL11BWL_PRODUCT_REQ_
+-#if defined(FEATURE_RDKB_CONFIGURABLE_WAN_INTERFACE ) && defined( _HUB4_PRODUCT_REQ_ ) 
+-    /* added _HUB4_PRODUCT_REQ_ to restrict only VlanManger supported products */
+-    {"erouter0",    COSA_DML_LINK_TYPE_VlanLink, TRUE},
+-#else
+-    {"erouter0",    COSA_DML_LINK_TYPE_EthLink, TRUE},
+-#endif
+-#endif
+-#if defined(_COSA_INTEL_USG_ARM_) && !defined(_ENABLE_DSL_SUPPORT_)
+-#ifndef _PLATFORM_RASPBERRYPI_
+-#ifndef _PLATFORM_TURRIS_
+-#ifndef _PLATFORM_BANANAPI_R4_    
+-    {"wan0",        COSA_DML_LINK_TYPE_DOCSIS,  TRUE},  /*DH  wan0 should never appear here -- CM extensions are for DOCSIS interfaces */
+-#endif
+-#endif
+-#endif
+-#endif      
++{ 
+     {"lo",          COSA_DML_LINK_TYPE_EthLink, FALSE}, /*DH  change the value of gDmsbIpIfLoopbackInstNum too, if "lo" is moved to a different location */
+     /*
+      *  Multi-LAN -- still have to keep primary LAN interface for IPv6 settings -- overlapping with MLAN configuration
+-- 
+2.39.5
+

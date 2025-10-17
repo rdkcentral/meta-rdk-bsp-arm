@@ -1,0 +1,32 @@
+From c0818e6665a197cb5a4ebad686573b1e63ff2a98 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Tue, 16 Jul 2024 13:47:12 +1000
+Subject: [PATCH] net: allow PAGE_POOL to be user selected
+
+This is to facilitate drivers that use PAGE_POOL, such as mt76,
+to be built out of tree.
+
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+---
+ net/Kconfig | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/net/Kconfig b/net/Kconfig
+index 45381740afe9..ab3567f25492 100644
+--- a/net/Kconfig
++++ b/net/Kconfig
+@@ -430,7 +430,10 @@ config NET_DEVLINK
+ 	default n
+ 
+ config PAGE_POOL
+-	bool
++	default y
++	bool "Enable PAGE_POOL"
++	help
++	 Enable PAGE_POOL
+ 
+ config PAGE_POOL_STATS
+ 	default n
+-- 
+2.39.2
+

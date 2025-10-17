@@ -1,0 +1,42 @@
+From 34525d90461deb24898b69163f5f74cac5e8f2a0 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Tue, 22 Oct 2024 12:30:22 +1100
+Subject: [PATCH] cosa_dhcpv4_apis: fix compile error when MoCA not enabled
+
+cosa_dhcpv4_apis.c:600:6: error: expected identifier or '(' before 'else'
+|   600 |     }else{
+|       |      ^~~~
+cosa_dhcpv4_apis.c:609:5: error: expected identifier or '(' before 'return'
+|   609 |     return(0);
+cosa_dhcpv4_apis.c:610:1: error: expected identifier or '(' before '}' token
+|   610 | }
+|       | ^
+
+Change-Id: I248c9dae099aaaaf928b913e21f420ddc10eddf2
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+---
+ source/TR-181/board_sbapi/cosa_dhcpv4_apis.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/source/TR-181/board_sbapi/cosa_dhcpv4_apis.c b/source/TR-181/board_sbapi/cosa_dhcpv4_apis.c
+index 0ccc325..7a0bae8 100644
+--- a/source/TR-181/board_sbapi/cosa_dhcpv4_apis.c
++++ b/source/TR-181/board_sbapi/cosa_dhcpv4_apis.c
+@@ -520,11 +520,13 @@ int usg_get_cpe_associate_interface(char *pMac, char ifname[64])
+             ERR_CHK(rc);
+         }
+         else
+-#endif
+ 	{
++#endif
+             rc = strcpy_s(ifname, 64, "Device.Ethernet.Interface.x");
+             ERR_CHK(rc);
++#ifdef CONFIG_SYSTEM_MOCA
+         }
++#endif
+     }else{
+         if(result.result == 0)  {
+             rc = strcpy_s(ifname, 64, result.data.host.l1IfName);
+-- 
+2.39.5
+

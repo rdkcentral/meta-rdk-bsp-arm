@@ -1,0 +1,33 @@
+From cef6259ad8debc24b173345b544268233c586c19 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Tue, 16 Jul 2024 13:23:21 +1000
+Subject: [PATCH 3/3] mt76: fix page_pool helper include for kernel <6.6
+
+Kernel commit a9ca9f9ceff382b58b488248f0c0da9e157f5d06
+("page_pool: split types and declarations from page_pool.h")
+split some page_pool functions into a separate header file.
+
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+---
+ drivers/net/wireless/mediatek/mt76/mt76.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 3d524e5..4f23281 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -15,7 +15,11 @@
+ #include <linux/average.h>
+ #include <linux/soc/mediatek/mtk_wed.h>
+ #include <net/mac80211.h>
++#if LINUX_VERSION_IS_LESS(6,6,0)
++#include <net/page_pool.h>
++#else
+ #include <net/page_pool/helpers.h>
++#endif
+ #include "util.h"
+ #include "testmode.h"
+ 
+-- 
+2.39.2
+

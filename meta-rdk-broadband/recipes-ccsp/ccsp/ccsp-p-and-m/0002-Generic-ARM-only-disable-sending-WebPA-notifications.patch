@@ -1,0 +1,36 @@
+From 2d497d39f2055d0be863214574850b492b7ee6e5 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Thu, 11 Sep 2025 15:03:19 +1000
+Subject: [PATCH] (Generic ARM only) disable sending WebPA notifications
+
+Change-Id: Iecfdcf76c2f430e2468740e9dfb73b376313ed1d
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+---
+ source-arm/TR-181/board_sbapi/cosa_common_util.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/source-arm/TR-181/board_sbapi/cosa_common_util.c b/source-arm/TR-181/board_sbapi/cosa_common_util.c
+index 698777e3..457fe4bc 100644
+--- a/source-arm/TR-181/board_sbapi/cosa_common_util.c
++++ b/source-arm/TR-181/board_sbapi/cosa_common_util.c
+@@ -474,7 +474,7 @@ Set_Notifi_ParamName(void *args)
+         CcspTraceError(("%s: arguments struct is NULL", __FUNCTION__)); 
+         return NULL;
+     }
+-    
++#ifndef WEBPA_NOTIFICATIONS_DISABLED
+     rc = sprintf_s(str1,sizeof(str1),"%s,%u,%s,%s,%d",arguments->parameterName, arguments->writeID, (arguments->newValue)!=NULL ? (strlen(arguments->newValue)>0 ? arguments->newValue : "NULL") : "NULL", (arguments->oldValue)!=NULL ? (strlen(arguments->oldValue)>0 ? arguments->oldValue : "NULL") : "NULL", arguments->type);
+     CcspTraceInfo(("%s rc: %d, str1: %s\n", __FUNCTION__ , rc, str1));
+ 
+@@ -540,7 +540,7 @@ Set_Notifi_ParamName(void *args)
+     {
+         CcspTraceWarning(("%s: CcspBaseIf_setParameterValues: Param value set succesfully and sent to WebPA.\n", __FUNCTION__ ));
+     }
+-  
++#endif /* !WEBPA_NOTIFICATIONS_DISABLED */
+     EXIT:
+         free_args_struct(arguments);
+         return NULL;
+-- 
+2.39.5
+

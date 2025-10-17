@@ -1,0 +1,44 @@
+From 008db153e2cade615b6a8f7b3020f910f01d3c10 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Fri, 8 Nov 2024 14:59:17 +1100
+Subject: [PATCH 09/11] service: dhcpv6_client: log to syslog instead of
+ /dev/console
+
+During bring up of the Arm generic machine, I noticed quite a few logs to
+console with this message:
+Usage: dhcpv6_client [ dhcpv6_client-start | dhcpv6_client-stop | dhcpv6_client-restart]
+
+The underlying issue is with SelfHeal, but in any case, it is better
+for these logs to go to syslog (/var/log/user)
+
+Change-Id: I15f1745a63a3e69bb4448d96269096f90e2ee1a2
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+---
+ source/scripts/init/service.d/service_dhcpv6_client.sh | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/source/scripts/init/service.d/service_dhcpv6_client.sh b/source/scripts/init/service.d/service_dhcpv6_client.sh
+index 9b6888d5..bcbf415e 100755
+--- a/source/scripts/init/service.d/service_dhcpv6_client.sh
++++ b/source/scripts/init/service.d/service_dhcpv6_client.sh
+@@ -369,6 +369,8 @@ call_back_remove_prefix ()
+ #-------------------------------------------------------------------------------------------
+ 
+ service_init 
++logger -t "utopia_${SERVICE_NAME}" "Called $1 parent $PPID"
++
+ 
+ case "$1" in
+    "${SERVICE_NAME}-start")
+@@ -404,7 +406,7 @@ case "$1" in
+   	call_back_remove_prefix
+       else
+ 	echo "$SELF: unknown event ($EVENT) or unknow DHCP call back ($REASON)" >> $LOG
+-	echo "Usage: $SERVICE_NAME [ ${SERVICE_NAME}-start | ${SERVICE_NAME}-stop | ${SERVICE_NAME}-restart]" > /dev/console
++	logger -t "utopia_${SERVICE_NAME}" "Usage: $SERVICE_NAME [ ${SERVICE_NAME}-start | ${SERVICE_NAME}-stop | ${SERVICE_NAME}-restart]"
+ 	exit 3
+       fi
+       ;;
+-- 
+2.39.5
+

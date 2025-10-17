@@ -1,0 +1,19 @@
+[package]
+name = "efi-image-manager"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+license-file = "LICENSE"
+publish = false
+
+[dependencies]
+clap = { version = "4.5.40", features = ["derive"] }
+libbtrfsutil = "0.7.1"
+rand = "0.9.1"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
+tempfile = "3.20.0"
+
+[profile.release]
+opt-level = "z"  # Optimize for size.
+lto = true

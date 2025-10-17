@@ -1,0 +1,76 @@
+From d58c88b667da5b7f7bad4295048d859b8ed94d94 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Tue, 19 Nov 2024 17:14:04 +1100
+Subject: [PATCH 11/11] Remove dead code from Utopia service_wan.c
+
+I could not find any references to start_dhcpv6_client inside
+the Utopia codebase.
+
+Resolves this compiler error:
+
+source/service_wan/service_wan.c:628:12: warning: 'start_dhcpv6_client'
+  defined but not used [-Wunused-function]
+  628 | static int start_dhcpv6_client(struct serv_wan *sw)
+      |            ^~~~~~~~~~~~~~~~~~~
+
+Additionally, when Utopia was compiled with -O0 (no compiler optimization),
+further compile errors related to use of the system() call appeared.
+
+Change-Id: If4ff1cde6f82ee61c55b0750f81fd06ad73c0d57
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+---
+ source/service_wan/service_wan.c | 38 --------------------------------
+ 1 file changed, 38 deletions(-)
+
+diff --git a/source/service_wan/service_wan.c b/source/service_wan/service_wan.c
+index 23bb2123..024a4d7c 100644
+--- a/source/service_wan/service_wan.c
++++ b/source/service_wan/service_wan.c
+@@ -635,44 +635,6 @@ STATIC int Is_Dslite_Dhcpv6option64_received(struct serv_wan *sw)
+     return 0;
+ }
+ 
+-STATIC int start_dhcpv6_client(struct serv_wan *sw)
+-{
+-    char buf[8];
+-    if (!sw)
+-        return -1;
+-
+-    memset(buf,0,sizeof(buf));
+-    syscfg_get(NULL, "dslite_enable", buf, sizeof(buf));
+-    if (!strncmp(buf,"1",1))
+-    {
+-        if (sw->rtmod == WAN_RTMOD_IPV6 || sw->rtmod == WAN_RTMOD_DS)
+-        {
+-            switch (sw->prot)
+-            {
+-                case WAN_PROT_DHCP:
+-                    sleep(5);
+-                    sysevent_set(sw->sefd, sw->setok, "wan-status", "starting", 0);
+-                    sysevent_set(sw->sefd, sw->setok, "dslite_option64-status", "", 0);
+-                    fprintf(stderr, "Starting DHCPv6 Client now\n");
+-#if defined (FEATURE_RDKB_DHCP_MANAGER)
+-                    system("dmcli eRT setv Device.DHCPv6.Client.1.Enable bool true");
+-                    //sysevent_set(sw->sefd, sw->setok, "dhcpv6_client-start", "", 0);
+-                    fprintf(stderr, "%s  Enabling DHCPv6 client using TR181\n",__func__);
+-#elif defined(CORE_NET_LIB)
+-                    system("/usr/bin/service_dhcpv6_client dhcpv6_client_service_enable");
+-                    fprintf(stderr, "%s  Calling service_dhcpv6_client.c with dhcpv6_client_service_enable from service_wan.c\n",__func__);
+-#else
+-                    system("/etc/utopia/service.d/service_dhcpv6_client.sh enable");
+-#endif
+-                    break;
+-                case WAN_PROT_STATIC:
+-                    break;
+-            }
+-        }
+-    }
+-    return 0;
+-}
+-
+ STATIC int wait_till_dhcpv6_client_reply(struct serv_wan *sw)
+ {
+     char status[32];
+-- 
+2.39.5
+

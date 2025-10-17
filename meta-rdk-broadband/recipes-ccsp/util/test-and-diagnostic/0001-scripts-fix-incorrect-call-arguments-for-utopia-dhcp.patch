@@ -1,0 +1,69 @@
+From 4acdb4fc4518829623b430159e1a4b2591209f27 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Fri, 8 Nov 2024 15:05:08 +1100
+Subject: [PATCH] scripts: fix incorrect call arguments for utopia
+ dhcpv4_client service
+
+Messages like these were being printed to the system console on the
+generic Arm RDK-B machine:
+Usage: dhcpv6_client [ dhcpv6_client-start | dhcpv6_client-stop | dhcpv6_client-restart]
+
+These have been traced to the selfheal_aggressive.sh script not using the correct
+names for these services
+
+Change-Id: I5e94644c97f9959a4d819302ff1fbf1ea6c8219d
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+---
+ scripts/selfheal_aggressive.sh | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/scripts/selfheal_aggressive.sh b/scripts/selfheal_aggressive.sh
+index a99fd4f..79fde30 100644
+--- a/scripts/selfheal_aggressive.sh
++++ b/scripts/selfheal_aggressive.sh
+@@ -85,13 +85,13 @@ Dhcpv6_Client_restart ()
+             if [ -f /tmp/dhcpmgr_initialized ]; then
+                 sysevent set dhcpv6_client-stop
+             else
+-                $DHCPV6_HANDLER dhcpv6_client_service_disable
++                $DHCPV6_HANDLER dhcpv6_client-stop
+             fi
+             sleep 2
+             if [ -f /tmp/dhcpmgr_initialized ]; then
+                 sysevent set dhcpv6_client-start
+             else
+-                $DHCPV6_HANDLER dhcpv6_client_service_enable
++                $DHCPV6_HANDLER dhcpv6_client-start
+             fi
+             sleep 8
+ 		fi
+@@ -759,7 +759,7 @@ self_heal_dibbler_server()
+                                     if [ -f /tmp/dhcpmgr_initialized ]; then
+                                         sysevent set dhcpv6_client-stop
+                                     else
+-                                        $DHCPV6_HANDLER dhcpv6_client_service_disable
++                                        $DHCPV6_HANDLER dhcpv6_client-stop
+                                     fi
+                                     sysctl -w net.ipv6.conf.$PRIVATE_LAN.disable_ipv6=1
+                                     sysctl -w net.ipv6.conf.$PRIVATE_LAN.accept_dad=0
+@@ -770,7 +770,7 @@ self_heal_dibbler_server()
+                                     if [ -f /tmp/dhcpmgr_initialized ]; then
+                                         sysevent set dhcpv6_client-start
+                                     else
+-                                        $DHCPV6_HANDLER dhcpv6_client_service_enable
++                                        $DHCPV6_HANDLER dhcpv6_client-start
+                                     fi
+                                     # re-add global ipv6 address after enabled it
+                                     ip -6 addr add $v6addr dev $PRIVATE_LAN
+@@ -925,7 +925,7 @@ self_heal_dhcp_clients()
+                             if [ -f /tmp/dhcpmgr_initialized ]; then
+                                 sysevent set dhcpv6_client-stop
+                             else
+-                                $DHCPV6_HANDLER dhcpv6_client_service_disable
++                                $DHCPV6_HANDLER dhcpv6_client-stop
+                             fi
+                         fi
+                     fi
+-- 
+2.39.5
+

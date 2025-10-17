@@ -1,0 +1,171 @@
+From fde0deda0d5dea59ef2145fe33bc074baed8a984 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Tue, 10 Jun 2025 11:01:32 +1000
+Subject: [PATCH] service: set systemd SyslogIdentifier
+
+A previous changeset made all services invoked
+via the "/bin/sh -c '(...)'" pattern, which causes all
+syslog/journalctl entries to have the "sh" process name.
+
+This can cause a lot of confusion when debugging RDK-B:
+
+rdkb-arm sh[5613]: Fetching values to form parodus command line arguments
+rdkb-arm sh[5151]: result =
+rdkb-arm sh[5151]: result = rdkb-generic-broadband-image_rdkb-2025q1-kirkstone_20250606001224
+rdkb-arm sh[5613]: Framing command for parodus
+rdkb-arm sh[5613]: Starting parodus with the following arguments
+rdkb-arm sh[5613]: ModelName=RPI  SerialNumber=  Manufacturer=Traverse  HW_MAC=00:0a:fa:24:29:5d ...
+rdkb-arm sh[5808]: rdk_dyn_log_initg_dl_socket = 3 __progname = parodus
+rdkb-arm sh[5551]: Conf file /etc/debug.ini open success
+rdkb-arm sh[5551]: rdk_dyn_log_initg_dl_socket = 3 __progname = CcspTandDSsp
+rdkb-arm sh[5551]: rdk_logger_init /etc/debug.ini Already Stack Level Logging processed... not processing again.
+rdkb-arm sh[5551]: ****LOADING DM LIBRARY***************
+rdkb-arm sh[5573]: CosaEthInferface initialization done!
+rdkb-arm sh[5573]: CcspHalExtSw_getAssociatedDevice not implemented on generic arm platforms yet
+
+In the above output there is a mix of CcspPandMSsp, Parodus and CcspEthAgent, which
+is very confusing.
+
+Change-Id: Iec435cf4393ae7884e72e571efd7dbd89dadb3fc
+---
+ systemd_units/CcspCrSsp.service      | 2 +-
+ systemd_units/CcspEthAgent.service   | 1 +
+ systemd_units/CcspLMLite.service     | 1 +
+ systemd_units/CcspPandMSsp.service   | 1 +
+ systemd_units/CcspTandDSsp.service   | 2 +-
+ systemd_units/CcspTr069PaSsp.service | 1 +
+ systemd_units/CcspXdnsSsp.service    | 2 +-
+ systemd_units/PsmSsp.service         | 2 +-
+ systemd_units/RdkWanManager.service  | 2 +-
+ systemd_units/notifyComp.service     | 2 +-
+ 10 files changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/systemd_units/CcspCrSsp.service b/systemd_units/CcspCrSsp.service
+index 751d4d8b..a73813cf 100644
+--- a/systemd_units/CcspCrSsp.service
++++ b/systemd_units/CcspCrSsp.service
+@@ -32,7 +32,7 @@ ExecStartPre=/bin/sh -c '(/usr/ccsp/ccspSysConfigEarly.sh)'
+ ExecStart=/bin/sh -c '/usr/bin/CcspCrSsp -subsys $Subsys'
+ ExecStopPost=/bin/sh -c 'echo 0 >> /tmp/CcspCrSsp_Restarted'
+ Restart=always
+-
++SyslogIdentifier=CcspCrSsp
+ 
+ [Install]
+ WantedBy=multi-user.target
+diff --git a/systemd_units/CcspEthAgent.service b/systemd_units/CcspEthAgent.service
+index 42993828..260ac944 100644
+--- a/systemd_units/CcspEthAgent.service
++++ b/systemd_units/CcspEthAgent.service
+@@ -29,6 +29,7 @@ Environment="LOG4C_RCPATH=/etc"
+ EnvironmentFile=/etc/device.properties
+ ExecStart=/bin/sh -c '/usr/bin/CcspEthAgent -subsys $Subsys'
+ ExecStopPost=/bin/sh -c 'echo "`date`: Stopping/Restarting CcspEthAgent" >> ${PROCESS_RESTART_LOG}'
++SyslogIdentifier=CcspEthAgent
+ Restart=always
+ 
+ 
+diff --git a/systemd_units/CcspLMLite.service b/systemd_units/CcspLMLite.service
+index a9e98e55..161f9357 100644
+--- a/systemd_units/CcspLMLite.service
++++ b/systemd_units/CcspLMLite.service
+@@ -29,6 +29,7 @@ Environment="LOG4C_RCPATH=/etc"
+ EnvironmentFile=/etc/device.properties
+ ExecStart=/bin/sh -c '/usr/bin/CcspLMLite -subsys $Subsys'
+ ExecStopPost=/bin/sh -c 'echo "`date`: Stopping/Restarting CcspLMLite" >> ${PROCESS_RESTART_LOG}'
++SyslogIdentifier=CcspLMLite
+ Restart=always
+ 
+ 
+diff --git a/systemd_units/CcspPandMSsp.service b/systemd_units/CcspPandMSsp.service
+index e06e34b6..29ba00e6 100644
+--- a/systemd_units/CcspPandMSsp.service
++++ b/systemd_units/CcspPandMSsp.service
+@@ -33,6 +33,7 @@ ExecStartPre=/bin/sh -c '(/usr/ccsp/pam/GwProvCheck.sh)'
+ ExecStart=/bin/sh -c '/usr/bin/CcspPandMSsp -subsys $Subsys'
+ ExecStopPost=/bin/sh -c 'echo "`date`: Stopping/Restarting CcspPandMSsp" >> ${PROCESS_RESTART_LOG}'
+ ExecStartPost=/bin/sh -c '(/usr/ccsp/ccspPAMCPCheck.sh)'
++SyslogIdentifier=CcspPandMSsp
+ Restart=always
+ 
+ 
+diff --git a/systemd_units/CcspTandDSsp.service b/systemd_units/CcspTandDSsp.service
+index 01aa583a..439eb714 100644
+--- a/systemd_units/CcspTandDSsp.service
++++ b/systemd_units/CcspTandDSsp.service
+@@ -30,7 +30,7 @@ WorkingDirectory=/usr/ccsp/tad
+ ExecStart=/bin/sh -c '/usr/bin/CcspTandDSsp -subsys $Subsys'
+ ExecStopPost=/bin/sh -c 'echo "`date`: Stopping/Restarting CcspTandDSsp" >> ${PROCESS_RESTART_LOG}'
+ Restart=always
+-
++SyslogIdentifier=CcspTandDSsp
+ 
+ [Install]
+ WantedBy=multi-user.target
+diff --git a/systemd_units/CcspTr069PaSsp.service b/systemd_units/CcspTr069PaSsp.service
+index 5853c3df..37e6d99b 100644
+--- a/systemd_units/CcspTr069PaSsp.service
++++ b/systemd_units/CcspTr069PaSsp.service
+@@ -31,6 +31,7 @@ WorkingDirectory=/usr/ccsp/tr069pa
+ ExecStartPre=/bin/sh -c 'val=`syscfg get EnableTR69Binary`; if [ "$val" == "false" ]; then `systemctl stop CcspTr069PaSsp`; fi'
+ ExecStart=/bin/sh -c '/usr/bin/CcspTr069PaSsp -subsys $Subsys'
+ ExecStopPost=/bin/sh -c 'echo "`date`: Stopping/Restarting CcspTr069PaSsp" >> ${PROCESS_RESTART_LOG}'
++SyslogIdentifier=CcspTr069PaSsp
+ Restart=always
+ SuccessExitStatus=SIGTERM
+ 
+diff --git a/systemd_units/CcspXdnsSsp.service b/systemd_units/CcspXdnsSsp.service
+index 0f6df5f0..03e52428 100644
+--- a/systemd_units/CcspXdnsSsp.service
++++ b/systemd_units/CcspXdnsSsp.service
+@@ -30,7 +30,7 @@ WorkingDirectory=/usr/ccsp/xdns
+ ExecStart=/bin/sh -c '/usr/bin/CcspXdnsSsp -subsys $Subsys'
+ ExecStopPost=/bin/sh -c 'echo "`date`: Stopping/Restarting CcspXdnsSsp" >> ${PROCESS_RESTART_LOG}'
+ Restart=always
+-
++SyslogIdentifier=CcspXdnsSsp
+ 
+ [Install]
+ WantedBy=multi-user.target
+diff --git a/systemd_units/PsmSsp.service b/systemd_units/PsmSsp.service
+index 1ac08283..273498da 100644
+--- a/systemd_units/PsmSsp.service
++++ b/systemd_units/PsmSsp.service
+@@ -34,7 +34,7 @@ ExecStart=/bin/sh -c '/usr/bin/PsmSsp -subsys $Subsys'
+ ExecStartPost=/bin/sh -c '(/etc/migration_to_psm.sh)'
+ ExecStopPost=/bin/sh -c 'echo "`date`: Stopping/Restarting PsmSsp" >> ${PROCESS_RESTART_LOG}'
+ Restart=always
+-
++SyslogIdentifier=PsmSsp
+ 
+ [Install]
+ WantedBy=multi-user.target
+diff --git a/systemd_units/RdkWanManager.service b/systemd_units/RdkWanManager.service
+index 56494dd0..0915391d 100644
+--- a/systemd_units/RdkWanManager.service
++++ b/systemd_units/RdkWanManager.service
+@@ -32,7 +32,7 @@ ExecStartPre=/bin/sh -c '(/usr/ccsp/utopiaInitCheck.sh)'
+ ExecStart=/usr/rdk/wanmanager/wanmanager -subsys $Subsys
+ ExecStop=/bin/sh -c 'echo "`date`: Stopping/Restarting RdkWanManager" >> ${PROCESS_RESTART_LOG}'
+ Restart=always
+-
++SyslogIdentifier=RdkWanManager
+ 
+ [Install]
+ WantedBy=multi-user.target
+diff --git a/systemd_units/notifyComp.service b/systemd_units/notifyComp.service
+index ed2914dd..f20c78d0 100644
+--- a/systemd_units/notifyComp.service
++++ b/systemd_units/notifyComp.service
+@@ -30,7 +30,7 @@ EnvironmentFile=/etc/device.properties
+ ExecStart=/bin/sh -c '/usr/bin/notify_comp -subsys $Subsys'
+ ExecStopPost=/bin/sh -c 'echo "`date`: Stopping/Restarting notify_comp" >> ${PROCESS_RESTART_LOG}'
+ Restart=always
+-
++SyslogIdentifier=notifyComp
+ 
+ [Install]
+ WantedBy=multi-user.target
+-- 
+2.39.5
+

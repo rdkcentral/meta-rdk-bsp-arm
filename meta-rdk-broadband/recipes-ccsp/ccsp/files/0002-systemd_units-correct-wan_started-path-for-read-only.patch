@@ -1,0 +1,27 @@
+From 28379d78228c53cd464be641dc981a6b296bed9a Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Wed, 11 Jun 2025 16:00:48 +1000
+Subject: [PATCH] systemd_units: correct wan_started path for read-only rootfs
+ operation
+
+Change-Id: Ic2ea67894ac51797867cb72625c2a0b127350302
+---
+ systemd_units/wan-initialized.path | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/systemd_units/wan-initialized.path b/systemd_units/wan-initialized.path
+index 8136280a..40d5b8ff 100644
+--- a/systemd_units/wan-initialized.path
++++ b/systemd_units/wan-initialized.path
+@@ -3,7 +3,7 @@ Description=WAN Initialized Path
+ 
+ [Path]
+ # Path Is Written By Utopia service_wan.c when WAN-STATUS is set to started
+-PathChanged=/var/wan_started
++PathChanged=/var/run/wan_started
+ Unit=wan-initialized.target
+ 
+ [Install]
+-- 
+2.39.5
+

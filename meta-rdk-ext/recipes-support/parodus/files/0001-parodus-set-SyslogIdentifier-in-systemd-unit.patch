@@ -1,0 +1,25 @@
+From 1658fd29c60c0de8bb4e1f5ad21551d0d6bde7a8 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Tue, 10 Jun 2025 11:38:15 +1000
+Subject: [PATCH] parodus: set SyslogIdentifier in systemd unit
+
+Change-Id: I9937660cb74a5611fea98f75c253d2cbabfef961
+---
+ broadband/parodus/systemd/parodus.service | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/broadband/parodus/systemd/parodus.service b/broadband/parodus/systemd/parodus.service
+index 99bcb3e..7806189 100644
+--- a/broadband/parodus/systemd/parodus.service
++++ b/broadband/parodus/systemd/parodus.service
+@@ -25,6 +25,7 @@ Requires=utopia.service RdkWanManager.service
+ ExecStart=/bin/sh -c '/lib/rdk/parodus_start.sh;'
+ Type=forking
+ Restart=always
++SyslogIdentifier=parodus
+ 
+ [Install]
+ WantedBy=multi-user.target
+-- 
+2.39.5
+

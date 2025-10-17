@@ -1,0 +1,29 @@
+From 14017eef05dfd3c789f0c7a938b975c0559f5a3e Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Thu, 22 Aug 2024 12:06:13 +1000
+Subject: [PATCH 1/2] genericarm: register link handler callback with the HAL
+
+For multiple EthAgent managed interfaces to work with WAN Manager,
+all interface statuses need to be reflected in
+Device.Ethernet.X_RDK_Interface.X.Status
+---
+ source/TR-181/middle_layer_src/cosa_ethernet_internal.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/source/TR-181/middle_layer_src/cosa_ethernet_internal.c b/source/TR-181/middle_layer_src/cosa_ethernet_internal.c
+index e9ea8ad..69484da 100644
+--- a/source/TR-181/middle_layer_src/cosa_ethernet_internal.c
++++ b/source/TR-181/middle_layer_src/cosa_ethernet_internal.c
+@@ -382,6 +382,9 @@ CosaEthernetInitialize
+     GWP_RegisterEthWan_Callback ( &obj );
+     //Initialise global data and initalise hal
+     CosaDmlEthInit(NULL, (PANSC_HANDLE)pMyObject);
++#if defined(_PLATFORM_GENERICARM_)
++    CcspHalEthSw_RegisterLinkEventCallback(CosaDmlEthPortLinkStatusCallback); //Register cb for link event.
++#endif
+ 
+ #elif defined(FEATURE_RDKB_WAN_AGENT)
+     CosaDmlEthInit(NULL, (PANSC_HANDLE)pMyObject);
+-- 
+2.39.5
+

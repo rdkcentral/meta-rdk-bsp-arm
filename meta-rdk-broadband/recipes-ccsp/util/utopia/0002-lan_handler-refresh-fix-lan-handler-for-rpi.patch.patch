@@ -1,0 +1,60 @@
+From 3922104dee4964e7ad900f2cf69fb4b26c702cdc Mon Sep 17 00:00:00 2001
+From: Simon Chung <simon.c.chung@accenture.com>
+Date: Wed, 10 Mar 2021 10:11:41 +0000
+Subject: [PATCH 02/11] lan_handler: refresh "fix-lan-handler-for-rpi.patch"
+
+Refresh of the patch originally added by:
+
+  d46de29 RDKCMF-3935 Modify gwprovapp state machine for Raspberry Pi events
+  d9a1ea9 RDKCMF-3919: RDK-B on RPI: update Utopia lan_handler sh patch
+  3ab4cf5 RDKCMF-3804 - Initial check-in for RDK-B on Raspberry Pi 2 and 3
+
+Since the previous version of the patch did not contain any diff
+context, it was being applied at a fixed offset in lan_handler.sh.
+That fixed offset has become incorrect as lan_handler.sh has been
+updated.
+
+Unfortunately none of the commits which previously added or updated
+the patch give any indication of what the patch does or why it's
+needed.
+
+Signed-off-by: Andre McCurdy <armccurdy@gmail.com>
+
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+[Refreshed patch title for Generic ARM port, 2024-09-05]
+---
+ source/scripts/init/service.d/lan_handler.sh | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/source/scripts/init/service.d/lan_handler.sh b/source/scripts/init/service.d/lan_handler.sh
+index 27886455..9d6519dd 100755
+--- a/source/scripts/init/service.d/lan_handler.sh
++++ b/source/scripts/init/service.d/lan_handler.sh
+@@ -304,6 +304,24 @@ case "$1" in
+             sysevent set multinet-up 9
+         fi
+ 
++        # --------------------------------------------------------------------
++        # RPi specific change begin
++        # --------------------------------------------------------------------
++
++        PHY_BRIDGE_IFNAME=`syscfg get lan_ifname`
++        PHY_ETH_IFNAMES=`syscfg get lan_ethernet_physical_ifnames`
++        IFS=' ' read -r -a PHY_ETH_IFNAME_ARRAY <<< "$PHY_ETH_IFNAMES"
++        for PHY_ETH_IFNAME in "${PHY_ETH_IFNAME_ARRAY[@]}"
++        do
++            echo "LAN HANDLER : PHY_ETH_IFNAME = $PHY_ETH_IFNAME"
++            ifconfig $PHY_ETH_IFNAME up
++            brctl addif $PHY_BRIDGE_IFNAME $PHY_ETH_IFNAME
++        done
++
++        # --------------------------------------------------------------------
++        # RPi specific change end
++        # --------------------------------------------------------------------
++
+         echo_t "LAN HANDLER : Triggering RDKB_FIREWALL_RESTART after nfqhandler"
+ 	t2CountNotify "RF_INFO_RDKB_FIREWALL_RESTART"
+         sysevent set firewall-restart
+-- 
+2.39.5
+

@@ -1,0 +1,45 @@
+From 56dc34d715a0908a30b730ef3e6b4d3f2f47c26c Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Thu, 11 Sep 2025 17:10:05 +1000
+Subject: [PATCH] (Generic ARM only) disable telemetry reporting for WAN IP
+
+When CcspTelemetry is not present in the system, error messages like this
+may appear in the system log:
+
+waitForTelemetryReady Telemetry is not ready to receive events. \
+Waiting for /tmp/.t2ReadyToReceiveEvents file: 720
+
+If CcspPandM is compiled with -DTELEMETRY_DISABLED, no upload of
+the WAN IP will be attempted
+
+Change-Id: If93cbbfcc1e25347c1d36f1e3b5480ffba6ee987
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+---
+ source/TR-181/middle_layer_src/cosa_rbus_handler_apis.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/source/TR-181/middle_layer_src/cosa_rbus_handler_apis.c b/source/TR-181/middle_layer_src/cosa_rbus_handler_apis.c
+index 8843be84..bff5f28f 100644
+--- a/source/TR-181/middle_layer_src/cosa_rbus_handler_apis.c
++++ b/source/TR-181/middle_layer_src/cosa_rbus_handler_apis.c
+@@ -768,6 +768,7 @@ rbusError_t publishWanIpAddr(char* event_name, char* new_val, char* old_val)
+         return RBUS_ERROR_BUS_ERROR;
+     }
+ 
++    #ifndef TELEMETRY_DISABLED
+     pthread_t threadId;
+     publish_wanip_t *publish_wanip_args = NULL;
+     publish_wanip_args = (publish_wanip_t *)malloc(sizeof(publish_wanip_t));
+@@ -793,6 +794,9 @@ rbusError_t publishWanIpAddr(char* event_name, char* new_val, char* old_val)
+     {
+         CcspTraceInfo(("%s: Created thread waitForTelemetryReady\n", __FUNCTION__));
+     }
++    #else
++        CcspTraceInfo(("%s: telemetry disabled, not publishing WAN IP address\n", __FUNCTION__));
++    #endif
+ 
+     return RBUS_ERROR_SUCCESS;
+ }
+-- 
+2.39.5
+

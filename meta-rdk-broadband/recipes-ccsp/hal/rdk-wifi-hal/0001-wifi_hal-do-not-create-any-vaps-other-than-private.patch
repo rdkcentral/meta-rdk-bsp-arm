@@ -1,0 +1,36 @@
+From 60f26c59e9a704460c52ca8c5635cc15db0dcace Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Mon, 22 Jul 2024 19:32:44 +1000
+Subject: [PATCH] wifi_hal: do not create any vaps other than private_ssid_*
+ for now
+
+The mt76 driver appears to have issues accepting parameters for the various
+non private_ssid (iot/hotspot/mesh/etc.), causing none of the 5G SSIDs to
+come up.
+
+Until this issue is resolved, only create the private_ssid_2g/5g.
+
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+---
+ src/wifi_hal.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/wifi_hal.c b/src/wifi_hal.c
+index 9a54a3c..d8afa0a 100644
+--- a/src/wifi_hal.c
++++ b/src/wifi_hal.c
+@@ -1051,6 +1051,11 @@ INT wifi_hal_createVAP(wifi_radio_index_t index, wifi_vap_info_map_t *map)
+     for (i = 0; i < map->num_vaps; i++) {
+         vap = &map->vap_array[i];
+ 
++        if (vap->vap_index != 0 && vap->vap_index != 1) {
++            wifi_hal_info_print("%s:%d: Ignoring VAP index %d\n", __func__, __LINE__, vap->vap_index);
++            continue;
++        }
++
+         wifi_hal_info_print("%s:%d: vap index:%d create vap\n", __func__, __LINE__,
+             vap->vap_index);
+ 
+-- 
+2.39.5
+

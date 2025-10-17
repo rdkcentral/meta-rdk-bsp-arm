@@ -1,0 +1,84 @@
+#
+# SPDX-License-Identifier: MIT
+#
+# This file Copyright (C) 2020 Tano Systems LLC
+# Anton Kikin <a.kikin@tano-systems.com>
+#
+DESCRIPTION = "Linux Backports"
+HOMEPAGE = "https://backports.wiki.kernel.org"
+SECTION = "kernel/modules"
+LICENSE = "GPL-2.0-only"
+LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
+
+INC_PR = "0"
+
+FILESEXTRAPATHS:prepend = "${THISDIR}/${PN}/files:"
+FILESEXTRAPATHS:prepend = "${THISDIR}/${PN}/configs:"
+
+DEPENDS = "virtual/kernel coreutils-native flex-native bison-native"
+
+PACKAGE_ARCH = "${TUNE_PKGARCH}"
+# Base configuration
+SRC_URI += "\
+	file://config-base \
+"
+
+# Configurations
+SRC_URI += "\
+	file://config-mediatek \
+"
+
+inherit module-base
+
+EXTRA_OEMAKE = "V=1 \
+                KLIB_BUILD=${STAGING_KERNEL_BUILDDIR} \
+                KLIB=${B} \
+"
+
+EXCLUDE_FROM_WORLD = "1"
+
+LINUX_BACKPORTS_CONFIGS ?= "mediatek"
+
+do_configure() {
+	rm -f ${S}/kconf/conf ${S}/kconf/*.o
+	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
+	oe_runmake -C kconf CC=${BUILD_CC} conf
+
+	rm -f ${S}/.config
+	cp ${WORKDIR}/config-base ${S}/.config
+	for cfg in ${LINUX_BACKPORTS_CONFIGS}; do
+		if [ -f ${WORKDIR}/config-$cfg ]; then
+			cat ${WORKDIR}/config-$cfg >> ${S}/.config
+		else
+			bbwarn "Invalid config '${cfg}' (not exists) in LINUX_BACKPORTS_CONFIGS"
+		fi
+	done
+
+	cp ${S}/.config ${S}/.config.orig
+
+	oe_runmake oldconfig
+}
+
+do_compile() {
+	oe_runmake
+}
+
+do_install() {
+	install -d ${D}/lib/modules/${KERNEL_VERSION}/backports
+	for ko in $(find ${S} -type f -name '*.ko')
+	do
+		install -m 0644 $ko ${D}/lib/modules/${KERNEL_VERSION}/backports/
+	done
+}
+
+FILES:${PN} = " \
+	/lib/modules/${KERNEL_VERSION}/backports/ \
+"
+
+EXTRA_OEMAKE += "LEX=flex"
+
+do_configure[depends] += "\
+	flex-native:do_populate_sysroot \
+	bison-native:do_populate_sysroot \
+	virtual/kernel:do_shared_workdir \
+"
