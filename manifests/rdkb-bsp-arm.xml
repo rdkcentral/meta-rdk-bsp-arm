@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <manifest>
     <remote name="cmf" review="https://code.rdkcentral.com/r/" fetch="https://code.rdkcentral.com/r/"/>
-    <remote name="github" fetch="git+ssh://git@github.com" review=""/>
+    <remote name="github" fetch="https://github.com" review=""/>
     <remote name="yocto" fetch="http://git.yoctoproject.org/git" review=""/>
     <remote name="openembedded" fetch="https://git.openembedded.org" review=""/>
     <default remote="cmf" revision="rdkb-2025q1-kirkstone" sync-j="2"/>
