@@ -11,18 +11,19 @@ specifications. This layer only sources from community upstream sources (e.g ker
 There are some RDK-B packages for which custom branches are needed, so you will need to use
 our `rdkb-bsp-arm.xml` manifest.
 
-You **must** have SSH access configured for github.com to clone the repositories.
-
 ```
 $ mkdir rdkb-arm
 $ cd rdkb-arm
-$ repo init -u 'git+ssh://git@github.com/rdkcentral/meta-rdk-bsp-arm/' \
+$ repo init -u 'https://github.com/rdkcentral/meta-rdk-bsp-arm/' \
     -m "manifests/rdkb-bsp-arm.xml" \
     -b "develop"
 $ repo sync
 $ source meta-rdk-bsp-arm/setup-environment
 $ bitbake rdk-generic-broadband-image
 ```
+
+At the current time, the mainfest will build RDK-B 2025Q1. There will be
+an update to 2025Q3 following its release.
 
 Some Linux distributions with AppArmor support (such as Ubuntu 24.04)
 may experience difficulties when building meta-rdk-bsp-arm,
