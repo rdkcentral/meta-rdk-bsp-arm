@@ -4,116 +4,42 @@
     <remote name="github" fetch="https://github.com" review=""/>
     <remote name="yocto" fetch="http://git.yoctoproject.org/git" review=""/>
     <remote name="openembedded" fetch="https://git.openembedded.org" review=""/>
-    <default remote="cmf" revision="rdkb-2025q1-kirkstone" sync-j="2"/>
+    <default remote="cmf" revision="rdk-next" sync-j="2"/>
     <include name="manifests/oe-layers.xml"/>
     <project name="rdkcentral/meta-rdk-bsp-arm" remote="github" path="meta-rdk-bsp-arm" revision="main"/>
-    <project name="components/opensource/OMI"/>
     <project name="components/opensource/gdbus-client"/>
-    <project name="rdk/components/generic/OvsAgent"/>
-    <project name="rdk/components/generic/WebconfigFramework"/>
-    <project name="rdk/components/generic/breakpad_wrapper"/>
-    <project name="rdk/components/generic/cpuprocanalyzer"/>
-    <project name="rdk/components/generic/crashupload"/>
-    <project name="rdk/components/generic/dca"/>
-    <project name="rdk/components/generic/dcm"/>
-    <project name="rdk/components/generic/jst"/>
     <project name="rdk/components/generic/libSyscallWrapper"/>
     <project name="rdk/components/generic/libunpriv"/>
-    <project name="rdk/components/generic/lxc-container-generator"/>
-    <project name="rdk/components/generic/lxccpid"/>
     <project name="rdk/components/generic/rdk-oe/meta-cmf" path="meta-cmf"/>
     <project name="rdk/components/generic/rdk-oe/meta-cmf-broadband" path="meta-cmf-broadband"/>
     <project name="rdk/components/generic/rdk-oe/meta-cmf-mesh" path="meta-cmf-mesh"/>
     <project name="rdk/components/generic/rdk-oe/meta-rdk" path="meta-rdk"/>
     <project name="rdk/components/generic/rdk-oe/meta-rdk-broadband" path="meta-rdk-broadband"/>
     <project name="rdk/components/generic/rdk-oe/meta-rdk-ext" path="meta-rdk-ext"/>
-    <project name="rdk/components/generic/rdk_logger"/>
     <project name="rdk/components/generic/rdkssa"/>
-    <project name="rdk/components/generic/rdm"/>
-    <project name="rdk/components/generic/rfc"/>
     <project name="rdk/components/generic/sys_mon_tools/mem_analyser_tools"/>
     <project name="rdk/components/generic/sys_mon_tools/sys_resource"/>
     <project name="rdk/components/generic/syslog_helper"/>
-    <project name="rdk/components/generic/telemetry"/>
-    <project name="rdk/components/generic/xupnp"/>
     <project name="rdk/devices/raspberrypi/webpa-client"/>
     <project name="rdkb/components/generic/CcspLogAgent"/>
-    <project name="rdkb/components/generic/harvester"/>
-    <project name="rdkb/components/generic/json-rpc"/>
-    <project name="rdkb/components/generic/mtu_modifier"/>
-    <project name="rdkb/components/generic/notify_comp"/>
     <project name="rdkb/components/generic/sso"/>
-    <project name="rdkb/components/generic/startParodus"/>
-    <project name="rdkb/components/opensource/ccsp/CcspCMAgent"/>
-    <project name="rdkb/components/opensource/ccsp/CcspCommonLibrary"/>
-    <project name="rdkb/components/opensource/ccsp/CcspCr"/>
-    <project name="rdkb/components/opensource/ccsp/CcspDmCli"/>
     <project name="rdkb/components/opensource/ccsp/CcspEPONAgent"/>
-    <project name="rdkb/components/opensource/ccsp/CcspEthAgent"/>
-    <project name="rdkb/components/opensource/ccsp/CcspHomeSecurity"/>
-    <project name="rdkb/components/opensource/ccsp/CcspLMLite"/>
-    <project name="rdkb/components/opensource/ccsp/CcspMisc"/>
-    <project name="rdkb/components/opensource/ccsp/CcspMoCA"/>
-    <project name="rdkb/components/opensource/ccsp/CcspMtaAgent"/>
-    <project name="rdkb/components/opensource/ccsp/CcspPandM"/>
-    <project name="rdkb/components/opensource/ccsp/CcspPsm"/>
-    <project name="rdkb/components/opensource/ccsp/CcspSnmpPa"/>
-    <project name="rdkb/components/opensource/ccsp/CcspTr069Pa"/>
     <project name="rdkb/components/opensource/ccsp/CcspWifiAgent" revision="main"/>
-    <project name="rdkb/components/opensource/ccsp/CcspXDNS"/>
-    <project name="rdkb/components/opensource/ccsp/CoreNetLib"/>
-    <project name="rdkb/components/opensource/ccsp/DhcpManager"/>
     <project name="rdkb/components/opensource/ccsp/FirmwareSanity"/>
-    <project name="rdkb/components/opensource/ccsp/GwProvApp"/>
-    <project name="rdkb/components/opensource/ccsp/GwProvApp-EthWan"/>
     <project name="rdkb/components/opensource/ccsp/GwProvApp-ePON"/>
-    <project name="rdkb/components/opensource/ccsp/LanManager"/>
-    <project name="rdkb/components/opensource/ccsp/MeshAgent"/>
-    <project name="rdkb/components/opensource/ccsp/OneWifi"/>
     <project name="rdkb/components/opensource/ccsp/PlatformManager"/>
-    <project name="rdkb/components/opensource/ccsp/PowerManager"/>
-    <project name="rdkb/components/opensource/ccsp/RdkCellularManager"/>
-    <project name="rdkb/components/opensource/ccsp/RdkCellularManager-MM"/>
-    <project name="rdkb/components/opensource/ccsp/RdkInterDeviceManager"/>
-    <project name="rdkb/components/opensource/ccsp/RdkLedManager"/>
-    <project name="rdkb/components/opensource/ccsp/RdkPlatformManager"/>
     <project name="rdkb/components/opensource/ccsp/RdkTelcoVoiceManager"/>
-    <project name="rdkb/components/opensource/ccsp/TestAndDiagnostic"/>
-    <project name="rdkb/components/opensource/ccsp/Utopia"/>
-    <project name="rdkb/components/opensource/ccsp/Xconf"/>
-    <project name="rdkb/components/opensource/ccsp/hal"/>
-    <project name="rdkb/components/opensource/ccsp/hal/rdk-wifi-hal" path="rdkb/components/opensource/ccsp/rdk-wifi-hal"/>
-    <project name="rdkb/components/opensource/ccsp/halinterface"/>
-    <project name="rdkb/components/opensource/ccsp/hotspot"/>
     <project name="rdkb/components/opensource/ccsp/sysint"/>
-    <project name="rdkb/components/opensource/ccsp/webui"/>
-    <project name="rdkb/components/opensource/ccsp/webui-bwg"/>
-    <project name="rdkb/devices/ci20/hal"/>
-    <project name="rdkb/devices/emulator/hal"/>
     <project name="rdkb/devices/intel-x86-pc/emulator/sysint" path="rdkb/components/opensource/ccsp/sysint/device" revision="rdk-next"/>
     <project name="rdkb/devices/intel-x86-pc/emulator/tdkb" path="rdkb/tools/tdkb/platform/rdkbemulator" revision="rdk-next"/>
+    <project name="rdkb/devices/raspberrypi/sysint" path="rdkb/components/opensource/ccsp/sysint/devicerpi"/>
     <project name="rdkb/devices/raspberrypi/tdkb" path="rdkb/tools/tdkb/platform/raspberrypi"/>
-    <project name="rdkb/devices/rdkbemu/ccsp/rdkb" path="rdkb/components/generic/CcspLogAgent/devices"/>
-    <project name="rdkb/devices/rdkbemu/ccsp/rdkb" path="rdkb/components/generic/harvester/devices"/>
-    <project name="rdkb/devices/rdkbemu/ccsp/rdkb" path="rdkb/components/opensource/ccsp/CcspCr/devices"/>
-    <project name="rdkb/devices/rdkbemu/ccsp/rdkb" path="rdkb/components/opensource/ccsp/CcspLMLite/devices"/>
-    <project name="rdkb/devices/rdkbemu/ccsp/rdkb" path="rdkb/components/opensource/ccsp/CcspPandM/devices"/>
-    <project name="rdkb/devices/rdkbemu/ccsp/rdkb" path="rdkb/components/opensource/ccsp/CcspPsm/devices"/>
-    <project name="rdkb/devices/rdkbemu/ccsp/rdkb" path="rdkb/components/opensource/ccsp/CcspSnmpPa/devices"/>
-    <project name="rdkb/devices/rdkbemu/ccsp/rdkb" path="rdkb/components/opensource/ccsp/CcspTr069Pa/devices"/>
-    <project name="rdkb/devices/rdkbemu/ccsp/rdkb" path="rdkb/components/opensource/ccsp/CcspWifiAgent/devices"/>
-    <project name="rdkb/devices/rdkbemu/ccsp/rdkb" path="rdkb/components/opensource/ccsp/TestAndDiagnostic/devices"/>
-    <project name="rdkb/devices/rdkbemu/ccsp/rdkb" path="rdkb/components/opensource/ccsp/Utopia/devices"/>
-    <project name="rdkb/devices/rdkbemu/ccsp/rdkb" path="rdkb/components/opensource/ccsp/hotspot/devices"/>
     <project name="rdkb/devices/rdkbemu/rdkbemu_xb3" path="rdkb/components/opensource/ccsp/xb3"/>
-    <project name="rdkb/docs"/>
     <project name="rdkb/tools/tdkb"/>
-    <project name="rdkcentral/RdkEasyMeshController" remote="github" path="rdkb/components/opensource/ccsp/RdkEasyMeshController"/>
-    <project name="rdkcentral/RdkEasyMeshControllerSSP" remote="github" path="rdkb/components/opensource/ccsp/RdkEasyMeshController/ssp"/>
-    <project name="rdkcentral/hal-voice-asterisk" remote="github" path="components/opensource/hal-voice-asterisk"/>
-    <project name="rdkcentral/hal-wifi-cfg80211" remote="github" path="components/opensource/hal-wifi-cfg80211"/>
-    <project name="rdkcentral/meta-rdk-wan" remote="github" path="meta-rdk-wan"/>
-    <project name="rdkcentral/rdkb-emu-hal" remote="github" path="rdkb/devices/rdkbemu/hal"/>
-    <project name="rdkcentral/rdkb-halif-platform" remote="github" path="rdkb/components/opensource/ccsp/rdkb-halif-platform"/>
-    <project name="rdkcentral/zilker-sdk" remote="github" path="components/opensource/zilker-sdk" revision="main"/>
+    <project name="rdkcentral/RdkEasyMeshController" remote="github" path="rdkb/components/opensource/ccsp/RdkEasyMeshController" revision="main"/>
+    <project name="rdkcentral/RdkEasyMeshControllerSSP" remote="github" path="rdkb/components/opensource/ccsp/RdkEasyMeshController/ssp" revision="main"/>
+    <project name="rdkcentral/hal-voice-asterisk" remote="github" path="components/opensource/hal-voice-asterisk" revision="main"/>
+    <project name="rdkcentral/hal-wifi-cfg80211" remote="github" path="components/opensource/hal-wifi-cfg80211" revision="master"/>
+    <project name="rdkcentral/meta-rdk-wan" remote="github" path="meta-rdk-wan" revision="main"/>
+    <project name="rdkcentral/rdkb-halif-platform" remote="github" path="rdkb/components/opensource/ccsp/rdkb-halif-platform" revision="main"/>
 </manifest>
