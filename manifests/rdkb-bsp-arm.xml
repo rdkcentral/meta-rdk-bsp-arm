@@ -92,7 +92,6 @@
     <project name="rdkb/devices/emulator/hal"/>
     <project name="rdkb/devices/intel-x86-pc/emulator/sysint" path="rdkb/components/opensource/ccsp/sysint/device" revision="rdk-next"/>
     <project name="rdkb/devices/intel-x86-pc/emulator/tdkb" path="rdkb/tools/tdkb/platform/rdkbemulator" revision="rdk-next"/>
-    <project name="rdkb/devices/raspberrypi/sysint" path="rdkb/components/opensource/ccsp/sysint/devicegenericarm"/>
     <project name="rdkb/devices/raspberrypi/tdkb" path="rdkb/tools/tdkb/platform/raspberrypi"/>
     <project name="rdkb/devices/rdkbemu/ccsp/rdkb" path="rdkb/components/generic/CcspLogAgent/devices"/>
     <project name="rdkb/devices/rdkbemu/ccsp/rdkb" path="rdkb/components/generic/harvester/devices"/>
