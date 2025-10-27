@@ -1,4 +1,4 @@
-From 34525d90461deb24898b69163f5f74cac5e8f2a0 Mon Sep 17 00:00:00 2001
+From 147ad7e1995b7764142f3c87e2661de5b47e315e Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Tue, 22 Oct 2024 12:30:22 +1100
 Subject: [PATCH] cosa_dhcpv4_apis: fix compile error when MoCA not enabled
@@ -19,15 +19,15 @@ Signed-off-by: Mathew McBride <matt@traverse.com.au>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/source/TR-181/board_sbapi/cosa_dhcpv4_apis.c b/source/TR-181/board_sbapi/cosa_dhcpv4_apis.c
-index 0ccc325..7a0bae8 100644
+index 1b23c59..438d07a 100644
 --- a/source/TR-181/board_sbapi/cosa_dhcpv4_apis.c
 +++ b/source/TR-181/board_sbapi/cosa_dhcpv4_apis.c
-@@ -520,11 +520,13 @@ int usg_get_cpe_associate_interface(char *pMac, char ifname[64])
+@@ -254,11 +254,13 @@ int usg_get_cpe_associate_interface(char *pMac, char ifname[64])
              ERR_CHK(rc);
          }
-         else
+         else 
 -#endif
- 	{
+         {
 +#endif
              rc = strcpy_s(ifname, 64, "Device.Ethernet.Interface.x");
              ERR_CHK(rc);
@@ -38,5 +38,5 @@ index 0ccc325..7a0bae8 100644
          if(result.result == 0)  {
              rc = strcpy_s(ifname, 64, result.data.host.l1IfName);
 -- 
-2.39.5
+2.51.0
 
