@@ -7,5 +7,5 @@
     <project name="rdk/components/opensource/oe/meta-openembedded" path="meta-openembedded" revision="rdk/kirkstone"/>
     <project name="rdk/components/opensource/oe/meta-virtualization" path="meta-virtualization" revision="rdk/kirkstone"/>
     <project name="rdk/components/opensource/oe/openembedded-core" path="openembedded-core" revision="rdk/kirkstone"/>
-    <project name="meta-lts-mixins" path="meta-lts-mixins" remote="yocto" revision="77856a90b67834e5acd56eacc5964c0587353aec" dest-branch="kirkstone/rust"/>
+    <project name="meta-lts-mixins" path="meta-lts-mixins" remote="yocto" revision="ec37dc4b7041e0b81c7c577e541db42abbe43226" dest-branch="kirkstone/rust"/>
 </manifest>
