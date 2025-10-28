@@ -142,8 +142,10 @@ DISTRO_FEATURES_append_broadband = " RbusBuildFlagEnable"
 DISTRO_FEATURES:append:broadband = " meshwifi"
 
 #rdk-wifi-libhostap support for broadband
-DISTRO_FEATURES_append_broadband = " HOSTAPD_2_10"
+DISTRO_FEATURES_append_broadband = " HOSTAPD_2_11"
 
+# Use MLO/WiFi7 code
+DISTRO_FEATURES:append:broadband = " CONFIG_IEEE80211BE"
 # OneWifi feature
 DISTRO_FEATURES:append:broadband = " OneWifi"
 
@@ -171,6 +173,12 @@ DISTRO_FEATURES_append_broadband = " partner_default_ext"
 
 # Remove WebUI (does not work without erouter0)
 DISTRO_FEATURES_remove_broadband = " webui_jst"
+
+# Add new EasyMesh
+DISTRO_FEATURES_append_broadband = " EasyMesh"
+
+# Add IEEE1905 AL
+DISTRO_FEATURES_append_broadband = " with_alsap"
 
 SESSIONMGR_WS_RPC_ENABLE = "1"
 
