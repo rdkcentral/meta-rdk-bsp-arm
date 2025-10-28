@@ -1,0 +1,8 @@
+radius_s_port=8000
+radius_s_ip=127.0.0.1
+radius_key=1234567
+wps_pin=1234567
+# Value for testing only, user must change this password
+# This password is not used when the EasyMesh controller
+# is enabled!
+bpi_wifi_password=rdk@1234
