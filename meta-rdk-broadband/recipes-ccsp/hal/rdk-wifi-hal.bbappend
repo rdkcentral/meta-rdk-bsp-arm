@@ -1,36 +1,39 @@
 SRC_URI_remove = "git://github.com/rdkcentral/rdk-wifi-hal.git;protocol=https;branch=main;name=rdk-wifi-hal"
 
 SRC_URI += "git://github.com/rdkcentral/rdk-wifi-hal.git;protocol=https;branch=develop;name=rdk-wifi-hal"
-SRCREV_rdk-wifi-hal = "e62398c723a9cc96ac6b62a5b35e29a49869de51"
+SRCREV_rdk-wifi-hal = "7cbf2c7a892e9d10be0fc8fa3ad85c7a7aeb511c"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/rdk-wifi-hal:"
 
-# Patch an issue with the mainline mt76 (MediaTek) driver
-SRC_URI_append = "\
-        file://0001-wifi_hal-do-not-create-any-vaps-other-than-private.patch;apply=no \
-        file://0002-platform-raspberry-pi-remove-RPI-reference-default-SSID.patch;apply=no \
-        file://0003-platform-raspberrypi-remove-unused-variable.patch;apply=no \
-        file://0004-platform-rasbperry-pi-remove-functions-now-implement.patch;apply=no \
+SRC_URI:append = "\
+  file://0001-platform-change-default-SSID-to-RDKB-ARM-AP.patch;patchdir=.. \
 "
 
-CFLAGS_append = " -D_PLATFORM_RASPBERRYPI_  -DRASPBERRY_PI_PORT "
+# For the purposes of the EasyMesh bring up, we will "pretend" to be a
+# Banana Pi, which has the same WiFi vendor as us.
+CFLAGS_append = " -D_PLATFORM_BANANAPI_R4_ -DBANANA_PI_PORT"
 CFLAGS_append_kirkstone = " -fcommon"
 EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' ONE_WIFIBUILD=true ', '', d)}"
-EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' RASPBERRY_PI_PORT=true ', '', d)}"
+EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' BANANA_PI_PORT=true ', '', d)}"
 
-do_genericarm_patches() {
-    cd ${S} # This puts us in "rdk-wifi-hal/src, so use -p2 below"
-    if [ ! -e genericarm_patch_applied ]; then
-        bbnote "Applying 0001-wifi_hal-do-not-create-any-vaps-other-than-private.patch into ${S}"
-        patch -p2 -i ${WORKDIR}/0001-wifi_hal-do-not-create-any-vaps-other-than-private.patch
-        bbnote "Applying 0002-platform-raspberry-pi-remove-RPI-reference-default-SSID.patch into ${S}"
-        patch -d ${S}/.. -p1 -i ${WORKDIR}/0002-platform-raspberry-pi-remove-RPI-reference-default-SSID.patch
-        bbnote "Applying 0003-platform-raspberrypi-remove-unused-variable.patch into ${S}"
-        patch -d ${S}/.. -p1 -i ${WORKDIR}/0003-platform-raspberrypi-remove-unused-variable.patch
-        bbnote "Applying 0004-platform-rasbperry-pi-remove-functions-now-implement.patch into ${S}"
-        patch -d ${S}/.. -p1 -i ${WORKDIR}/0004-platform-rasbperry-pi-remove-functions-now-implement.patch
-        touch genericarm_patch_applied
-    fi
+SRC_URI += " \
+  ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', ' file://InterfaceMap_em.json ', 'file://InterfaceMap.json ', d)} \
+  ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', bb.utils.contains('DISTRO_FEATURES', 'em_extender', 'file://EasymeshCfg_ext.json ','file://EasymeshCfg.json ', d), ' ', d)} \
+"
+
+# On other implementations, these files are installed into /nvram
+# As our /nvram mount point is separate, these instead will be
+# copied by a pre-start script at runtime
+do_install_append() {
+  install -d ${D}/usr/ccsp/EasyMesh/nvram
+  install -m 0644 ${WORKDIR}/InterfaceMa*.json ${D}/usr/ccsp/EasyMesh/nvram/InterfaceMap.json
+  DISTRO_EM_ENABLED="${@bb.utils.contains('DISTRO_FEATURES','EasyMesh','true','false',d)}"
+  if [ $DISTRO_EM_ENABLED = 'true' ]; then
+     install -m 0644 ${WORKDIR}/Easymesh*.json  ${D}/usr/ccsp/EasyMesh/nvram/EasymeshCfg.json 
+  fi
 }
-addtask genericarm_patches after do_unpack before do_compile
+
+FILES_${PN} += " \
+  /usr/ccsp/EasyMesh/* \
+"
 
