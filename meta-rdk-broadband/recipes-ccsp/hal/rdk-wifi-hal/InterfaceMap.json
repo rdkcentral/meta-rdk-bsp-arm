@@ -1,0 +1,192 @@
+{
+    "PhyList": [
+        {
+            "Index": 0,
+            "RadioList": [
+                 {
+                    "Index": 2,
+                    "RadioName": "wifi2",
+                    "InterfaceList": [
+                        {
+                            "InterfaceName": "wifi23",
+                            "Bridge": "brlan2",
+                            "vlanId": 0,
+                            "vapIndex": 23,
+                            "vapName": "mesh_sta_6g"
+                        },
+                        {
+                            "InterfaceName": "wifi22",
+                            "Bridge": "brlan2",
+                            "vlanId": 0,
+                            "vapIndex": 22,
+                            "vapName": "mesh_backhaul_6g"
+                        },
+                        {                                 
+                            "InterfaceName": "wifi20",    
+                            "Bridge": "brlan4",           
+                            "vlanId": 0,                  
+                            "vapIndex": 20,               
+                            "vapName": "hotspot_secure_6g"
+                        },                            
+                        {                                 
+                            "InterfaceName": "wifi19",    
+                            "Bridge": "brlan6",           
+                            "vlanId": 0,                  
+                            "vapIndex": 19,               
+                            "vapName": "lnf_psk_6g"      
+                        },       
+                        {                                
+                            "InterfaceName": "wifi18",  
+                            "Bridge": "brlan2",         
+                            "vlanId": 0,                
+                            "vapIndex": 18,             
+                            "vapName": "hotspot_open_6g"
+                        },                                
+                        {                                 
+                            "InterfaceName": "wifi17",    
+                            "Bridge": "brlan1",           
+                            "vlanId": 0,                  
+                            "vapIndex": 17,               
+                            "vapName": "iot_ssid_6g"      
+                        },
+                        {
+                            "InterfaceName": "wifi2",
+                            "MldName": "mld0",
+                            "Bridge": "brlan0",
+                            "vlanId": 0,
+                            "vapIndex": 16,
+                            "vapName": "private_ssid_6g"
+                        }
+                    ]
+                },
+                {
+                    "Index": 1,
+                    "RadioName": "wifi1",
+                    "InterfaceList": [
+                        {
+                            "InterfaceName": "wifi15",
+                            "Bridge": "brlan2",
+                            "vlanId": 0,
+                            "vapIndex": 15,
+                            "vapName": "mesh_sta_5g"
+                        },
+                        {
+                            "InterfaceName": "wifi13",
+                            "Bridge": "brlan3",
+                            "vlanId": 0,
+                            "vapIndex": 13,
+                            "vapName": "mesh_backhaul_5g"
+                        },
+                        {
+                            "InterfaceName": "wifi11",
+                            "Bridge": "br1an6",
+                            "vlanId": 0,
+                            "vapIndex": 11,
+                            "vapName": "lnf_radius_5g"
+                        },
+                        {
+                            "InterfaceName": "wifi9",
+                            "Bridge": "brlan5",
+                            "vlanId": 0,
+                            "vapIndex": 9,
+                            "vapName": "hotspot_secure_5g"
+                        },
+                        {
+                            "InterfaceName": "wifi7",
+                            "Bridge": "brlan6",
+                            "vlanId": 0,
+                            "vapIndex": 7,
+                            "vapName": "lnf_psk_5g"
+                        },
+                        {
+                            "InterfaceName": "wifi5",
+                            "Bridge": "brlan3",
+                            "vlanId": 0,
+                            "vapIndex": 5,
+                            "vapName": "hotspot_open_5g"
+                        },
+                        {
+                            "InterfaceName": "wifi3",
+                            "Bridge": "brlan1",
+                            "vlanId": 0,
+                            "vapIndex": 3,
+                            "vapName": "iot_ssid_5g"
+                        },
+                        {
+                            "InterfaceName": "wifi1",
+                            "MldName": "mld0",
+                            "Bridge": "brlan0",
+                            "vlanId": 0,
+                            "vapIndex": 1,
+                            "vapName": "private_ssid_5g"
+                        }
+                        
+                    ]
+                },
+                {
+                    "Index": 0,
+                    "RadioName": "wifi0",
+                    "InterfaceList": [
+                        {
+                            "InterfaceName": "wifi14",
+                            "Bridge": "brlan2",
+                            "vlanId": 0,
+                            "vapIndex": 14,
+                            "vapName": "mesh_sta_2g"
+                        },
+                        {
+                            "InterfaceName": "wifi12",
+                            "Bridge": "brlan2",
+                            "vlanId": 0,
+                            "vapIndex": 12,
+                            "vapName": "mesh_backhaul_2g"
+                        },
+                        {
+                            "InterfaceName": "wifi10",
+                            "Bridge": "brlan6",
+                            "vlanId": 0,
+                            "vapIndex": 10,
+                            "vapName": "lnf_radius_2g"
+                        },
+                        {
+                            "InterfaceName": "wifi8",
+                            "Bridge": "brlan4",
+                            "vlanId": 0,
+                            "vapIndex": 8,
+                            "vapName": "hotspot_secure_2g"
+                        },
+                        {
+                            "InterfaceName": "wifi6",
+                            "Bridge": "brlan6",
+                            "vlanId": 0,
+                            "vapIndex": 6,
+                            "vapName": "lnf_psk_2g"
+                        },
+                        {
+                            "InterfaceName": "wifi4",
+                            "Bridge": "brlan2",
+                            "vlanId": 0,
+                            "vapIndex": 4,
+                            "vapName": "hotspot_open_2g"
+                        },
+                        {
+                            "InterfaceName": "wifi25",
+                            "Bridge": "brlan1",
+                            "vlanId": 0,
+                            "vapIndex": 2,
+                            "vapName": "iot_ssid_2g"
+                        },
+                        {
+                            "InterfaceName": "wifi0",
+                            "MldName": "mld0",
+                            "Bridge": "brlan0",
+                            "vlanId": 0,
+                            "vapIndex": 0,
+                            "vapName": "private_ssid_2g"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
