@@ -72,6 +72,7 @@ do_install_append() {
 # TODO add back swupdate.service
 SYSTEMD_SERVICE_${PN}_append = " dropbear.service btrfs-subvolume.service"
 SYSTEMD_SERVICE_${PN}_remove_broadband = "dropbear.service"
+SYSTEMD_SERVICE_${PN}_remove_broadband = "ntp-data-collector.service"
 SYSTEMD_SERVICE_${PN}_append_bootbroadband += " boot-time-upload.service monitor-upload.service"
 
 FILES_${PN}_append = " ${systemd_unitdir}/system/* /usr/ccsp/tad/* /nvram/.placeholder /rdklogs/.placeholder /volumes/toplevel/.placeholder"
