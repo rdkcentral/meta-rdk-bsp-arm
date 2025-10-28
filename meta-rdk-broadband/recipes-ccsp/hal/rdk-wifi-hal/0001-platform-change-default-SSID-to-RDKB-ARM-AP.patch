@@ -1,0 +1,37 @@
+From 6dd47d0ef0d189a03d34a86d04d7b6f204afd531 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Wed, 10 Sep 2025 14:12:33 +1000
+Subject: [PATCH] platform: change default SSID to 'RDKB-ARM-AP%d'
+
+---
+ platform/banana-pi/platform.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/platform/banana-pi/platform.c b/platform/banana-pi/platform.c
+index 4be1efb..3065e02 100644
+--- a/platform/banana-pi/platform.c
++++ b/platform/banana-pi/platform.c
+@@ -220,9 +220,9 @@ int platform_get_ssid_default(char *ssid, int vap_index)
+         }
+     }
+ #ifdef CONFIG_GENERIC_MLO
+-    snprintf(ssid, BPI_LEN_16, "BPI-RDKB-MLO-AP");
++    snprintf(ssid, BPI_LEN_16, "RDKB-ARM-MLO-AP");
+ #else    
+-    snprintf(ssid,BPI_LEN_16,"BPI_RDKB-AP%d",vap_index);
++    snprintf(ssid,BPI_LEN_16,"RDKB-ARM-AP%d",vap_index);
+ #endif    
+     return 0;
+ }
+@@ -261,7 +261,7 @@ int nvram_get_current_ssid(char *l_ssid, int vap_index)
+ #ifdef CONFIG_GENERIC_MLO    
+     snprintf(l_ssid, BPI_LEN_16, "BPI-RDKB-MLO-AP");
+ #else    
+-    snprintf(l_ssid,BPI_LEN_16,"BPI_RDKB-AP%d",vap_index);
++    snprintf(l_ssid,BPI_LEN_16,"RDKB-ARM-AP%d",vap_index);
+ #endif    
+     return 0;
+ }
+-- 
+2.51.0
+
