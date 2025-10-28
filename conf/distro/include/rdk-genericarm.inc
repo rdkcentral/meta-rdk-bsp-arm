@@ -160,7 +160,8 @@ DISTRO_FEATURES_append_broadband = " CPUPROCANALYZER_BROADBAND"
 DISTRO_FEATURES_append_broadband = " lld_support"
 
 # RDKB-48800: Install DHCP Manager service file
-DISTRO_FEATURES_append_broadband = " dhcp_manager"
+# 2025-09: Disable DHCP Manager (RDKBNETWOR-3)
+# DISTRO_FEATURES_append_broadband = " dhcp_manager"
 
 # RDKBDEV-694: Adding Partner Default Ext
 DISTRO_FEATURES_append_broadband = " partner_default_ext"
