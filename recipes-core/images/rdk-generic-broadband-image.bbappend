@@ -27,6 +27,10 @@ IMAGE_INSTALL_append = " efi-image-manager"
 # Placeholder for resolv.conf
 IMAGE_INSTALL_append = " resolvconf-placeholder"
 
+# EasyMesh and IEEE1905
+IMAGE_INSTALL_append = "${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh',' unified-wifi-mesh unified-wifi-mesh-cli socat','',d)}"
+IMAGE_INSTALL_append = "${@bb.utils.contains('DISTRO_FEATURES', 'with_alsap',' ieee1905-em ','',d)}"
+
 require image-exclude-files.inc
 
 remove_unused_file() {
