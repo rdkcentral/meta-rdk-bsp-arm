@@ -9,7 +9,7 @@ DEPENDS_append = " mesh-agent "
 DEPENDS_remove = " opensync "
 DEPENDS += " ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', ' rdk-wifi-libhostap ', '', d)}"
 
-RDEPENDS_${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', ' maccalc', '', d)}"
+RDEPENDS_${PN}:append = " virtual/unified-wifi-mesh-personality"
 
 CFLAGS_append = " -DWIFI_HAL_VERSION_3 -Wno-unused-function "
 LDFLAGS_append = " -ldl"
@@ -33,17 +33,14 @@ EXTRA_OECONF_append = " ONEWIFI_WHIX_APP_SUPPORT=true"
 EXTRA_OECONF_append = " ONEWIFI_BLASTER_APP_SUPPORT=true"
 
 SRC_URI += " \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', bb.utils.contains('DISTRO_FEATURES', 'em_extender', 'file://onewifi_pre_start_em_ext.sh ','file://onewifi_pre_start_em_ctrl.sh ', d), 'file://onewifi_pre_start.sh ', d)} \
     file://wifi_defaults.txt \
 "
 do_install_append(){
     install -d ${D}/nvram 
-    install -m 777 ${WORKDIR}/onewifi_pre_*.sh ${D}/usr/ccsp/wifi/onewifi_pre_start.sh
     install -m 644 ${WORKDIR}/wifi_defaults.txt ${D}/nvram/
 }
 
 FILES_${PN} += " \
-    ${prefix}/ccsp/wifi/onewifi_pre_start.sh \
     /usr/bin/wifi_events_consumer \
     /nvram/wifi_defaults.txt \
 "

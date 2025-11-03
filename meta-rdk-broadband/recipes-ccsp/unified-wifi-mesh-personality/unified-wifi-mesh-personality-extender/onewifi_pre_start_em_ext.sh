@@ -1,5 +1,25 @@
 #!/bin/sh
-echo "Start EM Ctrl Pre-Setup"
+####################################################################################
+# If not stated otherwise in this file or this component's LICENSE file the
+# following copyright and licenses apply:
+#
+#  Copyright 2025 RDK Management
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+##################################################################################
+sleep 5
+
+echo "Start EM Extender Pre-Setup"
 
 modprobe mt7915e
 
@@ -15,6 +35,11 @@ fi
 if [ -d "/sys/class/net/wifi1.3" ]; then
     echo "AP interfaces already exist, not repeating setup"
     exit 0
+fi
+
+if [ ! -d "/sys/class/ieee80211/phy0" ]; then
+    echo "ERROR: No Wifi phy present"
+    exit 1
 fi
 
 iw phy phy0 interface add wifi0 type __ap
@@ -64,6 +89,16 @@ ifconfig wifi1.2 up
 ifconfig wifi1.3 up
 #ifconfig wifi2 up
 
-echo "End EM Ctrl Pre Setup"
+
+#To update al_mac addr in EasymesgCfg.json
+al_mac_addr=`cat /nvram/EasymeshCfg.json | grep AL_MAC_ADDR  | cut -d '"' -f4`
+al_mac=`iw dev wifi1.3 info | grep addr | cut -d ' ' -f2`
+
+if [ "$al_mac_addr" = "00:00:00:00:00:00" ]; then
+        sed -i "s/$al_mac_addr/$al_mac/g" /nvram/EasymeshCfg.json
+fi
+
+
+echo "End EM Extender Pre Setup"
 
 exit 0
