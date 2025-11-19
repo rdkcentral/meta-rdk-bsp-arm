@@ -169,7 +169,7 @@ DISTRO_FEATURES_append_broadband = " partner_default_ext"
 #DISTRO_FEATURES_append_broadband = " Asterisk"
 
 # Remove WebUI (does not work without erouter0)
-DISTRO_FEATURES_remove_broadband = " webui_jst"
+#DISTRO_FEATURES_remove_broadband = " webui_jst"
 
 SESSIONMGR_WS_RPC_ENABLE = "1"
 
