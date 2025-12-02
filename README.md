@@ -16,14 +16,16 @@ $ mkdir rdkb-arm
 $ cd rdkb-arm
 $ repo init -u 'https://github.com/rdkcentral/meta-rdk-bsp-arm/' \
     -m "manifests/rdkb-bsp-arm.xml" \
-    -b "develop"
+    -b "main"
 $ repo sync
 $ source meta-rdk-bsp-arm/setup-environment
 $ bitbake rdk-generic-broadband-image
 ```
 
-At the current time, the mainfest will build RDK-B 2025Q1. There will be
-an update to 2025Q3 following its release.
+At the current time, the `main` branch mainfest will build RDK-B 2025Q1 (based on Yocto `kirkstone`),
+and will be updated following the next major RDK-B release.
+
+The `develop` branch is intended to follow `rdk-next` as closely as possible.
 
 Some Linux distributions with AppArmor support (such as Ubuntu 24.04)
 may experience difficulties when building meta-rdk-bsp-arm,
