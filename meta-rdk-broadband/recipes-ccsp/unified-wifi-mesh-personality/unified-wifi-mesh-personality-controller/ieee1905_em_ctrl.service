@@ -19,6 +19,7 @@
 [Unit]
 Description=ieee1905 EasyMesh Controller service
 After=CcspEthAgent.service
+After=sys-devices-virtual-net-brlan0.device
 
 [Service]
 Type=forking
