@@ -24,7 +24,7 @@ while [ 1 ]
 	do
 	LanMode=`dmcli eRT getv Device.X_CISCO_COM_DeviceControl.LanManagementEntry.1.LanMode | grep value | cut -d ':' -f3 | cut -d ' ' -f2 | tr -d '\n'`
 	if [ "$LanMode" = "router" ]; then
-		num_intfs_in_bridge=$(find /sys/class/net/brlan0/ -name 'lower_eth*' | wc -l)
+		num_intfs_in_bridge=$(find /sys/class/net/brlan0/ -name 'lower_eth*' | grep -v 'virt' | wc -l)
 		if [ "${num_intfs_in_bridge}" = "0" ] && [ -f "/tmp/utopia-lan-started" ] && [ ! -f "/tmp/utopia-ipv4-4-up" ]; then
 			logger "brlan0 not operational, fixing"
 			/etc/utopia/service.d/lan_handler.sh ipv4_4-status up

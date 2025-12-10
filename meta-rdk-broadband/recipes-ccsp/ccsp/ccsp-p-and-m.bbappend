@@ -24,21 +24,6 @@ CFLAGS_remove = "-Werror"
 #Disabling the ppp manager conditional flag until the pppmanager functionality support in RPI
 CFLAGS_remove = " ${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_xdsl_ppp_manager', '-DFEATURE_RDKB_XDSL_PPP_MANAGER', '', d)}"
 
-do_genericarm_patches() {
-    cd ${S}
-    if [ ! -e genericarm_patch_applied ]; then
-        bbnote "Applying 0001-Remove-erouter0-reference-from-Device.IP.Interface.patch into ${S}"
-        patch -p1 -i ${WORKDIR}/0001-Remove-erouter0-reference-from-Device.IP.Interface.patch
-        bbnote "Applying 0002-Generic-ARM-only-disable-sending-WebPA-notifications.patch into ${S}"
-        patch -p1 -i ${WORKDIR}/0002-Generic-ARM-only-disable-sending-WebPA-notifications.patch
-        bbnote "Applying 0003-Generic-ARM-only-disable-telemetry-reporting-for-WAN.patch into ${S}"
-        patch -p1 -i ${WORKDIR}/0003-Generic-ARM-only-disable-telemetry-reporting-for-WAN.patch
-        touch genericarm_patch_applied
-    fi
-}
-addtask genericarm_patches after do_unpack before do_compile
-
-
 do_configure_prepend () {
    #for WanManager support
    #Below lines of code needs to be removed , once (Device.DHCPv4.Client.{i} and Device.DhCPv6,CLient.{i}) the mentioned parameters are permanently removed from TR181-USGv2.XML

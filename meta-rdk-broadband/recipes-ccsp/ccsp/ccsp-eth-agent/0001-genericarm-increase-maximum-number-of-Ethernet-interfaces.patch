@@ -1,0 +1,37 @@
+From 123970d52a1b325ce5a414803146b2a4351b5bed Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Thu, 22 Aug 2024 12:13:25 +1000
+Subject: [PATCH] genericarm: increase maximum number of Ethernet
+
+ interfaces
+
+The Ten64 platform has 10 Ethernet ports (8 GE + 2 SFP+).
+
+---
+ source/TR-181/board_sbapi/cosa_ethernet_apis.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/source/TR-181/board_sbapi/cosa_ethernet_apis.c b/source/TR-181/board_sbapi/cosa_ethernet_apis.c
+index 66c2ec7..b31d8bc 100755
+--- a/source/TR-181/board_sbapi/cosa_ethernet_apis.c
++++ b/source/TR-181/board_sbapi/cosa_ethernet_apis.c
+@@ -162,7 +162,9 @@ extern  char g_Subsystem[BUFLEN_32];
+ #include "cosa_ethernet_manager.h"
+ #endif
+ #if defined (FEATURE_RDKB_WAN_MANAGER)
+-#if defined (_CBR2_PRODUCT_REQ_)
++#if defined (_PLATFORM_GENERICARM_)
++#define TOTAL_NUMBER_OF_INTERNAL_INTERFACES 10
++#elif defined (_CBR2_PRODUCT_REQ_)
+ #define TOTAL_NUMBER_OF_INTERNAL_INTERFACES 6
+ #elif defined (_XER5_PRODUCT_REQ_) || defined(_SCER11BEL_PRODUCT_REQ_) || defined(_SCXF11BFL_PRODUCT_REQ_)
+ #define TOTAL_NUMBER_OF_INTERNAL_INTERFACES 5
+@@ -3934,7 +3936,7 @@ ANSC_STATUS CosaDmlTriggerExternalEthPortLinkStatus(char *ifname, BOOL status)
+ {
+     ANSC_STATUS   retStatus;
+     INT           IfIndex = -1;
+-    CcspTraceInfo(("%s.%d Enter \n",__FUNCTION__,__LINE__));
++    CcspTraceInfo(("%s.%d Enter (ifname=%s)\n",__FUNCTION__,__LINE__));
+     if (ifname == NULL)
+     {
+         CcspTraceError(("%s Invalid data \n", __FUNCTION__));

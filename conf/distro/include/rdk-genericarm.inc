@@ -142,13 +142,15 @@ DISTRO_FEATURES_append_broadband = " RbusBuildFlagEnable"
 DISTRO_FEATURES:append:broadband = " meshwifi"
 
 #rdk-wifi-libhostap support for broadband
-DISTRO_FEATURES_append_broadband = " HOSTAPD_2_10"
+DISTRO_FEATURES_append_broadband = " HOSTAPD_2_11"
 
+# Use MLO/WiFi7 code
+DISTRO_FEATURES:append:broadband = " CONFIG_IEEE80211BE"
 # OneWifi feature
 DISTRO_FEATURES:append:broadband = " OneWifi"
 
-# MacFilter Feature
-DISTRO_FEATURES_append_broadband = " acl_nl_support"
+# 2025-07-10: Disable 802.11ACL feature due to MT7915/6 problem
+DISTRO_FEATURES:append:broadband = " disable_nl80211_acl"
 
 # RDKBDEV-942 RdkGponManager: Modify as per new WAN Manager Design
 DISTRO_FEATURES_append_broadband = " WanManagerUnificationEnable"
@@ -160,7 +162,8 @@ DISTRO_FEATURES_append_broadband = " CPUPROCANALYZER_BROADBAND"
 DISTRO_FEATURES_append_broadband = " lld_support"
 
 # RDKB-48800: Install DHCP Manager service file
-DISTRO_FEATURES_append_broadband = " dhcp_manager"
+# 2025-09: Disable DHCP Manager (RDKBNETWOR-3)
+# DISTRO_FEATURES_append_broadband = " dhcp_manager"
 
 # RDKBDEV-694: Adding Partner Default Ext
 DISTRO_FEATURES_append_broadband = " partner_default_ext"
@@ -170,6 +173,12 @@ DISTRO_FEATURES_append_broadband = " partner_default_ext"
 
 # Remove WebUI (does not work without erouter0)
 DISTRO_FEATURES_remove_broadband = " webui_jst"
+
+# Add new EasyMesh
+DISTRO_FEATURES_append_broadband = " EasyMesh"
+
+# Add IEEE1905 AL
+DISTRO_FEATURES_append_broadband = " with_alsap"
 
 SESSIONMGR_WS_RPC_ENABLE = "1"
 
