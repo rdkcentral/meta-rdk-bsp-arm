@@ -12,5 +12,5 @@ inherit cmake pkgconfig
 S = "${WORKDIR}/git"
 
 FILES_SOLIBSDEV = ""
-FILES_${PN} += "${libdir}/*.so"
+FILES:${PN} += "${libdir}/*.so"
 INSANE_SKIP_${PN} += "dev-so"

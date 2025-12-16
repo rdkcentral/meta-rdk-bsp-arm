@@ -8,5 +8,5 @@ do_install:append() {
     rm -rf ${D}/nvram
 }
 
-FILES_${PN}:remove = "/nvram/*"
-FILES_${PN} =+ " /usr/ccsp/EasyMesh/nvram/*"
+FILES:${PN}:remove = "/nvram/*"
+FILES:${PN} =+ " /usr/ccsp/EasyMesh/nvram/*"

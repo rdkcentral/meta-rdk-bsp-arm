@@ -13,5 +13,5 @@ python () {
     d.setVar("do_install", "export CRATE_CC_NO_DEFAULTS=1\ncargo_do_install")
 }
 
-SYSTEMD_SERVICE_${PN}:remove = "ieee1905_em_ctrl.service"
-SYSTEMD_SERVICE_${PN}:remove = "ieee1905_em_agent.service"
+SYSTEMD_SERVICE:${PN}:remove = "ieee1905_em_ctrl.service"
+SYSTEMD_SERVICE:${PN}:remove = "ieee1905_em_agent.service"

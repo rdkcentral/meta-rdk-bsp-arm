@@ -3,7 +3,7 @@ SUMMARY = "A console-only image for the RDK-B yocto build which supports uploadi
 require recipes-core/images/add-non-root-user-group.inc
 require recipes-core/images/rdk-generic-broadband-image.bb
 
-IMAGE_INSTALL_append = " \
+IMAGE_INSTALL:append = " \
     packagegroup-core-ssh-openssh \
     "
 IMAGE_FEATURES += " ssh-server-openssh"
@@ -15,9 +15,9 @@ IMAGE_ROOTFS_SIZE = "14192"
 SYSTEMD_TOOLS = "systemd-analyze systemd-bootchart"
 
 # systemd-bootchart doesn't currently build with musl libc
-SYSTEMD_TOOLS_remove_libc-musl = "systemd-bootchart"
+SYSTEMD_TOOLS:remove:libc-musl = "systemd-bootchart"
 
-IMAGE_INSTALL_append = " ${SYSTEMD_TOOLS}"
+IMAGE_INSTALL:append = " ${SYSTEMD_TOOLS}"
 
 ROOTFS_POSTPROCESS_COMMAND += "add_systemd_services; "
 

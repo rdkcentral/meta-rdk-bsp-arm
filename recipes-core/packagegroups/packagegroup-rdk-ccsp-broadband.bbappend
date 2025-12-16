@@ -1,21 +1,21 @@
-RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "ccsp-cm-agent"
-RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "ccsp-cm-agent-ccsp"
-RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "ccsp-moca-ccsp"
-RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "ccsp-epon-agent"
-RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "sys-resource"
-RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "ccsp-wifi-agent"
-RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "ccsp-mta-agent"
-RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "ccsp-mta-agent-ccsp"
-RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "rdktelcovoicemanager"
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-cm-agent"
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-cm-agent-ccsp"
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-moca-ccsp"
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-epon-agent"
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "sys-resource"
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-wifi-agent"
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-mta-agent"
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-mta-agent-ccsp"
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "rdktelcovoicemanager"
 
-RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "ccsp-adv-security"
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-adv-security"
 
-RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "ccsp-webui-jst"
-RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "ccsp-webui-php"
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-webui-jst"
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-webui-php"
 
-RDEPENDS_packagegroup-rdk-ccsp-broadband_remove = "parodus"
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "parodus"
 
-RDEPENDS_packagegroup-rdk-ccsp-broadband_append = "\
+RDEPENDS_packagegroup-rdk-ccsp-broadband:append = "\
     rdk-logger \
     libseshat \
     notify-comp \

@@ -10,4 +10,4 @@ do_install () {
 	install -m 0644 ${WORKDIR}/resolv.placeholder.conf ${D}${sysconfdir}/resolv.conf
 }
 
-FILES_${PN} = "/etc/resolv.conf"
+FILES:${PN} = "/etc/resolv.conf"

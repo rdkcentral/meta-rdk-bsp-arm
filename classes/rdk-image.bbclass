@@ -95,7 +95,7 @@ ROOTFS_POSTPROCESS_COMMAND += 'version_hook; '
 
 inherit core-image
 
-do_populate_sdk_ext_prepend() {
+do_populate:sdk_ext:prepend() {
     builddir = d.getVar('TOPDIR')
     if os.path.exists(builddir + '/conf/templateconf.cfg'):
         with open(builddir + '/conf/templateconf.cfg', 'w') as f:
