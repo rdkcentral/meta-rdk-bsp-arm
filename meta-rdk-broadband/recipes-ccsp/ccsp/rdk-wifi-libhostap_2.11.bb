@@ -3,12 +3,12 @@ SUMMARY = "This recipe compiles and installs the Opensource hostapd as a dynamic
 SECTION = "base"
 LICENSE = "BSD-3-Clause"
 
-FILESEXTRAPATHS_prepend:="${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend :="${THISDIR}/${PN}:"
 PROVIDES = "rdk-wifi-libhostap"
 RPROVIDES_${PN} = "rdk-wifi-libhostap"
 DEPENDS += "libnl openssl"
 
-DEPENDS_append = " ucode"
+DEPENDS:append = " ucode"
 
 inherit autotools pkgconfig
 
@@ -17,14 +17,14 @@ SRCREV = "96e48a05aa0a82e91e3cab75506297e433e253d0"
 
 LIC_FILES_CHKSUM = "file://source/hostap-2.11/README;md5=6e4b25e7d74bfc44a32ba37bdf5210a6"
 
-EXTRA_OEMAKE_append = " \
+EXTRA_OEMAKE:append = " \
     'BUILDDIR=${B}' \
     'PN=rdk-wifi-libhostap' \
     'MACHINE_IMAGE_NAME=${MACHINE_IMAGE_NAME}' \
     ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', 'ONE_WIFI=y', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'CONFIG_IEEE80211BE', 'CONFIG_IEEE80211BE=y', '', d)} \
 "
-CFLAGS_append = " \
+CFLAGS:append = " \
     -fcommon \
 "
 
@@ -68,7 +68,7 @@ SRC_URI += " \
     file://2.11/bpi.patch \
     "
 
-CFLAGS_append = " -D_PLATFORM_BANANAPI_R4_  -DCONFIG_SME -DCONFIG_GAS -DCONFIG_AP "
+CFLAGS:append = " -D_PLATFORM_BANANAPI_R4_  -DCONFIG_SME -DCONFIG_GAS -DCONFIG_AP "
 
 EMULATOR_FEATURE_ENABLED = "${@bb.utils.contains('DISTRO_FEATURES', 'Wifi-test-suite', '1', '0', d)}"
 
@@ -79,7 +79,7 @@ EXTRA_OECONF += " --disable-static --enable-shared "
 
 S = "${WORKDIR}/git/"
 
-FILES_${PN} = " \
+FILES:${PN} = " \
         ${libdir}/libhostap.so* \
 "
 EXTRA_OEMAKE += "${@bb.utils.contains('DISTRO_FEATURES', 'Wifi-test-suite', 'WIFI_EMULATOR=true', 'WIFI_EMULATOR=false', d)}"
@@ -90,7 +90,7 @@ do_hostapd_patch () {
 
 addtask hostapd_patch after do_patch before do_configure
 
-do_configure_append () {
+do_configure:append () {
     oe_runmake -C ${S}/source/hostap-${PV}/hostapd clean_libhostap
 
     echo "CONFIG_TESTING_OPTIONS=y" >> ${S}/source/hostap-${PV}/hostapd/.config
@@ -104,7 +104,7 @@ do_compile () {
     oe_runmake -C ${S}/source/hostap-${PV}/hostapd libhostap V=1
 }
 
-do_configure_prepend () {
+do_configure:prepend () {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'Wifi-test-suite', 'true', 'false', d)}; then
         mv ${S}/source/hostap-${PV}/wpa_supplicant/rrm.c ${S}/source/hostap-${PV}/wpa_supplicant/rrm_test.c
     fi
@@ -114,7 +114,7 @@ do_install () {
     oe_runmake -C ${S}/source/hostap-${PV}/hostapd 'DESTDIR=${D}' install_libhostap
 }
 
-do_install_append () {
+do_install:append () {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'Wifi-test-suite', 'true', 'false', d)}; then
         cd ${S}/source/hostap-${PV}/wpa_supplicant && find . -type f -name "*.h" -exec install -D -m 0755 "{}" ${D}${includedir}/rdk-wifi-libhostap/src/"{}" \;
         mv ${D}${includedir}/rdk-wifi-libhostap/src/config.h ${D}${includedir}/rdk-wifi-libhostap/src/config_supplicant.h

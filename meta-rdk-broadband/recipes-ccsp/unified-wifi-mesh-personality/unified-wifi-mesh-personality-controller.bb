@@ -34,7 +34,7 @@ do_install() {
     install -D -m 0644 ${WORKDIR}/ieee1905_em_ctrl.service  ${D}${systemd_unitdir}/system/
 }
 
-FILES_${PN} = "\
+FILES:${PN} = "\
     /usr/ccsp/EasyMesh/em_ctrl_pre_start.sh \
     /usr/ccsp/EasyMesh/em_agent_pre_start.sh \
     /usr/ccsp/EasyMesh/nvram/EasymeshCfg.json \
@@ -45,7 +45,7 @@ FILES_${PN} = "\
     ${systemd_unitdir}/system/ieee1905_em_ctrl.service \
 "
 
-SYSTEMD_SERVICE_${PN} = " \
+SYSTEMD_SERVICE:${PN} = " \
     em_ctrl.service \
     ieee1905_em_agent.service \
     ieee1905_em_ctrl.service \

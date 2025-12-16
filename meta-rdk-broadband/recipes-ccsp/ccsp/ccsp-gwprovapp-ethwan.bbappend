@@ -2,14 +2,14 @@ require ccsp_common_genericarm.inc
 
 export PLATFORM_RASPBERRYPI_ENABLED="yes"
 
-DEPENDS_remove = "hal-gwprovappabs"
-LDFLAGS_remove = "-lgwprovappabs"
+DEPENDS:remove = "hal-gwprovappabs"
+LDFLAGS:remove = "-lgwprovappabs"
 
-CFLAGS_append = " -Wno-unused-variable -Wno-sizeof-pointer-memaccess -Wno-unused-parameter -Wno-unused-but-set-variable "
+CFLAGS:append = " -Wno-unused-variable -Wno-sizeof-pointer-memaccess -Wno-unused-parameter -Wno-unused-but-set-variable "
 
 inherit systemd
 
-do_install_append () {
+do_install:append () {
 	install -d ${D}${systemd_unitdir}/system
 	install -m 0644 ${S}/service/gwprovethwan.service ${D}${systemd_unitdir}/system
         sed -i "s/After=rg_network.service/After=network.target/g"  ${D}${systemd_unitdir}/system/gwprovethwan.service
@@ -26,7 +26,7 @@ do_install_append () {
 	sed -i "s/#ExecStartPre=\/bin\/sh \/usr\/ccsp\/utopia_init.sh/ExecStartPre=\/bin\/sh \/etc\/utopia\/utopia_init.sh/g" ${D}${systemd_unitdir}/system/gwprovethwan.service
 }
 
-SYSTEMD_SERVICE_${PN} = "gwprovethwan.service"
-FILES_${PN} += " \
+SYSTEMD_SERVICE:${PN} = "gwprovethwan.service"
+FILES_${PN}:append = " \
      ${systemd_unitdir}/system/gwprovethwan.service \
 "

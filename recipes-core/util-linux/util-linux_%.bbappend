@@ -1,4 +1,4 @@
-do_install_append_broadband() {
+do_install:append:broadband() {
   rm -rf ${D}${base_sbindir}/hwclock
   rm -rf ${D}${base_sbindir}/swapon
   rm -rf ${D}${base_sbindir}/swapoff
