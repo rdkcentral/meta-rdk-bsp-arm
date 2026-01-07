@@ -491,6 +491,30 @@ $igd_allow_wandisable=0
 $upnp_igd_advr_expire=1800
 $upnp_igd_advr_ttl=5
 
+# Webserver settings
+#   default admin username & password ("admin" in encrypted form)
+#   http_is_admin_default indicates whether the default password is being used
+$http_admin_user=admin
+$http_admin_password=TSLIIHauhEfGE
+$http_admin_port=80
+$http_admin_is_default=1
+
+# Default settings for WebUI
+$user_count=3
+$user_name_1=mso
+$user_name_2=cusadmin
+$user_name_3=admin
+#$user_password_1=password of the day
+$user_password_1=
+$user_password_2=
+$user_password_3=
+$hash_password_1=
+$hash_password_2=
+$hash_password_3=
+$user_insNum_1=1
+$user_insNum_2=2
+$user_insNum_3=3
+
 # User Interface access level
 @lan_ip_webaccess=1
 @cm_ip_webaccess=1
@@ -790,8 +814,8 @@ $dhcpv6spool0option1::bEnabled=1
 $dhcpv6spool0option1::Tag=24
 $dhcpv6spool0option1::PassthroughClient=Device.DHCPv6.Client.1.
 
-$CaptivePortal_Enable=false
-$redirection_flag=false
+$CaptivePortal_Enable=true
+$redirection_flag=true
 
 #CCSP RECOVERY MONITOR
 $ccsp_recovery_enable=1

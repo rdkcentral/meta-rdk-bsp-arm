@@ -17,6 +17,7 @@ SRC_URI_append = " \
     file://brlan0_check.sh \
     file://brlan0_check.service \
     file://onewifi.service \
+    file://gwprovapp.conf \
 "
 
 # we need to patch to code for rpi
@@ -96,6 +97,11 @@ do_install_append_class-target () {
 
     # Install "vendor information"
     install -m 0644 ${WORKDIR}/ccsp_vendor.h ${D}${includedir}/ccsp
+    
+    # Install gwprov app conf
+    install -D -m 0644 ${S}/systemd_units/gwprovapp.service ${D}${systemd_unitdir}/system/gwprovapp.service
+    install -D -m 0644 ${WORKDIR}/gwprovapp.conf ${D}${systemd_unitdir}/system/gwprovapp.service.d/gwprovapp.conf
+    sed -i -e '/ConditionPathExists/d' ${D}${systemd_unitdir}/system/gwprovapp.service
 
     sed -i -- 's/NotifyAccess=.*/#NotifyAccess=main/g' ${D}${systemd_unitdir}/system/CcspCrSsp.service
     sed -i -- 's/notify.*/forking/g' ${D}${systemd_unitdir}/system/CcspCrSsp.service
@@ -134,6 +140,7 @@ do_install_append_class-target () {
      if [ $DISTRO_WAN_ENABLED = 'true' ]; then
      install -D -m 0644 ${S}/systemd_units/RdkWanManager.service ${D}${systemd_unitdir}/system/RdkWanManager.service
      sed -i "s/After=CcspCrSsp.service/After=CcspCrSsp.service utopia.service /g" ${D}${systemd_unitdir}/system/RdkWanManager.service
+     sed -i "/WorkingDirectory/a ExecStartPre=/bin/sh /lib/rdk/run_rm_key.sh" ${D}${systemd_unitdir}/system/RdkWanManager.service
      sed -i "s/CcspPandMSsp.service/CcspCrSsp.service CcspPandMSsp.service/g" ${D}${systemd_unitdir}/system/CcspEthAgent.service
      install -D -m 0644 ${WORKDIR}/utopia.service ${D}${systemd_unitdir}/system/utopia.service
      install -D -m 0644 ${S}/systemd_units/RdkTelcoVoiceManager.service ${D}${systemd_unitdir}/system/RdkTelcoVoiceManager.service
@@ -170,7 +177,7 @@ fi' ${D}/usr/ccsp/ccspPAMCPCheck.sh
             sed -i "/^After=/ s/$/ ApplySystemDefaults.service /g" ${D}${systemd_unitdir}/system/RdkVlanManager.service
         fi
     fi
-
+    rm -f ${D}${systemd_unitdir}/system/utopia.service
 }
 
 SYSTEMD_SERVICE_${PN} += "CcspCrSsp.service"
@@ -185,6 +192,7 @@ SYSTEMD_SERVICE_${PN} += "CcspEthAgent.service"
 SYSTEMD_SERVICE_${PN} += "ProcessResetDetect.path"
 SYSTEMD_SERVICE_${PN} += "ProcessResetDetect.service"
 SYSTEMD_SERVICE_${PN} += "rfc.service"
+SYSTEMD_SERVICE_${PN}_remove = " utopia.service"
 SYSTEMD_SERVICE_${PN} += "notifyComp.service"
 SYSTEMD_SERVICE_${PN} += "CcspXdnsSsp.service"
 SYSTEMD_SERVICE_${PN} += "wan-initialized.path"
@@ -193,6 +201,7 @@ SYSTEMD_SERVICE_${PN} += "${@bb.utils.contains('DISTRO_FEATURES', 'fwupgrade_man
 SYSTEMD_SERVICE_${PN} += "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', 'onewifi.service ', 'ccspwifiagent.service', d)}"
 SYSTEMD_SERVICE_${PN} += "${@bb.utils.contains('DISTRO_FEATURES', 'webconfig_bin', 'webconfig.service', '', d)}"
 SYSTEMD_SERVICE_${PN} += "brlan0_check.service"
+SYSTEMD_SERVICE_${PN} += "gwprovapp.service"
 
 FILES_${PN}_append = " \
     /usr/ccsp/ccspSysConfigEarly.sh \
@@ -220,6 +229,9 @@ FILES_${PN}_append = " \
     ${systemd_unitdir}/system/CcspXdnsSsp.service \
     ${systemd_unitdir}/system/wan-initialized.target \
     ${systemd_unitdir}/system/wan-initialized.path \
+    ${systemd_unitdir}/system/gwprovapp.service \
+    ${systemd_unitdir}/system/gwprovapp.service.d/gwprovapp.conf \
 "
 FILES_${PN}_append = "${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', ' ${systemd_unitdir}/system/RdkWanManager.service ${systemd_unitdir}/system/utopia.service ${systemd_unitdir}/system/RdkVlanManager.service ${systemd_unitdir}/system/RdkTelcoVoiceManager.service ', '', d)}"
 FILES_${PN}_append = "${@bb.utils.contains('DISTRO_FEATURES', 'fwupgrade_manager', ' ${systemd_unitdir}/system/RdkFwUpgradeManager.service ', '', d)}"
+
