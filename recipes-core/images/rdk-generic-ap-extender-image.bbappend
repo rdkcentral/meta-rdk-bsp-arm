@@ -13,5 +13,5 @@ remove_gateway_only_files() {
 
 }
 
-ROOTFS_POSTPROCESS_COMMAND_append = "remove_gateway_only_files; "
+ROOTFS_POSTPROCESS_COMMAND:append = "remove_gateway_only_files; "
 

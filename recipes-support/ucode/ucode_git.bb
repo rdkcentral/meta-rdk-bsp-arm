@@ -20,8 +20,8 @@ DEPENDS += "libnl-tiny libubox"
 INSANE_SKIP_${PN} += "file-rdeps dev-deps dev-so"
 FILES_SOLIBSDEV = ""
 
-FILES_${PN}-dev = "${includedir}/*"
-FILES_${PN} = "${bindir}/* ${libdir}/libucode.so* ${libdir}/ucode/*"
+FILES:${PN}-dev = "${includedir}/*"
+FILES:${PN} = "${bindir}/* ${libdir}/libucode.so* ${libdir}/ucode/*"
 
 inherit cmake pkgconfig python3native  
 

@@ -1,1 +1,1 @@
-EXTRA_OECONF_remove_kirkstone  = " --with-ccsp-platform=bcm --with-ccsp-arch=arm "
+EXTRA_OECONF:remove:kirkstone  = " --with-ccsp-platform=bcm --with-ccsp-arch=arm "

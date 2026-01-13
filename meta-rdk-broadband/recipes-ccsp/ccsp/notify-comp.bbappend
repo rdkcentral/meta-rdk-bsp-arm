@@ -1,4 +1,4 @@
-do_install_append () {
+do_install:append () {
     # Config files and scripts
     install -d ${D}${exec_prefix}/ccsp/notify-comp
     install -m 644 ${S}/scripts/msg_daemon.cfg ${D}${exec_prefix}/ccsp/notify-comp/msg_daemon.cfg

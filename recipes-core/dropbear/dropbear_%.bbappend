@@ -1,9 +1,8 @@
-SRC_URI_remove = "file://verbose.patch"
-SRC_URI_remove = "file://revsshipv6.patch"
-SRC_URI_remove_extender_kirkstone = " file://ssh_telemetry_2020.patch"
-SYSTEMD_SERVICE_${PN}_remove_broadband = "dropbear.socket"
+SRC_URI:remove = "file://verbose.patch"
+SRC_URI:remove = "file://revsshipv6.patch"
+SYSTEMD_SERVICE:${PN}:remove:broadband = "dropbear.socket"
 
-do_install_append_broadband() {
+do_install:append:broadband() {
   rm -rf ${D}${systemd_unitdir}
   rm -rf ${D}/lib
 }

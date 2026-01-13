@@ -38,13 +38,13 @@ do_install () {
 
 }
 
-FILES_${PN} += "${base_libdir}/firmware/mediatek/mt7915_eeprom.bin"
-FILES_${PN} += "${base_libdir}/firmware/mediatek/mt7915_eeprom_dbdc.bin"
-FILES_${PN} += "${base_libdir}/firmware/mediatek/mt7915_rom_patch.bin"
-FILES_${PN} += "${base_libdir}/firmware/mediatek/mt7915_wa.bin"
-FILES_${PN} += "${base_libdir}/firmware/mediatek/mt7915_wm.bin"
+FILES:${PN} += "${base_libdir}/firmware/mediatek/mt7915_eeprom.bin"
+FILES:${PN} += "${base_libdir}/firmware/mediatek/mt7915_eeprom_dbdc.bin"
+FILES:${PN} += "${base_libdir}/firmware/mediatek/mt7915_rom_patch.bin"
+FILES:${PN} += "${base_libdir}/firmware/mediatek/mt7915_wa.bin"
+FILES:${PN} += "${base_libdir}/firmware/mediatek/mt7915_wm.bin"
 
-FILES_${PN} += "${base_libdir}/firmware/mediatek/mt7916_eeprom.bin"
-FILES_${PN} += "${base_libdir}/firmware/mediatek/mt7916_rom_patch.bin"
-FILES_${PN} += "${base_libdir}/firmware/mediatek/mt7916_wa.bin"
-FILES_${PN} += "${base_libdir}/firmware/mediatek/mt7916_wm.bin"
+FILES:${PN} += "${base_libdir}/firmware/mediatek/mt7916_eeprom.bin"
+FILES:${PN} += "${base_libdir}/firmware/mediatek/mt7916_rom_patch.bin"
+FILES:${PN} += "${base_libdir}/firmware/mediatek/mt7916_wa.bin"
+FILES:${PN} += "${base_libdir}/firmware/mediatek/mt7916_wm.bin"
