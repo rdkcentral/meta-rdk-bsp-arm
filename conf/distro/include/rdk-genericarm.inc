@@ -2,12 +2,12 @@
 IMAGE_GEN_DEBUGFS = "0"
 
 #preferred version for linux kirkstone build
-PREFERRED_VERSION_libnl_kirkstone ?= "3.5.0"
-PREFERRED_VERSION_jansson_kirkstone = "2.13.1"
-PREFERRED_VERSION_googletest_kirkstone = "1.11.%"
-PREFERRED_VERSION_net-snmp_kirkstone = "5.9.1"
-PREFERRED_VERSION_icu_kirkstone ?= "58.2"
-PREFERRED_VERSION_icu-native_kirkstone ?= "58.2"
+PREFERRED_VERSION:libnl:kirkstone ?= "3.5.0"
+PREFERRED_VERSION:jansson:kirkstone = "2.13.1"
+PREFERRED_VERSION:googletest:kirkstone = "1.11.%"
+PREFERRED_VERSION:net-snmp:kirkstone = "5.9.1"
+PREFERRED_VERSION:icu:kirkstone ?= "58.2"
+PREFERRED_VERSION:icu-native:kirkstone ?= "58.2"
 
 #preferred version for meson
 PREFERRED_VERSION_meson-native_kirkstone = "0.61.3"
@@ -29,120 +29,116 @@ PREFERRED_PROVIDER_virtual/wifi-vendor-mtk ?= "linux-backports"
 VIRTUAL-RUNTIME_mfrlib = "mfrlibs-rpi"
 VIRTUAL-RUNTIME_dtcpmgr = ""
 
-DISTRO_FEATURES_append = " parodus"
-DISTRO_FEATURES_append = " ledmgr"
-DISTRO_FEATURES_append = " build_rne"
-DISTRO_FEATURES_append = " rdk-oss-ssa"
+DISTRO_FEATURES:append = " parodus"
+DISTRO_FEATURES:append = " ledmgr"
+DISTRO_FEATURES:append = " build_rne"
+DISTRO_FEATURES:append = " rdk-oss-ssa"
 
 # RDKShell distro is enabled for RDK services
-DISTRO_FEATURES_append = " rdkshell"
-DISTRO_FEATURES_append = " offline_apps"
+DISTRO_FEATURES:append = " rdkshell"
+DISTRO_FEATURES:append = " offline_apps"
 
 # no more onscreen terminal required for RDK services
-DISTRO_FEATURES_append = " systemd-disable-getty"
+DISTRO_FEATURES:append = " systemd-disable-getty"
 
-DISTRO_FEATURES_append = " ctrlm"
-DISTRO_FEATURES_append = " vendor_class_id_feature"
-DISTRO_FEATURES_append = " ctrlm_voice_sdk"
+DISTRO_FEATURES:append = " ctrlm"
+DISTRO_FEATURES:append = " vendor_class_id_feature"
+DISTRO_FEATURES:append = " ctrlm_voice_sdk"
 
-DISTRO_FEATURES_append = " wifi"
-DISTRO_FEATURES_append = " bluetooth"
-DISTRO_FEATURES_append = " bluez5"
+DISTRO_FEATURES:append = " wifi"
+DISTRO_FEATURES:append = " bluetooth"
+DISTRO_FEATURES:append = " bluez5"
 
 # Disable lxc-container-generator warnings
-DISTRO_FEATURES_NATIVE_append = " disable-lxcgen-warnings"
-DISTRO_FEATURES_NATIVE_append_kirkstone = " kirkstone"
-DISTRO_FEATURES_NATIVESDK_append_kirkstone = " kirkstone"
+DISTRO_FEATURES_NATIVE:append = " disable-lxcgen-warnings"
+DISTRO_FEATURES_NATIVE:append:kirkstone = " kirkstone"
+DISTRO_FEATURES_NATIVESDK:append:kirkstone = " kirkstone"
 
 # Turn OFF the hardening feature.
-DISTRO_FEATURES_NATIVE_remove = " harden_dobby"
+DISTRO_FEATURES_NATIVE:remove = " harden_dobby"
 
 # Turn ON and OFF the hardening feature.
-DISTRO_FEATURES_NATIVE_append=" harden_dobby"
+DISTRO_FEATURES_NATIVE:append=" harden_dobby"
 
 # FOG support
-DISTRO_FEATURES_append = " enable-fog"
+DISTRO_FEATURES:append = " enable-fog"
 
 # Enable Storage Manager support for FOG
-DISTRO_FEATURES_append = " storage_sdc"
+DISTRO_FEATURES:append = " storage_sdc"
 
 HOSTTOOLS += " python"
 
 # globally disables this feature (for all images supported)
-IMAGE_FEATURES_remove = "read-only-rootfs"
+IMAGE_FEATURES:remove = "read-only-rootfs"
 
 ### others
 ENABLE_UART = "1"
 
 # 2024-11-11: meta-cmf-arm: usppa disabled due to erouter0 dependency
-# DISTRO_FEATURES_append_broadband = " usppa"
+# DISTRO_FEATURES:append:broadband = " usppa"
 
 # REFPLTV-1137: DLNA support for xupnp
-DISTRO_FEATURES_append_broadband = " dlna"
+DISTRO_FEATURES:append:broadband = " dlna"
 
-DISTRO_FEATURES_append_broadband = " referencepltfm "
-DISTRO_FEATURES_append_extender = " referencepltfm "
+DISTRO_FEATURES:append:broadband = " referencepltfm "
 
-DISTRO_FEATURES_append_broadband = " ipv6"
-DISTRO_FEATURES_append_broadband = " webconfig_bin"
+DISTRO_FEATURES:append:broadband = " ipv6"
+DISTRO_FEATURES:append:broadband = " webconfig_bin"
 
 # RDKB-51565,RDKB-50795: [HAL] Cellular Hal Implementation
-DISTRO_FEATURES_append_broadband = " rdkb_cellular_manager_mm"
-DISTRO_FEATURES_append_broadband = " cellular_mgr_lite"
-DISTRO_FEATURES_append_broadband = " cellular_libqmi_support"
+DISTRO_FEATURES:append:broadband = " rdkb_cellular_manager_mm"
+DISTRO_FEATURES:append:broadband = " cellular_mgr_lite"
+DISTRO_FEATURES:append:broadband = " cellular_libqmi_support"
 
-DISTRO_FEATURES_append_broadband = " rdkb_power_manager"
-#DISTRO_FEATURES_append_broadband = " rdkb_gpon_manager"
-DISTRO_FEATURES_append_broadband = " rdkb_wan_manager"
-#DISTRO_FEATURES_append_broadband = " rdkb_configurable_wan_interface"
-#DISTRO_FEATURES_append_broadband = " rdkb_voice_manager_dmltr104_v2"
-DISTRO_FEATURES_append_broadband = " rdkb_xdsl_ppp_manager"
-DISTRO_FEATURES_append_broadband = " fwupgrade_manager"
-DISTRO_FEATURES_append_broadband = " rdkb_inter_device_manager"
+DISTRO_FEATURES:append:broadband = " rdkb_power_manager"
+#DISTRO_FEATURES:append:broadband = " rdkb_gpon_manager"
+DISTRO_FEATURES:append:broadband = " rdkb_wan_manager"
+#DISTRO_FEATURES:append:broadband = " rdkb_configurable_wan_interface"
+#DISTRO_FEATURES:append:broadband = " rdkb_voice_manager_dmltr104_v2"
+DISTRO_FEATURES:append:broadband = " rdkb_xdsl_ppp_manager"
+DISTRO_FEATURES:append:broadband = " fwupgrade_manager"
+DISTRO_FEATURES:append:broadband = " rdkb_inter_device_manager"
 
-DISTRO_FEATURES_append_broadband = " no_moca_support"
+DISTRO_FEATURES:append:broadband = " no_moca_support"
 
-DISTRO_FEATURES_append_broadband = " rdk_ledmanager"
-DISTRO_FEATURES_remove_aarch64 = " rdk_ledmanager"
+DISTRO_FEATURES:append:broadband = " rdk_ledmanager"
+DISTRO_FEATURES:remove:aarch64 = " rdk_ledmanager"
 
 # Platform manager and LanManager
-#DISTRO_FEATURES_append_broadband = " pm_lan_mgr"
+#DISTRO_FEATURES:append:broadband = " pm_lan_mgr"
 
 # Fix MeshAgent build errors
-DISTRO_FEATURES_append_broadband = " WanFailOverSupportEnable"
+DISTRO_FEATURES:append:broadband = " WanFailOverSupportEnable"
 
 # RDKBDEV-50: Adding DSLite Functionality and related TR-181 DataModel Parameters
-DISTRO_FEATURES_append_broadband = " dslite"
+DISTRO_FEATURES:append:broadband = " dslite"
 
 # RDKBDEV-73 : Dynamic DNS : Standardization based on broadband-forum.
-DISTRO_FEATURES_append_broadband = " ddns_broadband"
+DISTRO_FEATURES:append:broadband = " ddns_broadband"
 
 # RDKBDEV-83 : Device Gateway Association using Managed Device
-DISTRO_FEATURES_append_broadband = " device_gateway_association"
+DISTRO_FEATURES:append:broadband = " device_gateway_association"
 
 # REFPLTB-1546 : WiFi HAL 3.0 support for RPI
-DISTRO_FEATURES_append_broadband = " halVersion3"
+DISTRO_FEATURES:append:broadband = " halVersion3"
 
 # RDKBDEV-866: EasyMesh Controller support
-DISTRO_FEATURES_append_broadband = " easymesh-controller"
-
-# RDKB-40900: RDKB support extender/nonrouter profile
-DISTRO_FEATURES_append_extender = " rdkb_extender"
+DISTRO_FEATURES:append:broadband = " easymesh-controller"
 
 # RDKB-44824: CoreNetLib move bb file location
-DISTRO_FEATURES_append_broadband = " core-net-lib"
+DISTRO_FEATURES:append:broadband = " core-net-lib"
 
 # DKBDEV-1455 : Support Broadband DAC
-DISTRO_FEATURES_append_broadband = " dac"
+DISTRO_FEATURES:append:broadband = " dac"
 
 # REFPLTB-1775: Sky team's fix for erouter0 IP issue
-DISTRO_FEATURES_append_broadband = " RbusBuildFlagEnable"
+DISTRO_FEATURES:append:broadband = " RbusBuildFlagEnable"
 
 #MeshAgent support for broadband
 DISTRO_FEATURES:append:broadband = " meshwifi"
 
 #rdk-wifi-libhostap support for broadband
-DISTRO_FEATURES_append_broadband = " HOSTAPD_2_11"
+DISTRO_FEATURES:append:broadband = " HOSTAPD_2_11"
 
 # Use MLO/WiFi7 code
 DISTRO_FEATURES:append:broadband = " CONFIG_IEEE80211BE"
@@ -153,35 +149,35 @@ DISTRO_FEATURES:append:broadband = " OneWifi"
 DISTRO_FEATURES:append:broadband = " disable_nl80211_acl"
 
 # RDKBDEV-942 RdkGponManager: Modify as per new WAN Manager Design
-DISTRO_FEATURES_append_broadband = " WanManagerUnificationEnable"
+DISTRO_FEATURES:append:broadband = " WanManagerUnificationEnable"
 
 # CpuPROCAnalyzer Support for broadband
-DISTRO_FEATURES_append_broadband = " CPUPROCANALYZER_BROADBAND"
+DISTRO_FEATURES:append:broadband = " CPUPROCANALYZER_BROADBAND"
 
 # RDKB-50999: WebConfig blob handler
-DISTRO_FEATURES_append_broadband = " lld_support"
+DISTRO_FEATURES:append:broadband = " lld_support"
 
 # RDKB-48800: Install DHCP Manager service file
 # 2025-09: Disable DHCP Manager (RDKBNETWOR-3)
-# DISTRO_FEATURES_append_broadband = " dhcp_manager"
+# DISTRO_FEATURES:append:broadband = " dhcp_manager"
 
 # RDKBDEV-694: Adding Partner Default Ext
-DISTRO_FEATURES_append_broadband = " partner_default_ext"
+DISTRO_FEATURES:append:broadband = " partner_default_ext"
 
 # RDKBDEV-755: Add Asterisk IP PBX voice HAL for TelcoVoiceManager
-#DISTRO_FEATURES_append_broadband = " Asterisk"
+#DISTRO_FEATURES:append:broadband = " Asterisk"
 
 # Remove WebUI (does not work without erouter0)
-DISTRO_FEATURES_remove_broadband = " webui_jst"
+DISTRO_FEATURES:remove:broadband = " webui_jst"
 
 # Add new EasyMesh
-DISTRO_FEATURES_append_broadband = " EasyMesh"
+DISTRO_FEATURES:append:broadband = " EasyMesh"
 
 # Add IEEE1905 AL
-DISTRO_FEATURES_append_broadband = " with_alsap"
+DISTRO_FEATURES:append:broadband = " with_alsap"
 
 SESSIONMGR_WS_RPC_ENABLE = "1"
 
 #REFPLTB-2784 : easymesh controller arch only supports with wifiagent
-MACHINEOVERRIDES_append =. "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ':onewifi', '' ,d)}"
-DISTRO_FEATURES_remove_onewifi = " easymesh-controller"
+MACHINEOVERRIDES:append = "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ':onewifi', '' ,d)}"
+DISTRO_FEATURES:remove:onewifi = " easymesh-controller"

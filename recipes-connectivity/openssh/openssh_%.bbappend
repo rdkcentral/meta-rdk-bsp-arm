@@ -1,6 +1,6 @@
-RCONFLICTS_${PN}_remove_broadband-dev = "dropbear"
-RCONFLICTS_${PN}-sshd_remove_broadband-dev = "dropbear"
+RCONFLICTS_${PN}:remove:broadband-dev = "dropbear"
+RCONFLICTS_${PN}-sshd:remove:broadband-dev = "dropbear"
 
-RCONFLICTS_${PN}_remove_bootbroadband = "dropbear"
-RCONFLICTS_${PN}-sshd_remove_bootbroadband = "dropbear"
+RCONFLICTS:${PN}:remove:bootbroadband = "dropbear"
+RCONFLICTS:${PN}-sshd:remove:bootbroadband = "dropbear"
 

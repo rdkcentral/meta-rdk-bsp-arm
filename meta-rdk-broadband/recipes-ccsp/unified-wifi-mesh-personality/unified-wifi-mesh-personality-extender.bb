@@ -25,13 +25,13 @@ do_install() {
     install -m 0644 ${WORKDIR}/EasymeshCfg_ext.json  ${D}/usr/ccsp/EasyMesh/nvram/EasymeshCfg.json
 }
 
-FILES_${PN} = "\
+FILES:${PN} = "\
     ${systemd_unitdir}/system/ieee1905_em_agent.service \
     /usr/ccsp/EasyMesh/nvram/EasymeshCfg.json \
     /usr/ccsp/wifi/onewifi_pre_start.sh \
     /usr/ccsp/EasyMesh/em_agent_pre_start.sh \
 "
 
-SYSTEMD_SERVICE_${PN} += " \
+SYSTEMD_SERVICE:${PN} += " \
     ieee1905_em_agent.service \
 "

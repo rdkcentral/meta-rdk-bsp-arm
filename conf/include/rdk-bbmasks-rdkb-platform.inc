@@ -125,4 +125,4 @@ BBMASK .= "|meta-rdk-broadband/recipes-ccsp/ccsp/ccsp-webui-php.bb"
 
 BBMASK .= "|meta-cmf-broadband/recipes-core/util-linux/util-linux_%.bbappend"
 
-BBMASK_append_kirkstone .= "|meta-rdk-opensync/recipes/python3-jinja2/python3-jinja2_2.11.1.bb"
+BBMASK:append:kirkstone = "|meta-rdk-opensync/recipes/python3-jinja2/python3-jinja2_2.11.1.bb"

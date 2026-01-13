@@ -1,6 +1,6 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-SRC_URI_append = " \
+SRC_URI:append = " \
     file://lighttpd.conf.video \
     file://lighttpd_php.conf.broadband \
     file://lighttpd_jst.conf.broadband \
@@ -8,9 +8,9 @@ SRC_URI_append = " \
 
 # Fixme: the meta-rdk .bbappend files do this already for broadband builds.
 # RPi builds for video apparently need it too? If not, this should be removed.
-CFLAGS_append = " -DSO_BINDTODEVICE"
+CFLAGS:append = " -DSO_BINDTODEVICE"
 
-SYSTEMD_SERVICE_${PN} += "lighttpd.service"
+SYSTEMD_SERVICE:${PN}:append = " lighttpd.service"
 
 LIGHTTPDCONF = "lighttpd.conf.video"
 
@@ -22,12 +22,12 @@ LIGHTTPDCONF = "lighttpd.conf.video"
 # for all RDK-B targets by an RDK-B specific distro config etc).
 
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${sysconfdir}
     install -m 0644 ${WORKDIR}/${LIGHTTPDCONF} ${D}${sysconfdir}/lighttpd.conf
 }
 
-do_install_append_broadband() {
+do_install:append:broadband() {
     if [ "${@bb.utils.contains("DISTRO_FEATURES", "webui_jst", "yes", "no", d)}" = "yes" ]; then
 	install -m 0644 ${WORKDIR}/lighttpd_jst.conf.broadband ${D}${sysconfdir}/lighttpd.conf
     else	
@@ -36,7 +36,7 @@ do_install_append_broadband() {
 
 }
 
-RDEPENDS_${PN}_append = " \
+RDEPENDS_${PN}:append = " \
     lighttpd-module-fastcgi \
     lighttpd-module-proxy \
     "

@@ -4,6 +4,6 @@ do_install:append() {
     rm -rf ${D}/lib
 }
 
-FILES_${PN}:remove = "${systemd_unitdir}/system/*"
+FILES:${PN}:remove = "${systemd_unitdir}/system/*"
 
-unset SYSTEMD_SERVICE_${PN}
+SYSTEMD_SERVICE:${PN} = ""

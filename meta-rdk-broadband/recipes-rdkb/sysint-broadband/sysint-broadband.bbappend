@@ -1,13 +1,13 @@
 # This is just to satisfy Yocto's want for a valid source
 # All relevant files to this port are maintained in this layer
-SRC_URI_append = " \
+SRC_URI:append = " \
     ${CMF_GIT_ROOT}/rdkb/devices/raspberrypi/sysint;module=.;protocol=${CMF_GIT_PROTOCOL};branch=${CMF_GIT_BRANCH};destsuffix=git/devicegenericarm;name=sysintdevicegenericarm \
 "
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 # These files relate to managing RDK related btrfs volumes (/nvram, /rdklogs etc.)
-SRC_URI_append = "file://btrfs-subvolume.service \
+SRC_URI:append = "file://btrfs-subvolume.service \
                   file://nvram-subvol-init.sh \
                   file://resize-disk.sh \
                   "
@@ -15,8 +15,8 @@ SRC_URI_append = "file://btrfs-subvolume.service \
 SRCREV_sysintdevicegenericarm = "${AUTOREV}"
 SRCREV_FORMAT = "sysintgeneric_sysintdevicegenericarm"
 
-RDEPENDS_${PN} += " gptfdisk util-linux btrfs-tools multipath-tools"
-do_install_append() {
+RDEPENDS:${PN}:append = " gptfdisk util-linux btrfs-tools multipath-tools"
+do_install:append() {
     install -d ${D}${systemd_unitdir}/system
     install -m 0755 ${S}/device/lib/rdk/* ${D}${base_libdir}/rdk
     install -m 0755 ${S}/rfc.service ${D}${base_libdir}/rdk
@@ -70,11 +70,11 @@ do_install_append() {
 
 
 # TODO add back swupdate.service
-SYSTEMD_SERVICE_${PN}_append = " dropbear.service btrfs-subvolume.service"
-SYSTEMD_SERVICE_${PN}_remove_broadband = "dropbear.service"
-SYSTEMD_SERVICE_${PN}_remove_broadband = "ntp-data-collector.service"
-SYSTEMD_SERVICE_${PN}_append_bootbroadband += " boot-time-upload.service monitor-upload.service"
+SYSTEMD_SERVICE:${PN}:append = " btrfs-subvolume.service"
+SYSTEMD_SERVICE:${PN}:remove:broadband = "dropbear.service"
+SYSTEMD_SERVICE:${PN}:remove:broadband = "ntp-data-collector.service"
+SYSTEMD_SERVICE:${PN}:bootbroadband:append = " boot-time-upload.service monitor-upload.service"
 
-FILES_${PN}_append = " ${systemd_unitdir}/system/* /usr/ccsp/tad/* /nvram/.placeholder /rdklogs/.placeholder /volumes/toplevel/.placeholder"
-FILES_${PN}_append = " /rdklogs/logs2/.placeholder /nvram2/.placeholder /nvram/logs /nvram2/logs"
-FILES_${PN}_append_bootbroadband = " ${systemd_unitdir}/system/*"
+FILES:${PN}:append = " ${systemd_unitdir}/system/* /usr/ccsp/tad/* /nvram/.placeholder /rdklogs/.placeholder /volumes/toplevel/.placeholder"
+FILES:${PN}:append = " /rdklogs/logs2/.placeholder /nvram2/.placeholder /nvram/logs /nvram2/logs"
+FILES:${PN}:append:bootbroadband = " ${systemd_unitdir}/system/*"

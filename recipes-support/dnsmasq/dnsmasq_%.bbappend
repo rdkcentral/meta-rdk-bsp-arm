@@ -15,4 +15,4 @@ do_install() {
         touch ${D}${sysconfdir}/resolv.dnsmasq
 }
 
-SYSTEMD_SERVICE_${PN} = ""
+SYSTEMD_SERVICE:${PN} = ""
