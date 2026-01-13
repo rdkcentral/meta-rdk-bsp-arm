@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote name="cmf" fetch="https://code.rdkcentral.com/r/" review="https://code.rdkcentral.com/r/"/>
+  <remote name="github" fetch="https://github.com"/>
+  <remote name="openembedded" fetch="https://git.openembedded.org"/>
+  <remote name="yocto" fetch="http://git.yoctoproject.org/git"/>
+  
+  <default remote="cmf" revision="rdk-next" sync-j="2"/>
+  
+  <project name="components/opensource/gdbus-client" revision="ac133193f17d458fe44faa03a8ef4067a2f140d7" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="kraj/meta-clang" path="meta-clang" remote="github" revision="26de1c560ef3caf3cf641cd54ed0b7cbdc219ed9" upstream="kirkstone" dest-branch="kirkstone"/>
+  <project name="meta-lts-mixins" remote="yocto" revision="ec37dc4b7041e0b81c7c577e541db42abbe43226" dest-branch="kirkstone/rust"/>
+  <project name="rdk/components/generic/libSyscallWrapper" revision="fd48b88ec9d4e3b6d1f9bec445c11b8e0271d0cd" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdk/components/generic/libunpriv" revision="21c1e54e5092f81e807f9aaa564f22be29305741" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdk/components/generic/rdk-oe/meta-cmf" path="meta-cmf" revision="c47d6c13354885322da362e03c8ee48c6990a0e8" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdk/components/generic/rdk-oe/meta-cmf-broadband" path="meta-cmf-broadband" revision="fc19e3760c90939c49b7cba43e7384ef148bba7f" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdk/components/generic/rdk-oe/meta-cmf-mesh" path="meta-cmf-mesh" revision="f186457e09f1570eb1e8435c9ae4a8415d722d63" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdk/components/generic/rdk-oe/meta-rdk" path="meta-rdk" revision="38f787e6d1184baeef7d5d84e99d0431368178c9" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdk/components/generic/rdk-oe/meta-rdk-broadband" path="meta-rdk-broadband" revision="e8df0054a547b7e63cc66f47c54b776df82a0512" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdk/components/generic/rdk-oe/meta-rdk-ext" path="meta-rdk-ext" revision="ff442735f6616f61f7aed290823c25ed8d72b63b" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdk/components/generic/rdkssa" revision="698fc07ad2772c77a005bda616fbaf64c632d5ed" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdk/components/generic/sys_mon_tools/mem_analyser_tools" revision="fb4db2459e4b5b1dbbe4e8582575fc43d55abcc2" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdk/components/generic/sys_mon_tools/sys_resource" revision="d332320370379900302daaaa3d181f3b40c5ac9a" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdk/components/generic/syslog_helper" revision="29c602938e57ec78a0778e3605a325eb3470386f" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdk/components/opensource/oe/bitbake" path="openembedded-core/bitbake" revision="e9facd828215fee2fa637418bcb81ef65918bed6" upstream="rdk/kirkstone" dest-branch="rdk/kirkstone"/>
+  <project name="rdk/components/opensource/oe/meta-gplv2" path="meta-gplv2" revision="d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a" upstream="kirkstone" dest-branch="kirkstone"/>
+  <project name="rdk/components/opensource/oe/meta-jz-mips" path="meta-jz-mips" revision="cc3815138fd1722757f4aa1bd11a3f88e67e08bb" upstream="master" dest-branch="master"/>
+  <project name="rdk/components/opensource/oe/meta-openembedded" path="meta-openembedded" revision="385736c2efb6a75f9aabb762a5c8817a9ced314b" upstream="rdk/kirkstone" dest-branch="rdk/kirkstone"/>
+  <project name="rdk/components/opensource/oe/meta-virtualization" path="meta-virtualization" revision="9482648daf0bb42ff3475e7892542cf99f3b8d48" upstream="rdk/kirkstone" dest-branch="rdk/kirkstone"/>
+  <project name="rdk/components/opensource/oe/openembedded-core" path="openembedded-core" revision="b8cbbd57f0fd91f536490c85970a2e83203e1984" upstream="rdk/kirkstone" dest-branch="rdk/kirkstone"/>
+  <project name="rdk/devices/raspberrypi/webpa-client" revision="e3e5163ea4826e8a984afd3ef94d3ecf7149cbda" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdkb/components/generic/CcspLogAgent" revision="eef33133c4734928c837a0358236329158eb8725" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdkb/components/generic/sso" revision="aadd7511e687b770b47b650246efe029ec37020b" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdkb/components/opensource/ccsp/CcspEPONAgent" revision="4ef8f81911d8d0d30faa9d593ddb38b44fee1751" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdkb/components/opensource/ccsp/CcspWifiAgent" revision="e06c3488a59072d77c5e9c5423f337844dbfd5ae" upstream="main" dest-branch="main"/>
+  <project name="rdkb/components/opensource/ccsp/FirmwareSanity" revision="4d67b266c46c7088cd1ee4a6c39137b0c9df4050" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdkb/components/opensource/ccsp/GwProvApp-ePON" revision="93e34bed4b2976f07801714d0e42aa7f36894b82" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdkb/components/opensource/ccsp/PlatformManager" revision="19a712ee02e0b4e160f9503948ae8c69afd47bf5" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdkb/components/opensource/ccsp/RdkTelcoVoiceManager" revision="8b651046b0afc124f3501a2e4a850820ca0127e7" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdkb/components/opensource/ccsp/sysint" revision="32f0ba83f18d69c4afb190bbf5619a1ebabe4c42" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdkb/devices/intel-x86-pc/emulator/sysint" path="rdkb/components/opensource/ccsp/sysint/device" revision="0d13c277bfd48e4dde02bd750c672c194ec72977" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdkb/devices/intel-x86-pc/emulator/tdkb" path="rdkb/tools/tdkb/platform/rdkbemulator" revision="47d31e58c3daa908a1f1bbb96b035b98e9fc6f2f" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdkb/devices/raspberrypi/sysint" path="rdkb/components/opensource/ccsp/sysint/devicerpi" revision="84571d9371fea4fb3169e456ce49b8b7dc0ea48a" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdkb/devices/raspberrypi/tdkb" path="rdkb/tools/tdkb/platform/raspberrypi" revision="581b4562c758825596c9cfb0f9bd6580605bac78" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdkb/devices/rdkbemu/rdkbemu_xb3" path="rdkb/components/opensource/ccsp/xb3" revision="27027631af99c21219629296fccde4772d1f5f68" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdkb/tools/tdkb" revision="2616e5e82f9395e2f38da50b38139c718274a033" upstream="rdk-next" dest-branch="rdk-next"/>
+  <project name="rdkcentral/RdkEasyMeshController" path="rdkb/components/opensource/ccsp/RdkEasyMeshController" remote="github" revision="e927a70c7727bf5c3148ddcf1abda3bfd9ff529a" upstream="main" dest-branch="main"/>
+  <project name="rdkcentral/RdkEasyMeshControllerSSP" path="rdkb/components/opensource/ccsp/RdkEasyMeshController/ssp" remote="github" revision="f50eef9b1b593b31226b12ac9942e389efe9e9fc" upstream="main" dest-branch="main"/>
+  <project name="rdkcentral/hal-voice-asterisk" path="components/opensource/hal-voice-asterisk" remote="github" revision="857a3eea3d89a5557e7424f726884ecd67e9aa6e" upstream="main" dest-branch="main"/>
+  <project name="rdkcentral/hal-wifi-cfg80211" path="components/opensource/hal-wifi-cfg80211" remote="github" revision="06eb5c40f72091cb50f68e4d10436db2096ab671" upstream="master" dest-branch="master"/>
+  <project name="rdkcentral/meta-rdk-bsp-arm" path="meta-rdk-bsp-arm" remote="github" revision="b5ec1b7f82be5e5d19da4e5eda0412121ebace2a" upstream="develop" dest-branch="develop"/>
+  <project name="rdkcentral/meta-rdk-wan" path="meta-rdk-wan" remote="github" revision="e8583f07c7742976cd2ca98c4a3b71d3b23fa8c6" upstream="main" dest-branch="main"/>
+  <project name="rdkcentral/rdkb-halif-platform" path="rdkb/components/opensource/ccsp/rdkb-halif-platform" remote="github" revision="04d3f5c8b5e234e7443b92f05a6fa4d6c3122d76" upstream="main" dest-branch="main"/>
+</manifest>
