@@ -1,5 +1,8 @@
 inherit cargo-update-recipe-crates
 
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+SRC_URI:append = "file://0001-fixed-high-cpu-usage-when-listened-interface-is-down.patch"
+
 include ieee1905-em-crates.inc
 # Override the meta-cmf-broadband recipe to avoid installing
 # systemd files (handled by unified-wifi-mesh-personality-...)
