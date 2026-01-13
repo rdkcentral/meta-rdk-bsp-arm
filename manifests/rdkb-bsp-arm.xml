@@ -28,14 +28,11 @@
     <project name="rdkb/components/opensource/ccsp/FirmwareSanity"/>
     <project name="rdkb/components/opensource/ccsp/GwProvApp-ePON"/>
     <project name="rdkb/components/opensource/ccsp/PlatformManager"/>
-    <project name="rdkb/components/opensource/ccsp/RdkTelcoVoiceManager"/>
     <project name="rdkb/components/opensource/ccsp/sysint"/>
     <project name="rdkb/devices/intel-x86-pc/emulator/sysint" path="rdkb/components/opensource/ccsp/sysint/device" revision="rdk-next"/>
     <project name="rdkb/devices/intel-x86-pc/emulator/tdkb" path="rdkb/tools/tdkb/platform/rdkbemulator" revision="rdk-next"/>
     <project name="rdkb/devices/raspberrypi/sysint" path="rdkb/components/opensource/ccsp/sysint/devicerpi"/>
-    <project name="rdkb/devices/raspberrypi/tdkb" path="rdkb/tools/tdkb/platform/raspberrypi"/>
     <project name="rdkb/devices/rdkbemu/rdkbemu_xb3" path="rdkb/components/opensource/ccsp/xb3"/>
-    <project name="rdkb/tools/tdkb"/>
     <project name="rdkcentral/RdkEasyMeshController" remote="github" path="rdkb/components/opensource/ccsp/RdkEasyMeshController" revision="main"/>
     <project name="rdkcentral/RdkEasyMeshControllerSSP" remote="github" path="rdkb/components/opensource/ccsp/RdkEasyMeshController/ssp" revision="main"/>
     <project name="rdkcentral/hal-voice-asterisk" remote="github" path="components/opensource/hal-voice-asterisk" revision="main"/>
