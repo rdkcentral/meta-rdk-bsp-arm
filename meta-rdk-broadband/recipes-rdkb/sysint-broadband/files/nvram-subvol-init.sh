@@ -18,7 +18,7 @@
 # limitations under the License.
 ##################################################################################
 
-if (grep -q -E " / btrfs" /proc/mounts) && !(grep -q -E "/nvram btrfs" /proc/mounts); then
+if (grep -q -E " / btrfs" /proc/mounts) && ! (grep -q -E "/nvram btrfs" /proc/mounts); then
 	(/lib/rdk/btrfs/resize-disk.sh 1>/tmp/resize_disk.log 2>&1) || :
 	ROOT_DEVICE=$(blkid --label root)
 	mkdir -p /volumes/toplevel /nvram
