@@ -3,10 +3,11 @@ HOMEPAGE = "http://github.com/belvedere-yocto/Utopia"
 
 LICENSE = "Apache-2.0 & BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=baa21dec03307f641a150889224a157f"
-SRC_URI = "${CMF_GIT_ROOT}/rdkb/components/opensource/ccsp/Utopia;protocol=${CMF_GIT_PROTOCOL};branch=${CMF_GIT_BRANCH};name=Utopia"
+SRC_URI = "${CMF_GITHUB_ROOT}/utopia;protocol=https;nobranch=1"
 
-SRCREV_Utopia = "${AUTOREV}"
-PV = "${RDK_RELEASE}"
+SRCREV = "${SRCREV:pn-utopia}"
+PV = "${PV:pn-utopia}"
+PR = "${PR:pn-utopia}"
 
 S = "${WORKDIR}/git"
 
