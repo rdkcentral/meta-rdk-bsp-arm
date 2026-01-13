@@ -1,4 +1,4 @@
-From 52d0863c024368fc02058691addd5cfd0991ec7f Mon Sep 17 00:00:00 2001
+From 9b239024aac7daa937921e974f78665b57eb4b0a Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Mon, 17 Feb 2025 20:10:51 +1100
 Subject: [PATCH 3/9] utopia: duplicate or replace _PLATFORM_RASPBERRYPI_ and
@@ -15,7 +15,7 @@ Change-Id: I56891cdd286fb4d195fe9f801b437a19fe764714
  3 files changed, 50 insertions(+), 35 deletions(-)
 
 diff --git a/source/firewall/firewall.c b/source/firewall/firewall.c
-index 0cb72ca..92a64ac 100644
+index 389620d..b83eac5 100644
 --- a/source/firewall/firewall.c
 +++ b/source/firewall/firewall.c
 @@ -333,6 +333,19 @@ NOT_DEF:
@@ -141,8 +141,8 @@ index 0cb72ca..92a64ac 100644
  					//Intel Proposed RDKB Generic Bug Fix from XB6 SDK
  					fprintf(fp, "-A lan2wan_pc_site -p tcp -m tcp --dport 80 -m webstr --host \"%s\" -j LOG_SiteBlocked_%d_DROP\n", query + host_name_offset, idx);
  					fprintf(fp, "-A lan2wan_pc_site -p tcp -m tcp --dport 443 -m webstr --host \"%s\" -j LOG_SiteBlocked_%d_DROP\n", query + host_name_offset, idx);
--#elif defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_)
-+#elif defined(_GENERIC_LINUX_DATA_PATH)
+-#elif defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_) || defined(_COSA_QCA_ARM_)
++#elif defined(_GENERIC_LINUX_DATA_PATH) || defined(_COSA_QCA_ARM_)
                      fprintf(fp, "-A lan2wan_pc_site -p tcp -m tcp --dport 80 -d \"%s\" -j LOG_SiteBlocked_%d_DROP\n", query + host_name_offset, idx);
                      fprintf(fp, "-A lan2wan_pc_site -p tcp -m tcp --dport 443 -d \"%s\" -j LOG_SiteBlocked_%d_DROP\n", query + host_name_offset, idx);
  #elif !defined(_XER5_PRODUCT_REQ_)
@@ -363,5 +363,5 @@ index b9abc63..da3bbc2 100644
              #if defined (_XB6_PRODUCT_REQ_) && defined (_COSA_BCM_ARM_)
                  v_secure_system("firewall");
 -- 
-2.51.0
+2.51.2
 

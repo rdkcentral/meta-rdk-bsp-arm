@@ -1,4 +1,4 @@
-From 4ccbc62522febcda0dc82d2277fef4df753a1fa8 Mon Sep 17 00:00:00 2001
+From bc4535159f47d884ec2f7d1bddefd3e7fd767cdc Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 3 Jul 2024 09:33:01 +1000
 Subject: [PATCH 5/9] scripts: lan_handler: create flag files for lan-start and
@@ -36,5 +36,5 @@ index 1c4f862..104f848 100755
     ${SERVICE_NAME}-start)
        service_start
 -- 
-2.51.0
+2.51.2
 

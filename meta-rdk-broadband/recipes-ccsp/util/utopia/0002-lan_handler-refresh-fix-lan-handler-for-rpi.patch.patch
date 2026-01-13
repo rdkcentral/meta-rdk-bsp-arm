@@ -1,4 +1,4 @@
-From 90b4bd197afc823ba2fd9991e58bb41ec9a7aef1 Mon Sep 17 00:00:00 2001
+From 10e8156a601af34f6d2246a7bd918ee2b447eb75 Mon Sep 17 00:00:00 2001
 From: Simon Chung <simon.c.chung@accenture.com>
 Date: Wed, 10 Mar 2021 10:11:41 +0000
 Subject: [PATCH 2/9] lan_handler: refresh "fix-lan-handler-for-rpi.patch"
@@ -56,5 +56,5 @@ index d18877a..1c4f862 100755
  	t2CountNotify "RF_INFO_RDKB_FIREWALL_RESTART"
          sysevent set firewall-restart
 -- 
-2.51.0
+2.51.2
 

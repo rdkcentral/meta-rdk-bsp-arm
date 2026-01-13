@@ -1,4 +1,4 @@
-From b822eb0fb8625f0693dc3c4ea77010ef6082212e Mon Sep 17 00:00:00 2001
+From 69c4fcf001a934487572eb93ed9edf3c5c0a42b3 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Mon, 1 Jul 2024 12:29:06 +1000
 Subject: [PATCH 1/9] scripts: lan_handler: treat generic Arm boards (Ten64,
@@ -58,7 +58,7 @@ index 95ba8b8..9f80373 100755
          	COUNTER=0
          	while [ $COUNTER -lt 5 ]; do
 diff --git a/source/scripts/init/service.d/service_dhcp_server/dhcp_server_functions.sh b/source/scripts/init/service.d/service_dhcp_server/dhcp_server_functions.sh
-index cd10fa2..64c1c09 100755
+index 1a05bbf..5fed9f9 100755
 --- a/source/scripts/init/service.d/service_dhcp_server/dhcp_server_functions.sh
 +++ b/source/scripts/init/service.d/service_dhcp_server/dhcp_server_functions.sh
 @@ -1098,7 +1098,7 @@ fi
@@ -84,5 +84,5 @@ index ba62cf1..56a499b 100755
                   if [ "$LAN_STATUS" = "stopped" ]; then
                        echo_t "service_ipv4 : Starting lan-status"
 -- 
-2.51.0
+2.51.2
 

@@ -1,4 +1,4 @@
-From 764d3a38bc3c4877592ccd1e79f34fb18cc3a813 Mon Sep 17 00:00:00 2001
+From d397d4e3cb1d6750ba6dfe44935cca31a235b84d Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 4 Sep 2024 15:36:18 +1000
 Subject: [PATCH 8/9] RDKBDEV-XXXX: remove usages of get_current_wan_ifname()
@@ -15,7 +15,7 @@ Signed-off-by: Mathew McBride <matt@traverse.com.au>
  1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/source/firewall/firewall.c b/source/firewall/firewall.c
-index 92a64ac..eac96fc 100644
+index b919c92..4966974 100644
 --- a/source/firewall/firewall.c
 +++ b/source/firewall/firewall.c
 @@ -1187,7 +1187,7 @@ int do_mapt_rules_v4(FILE *nat_fp, FILE *filter_fp, FILE *mangle_fp)
@@ -79,5 +79,5 @@ index 92a64ac..eac96fc 100644
     // Video Analytics Firewall rule to allow port 58081 only from LAN interface
     do_OpenVideoAnalyticsPort (filter_fp);
 -- 
-2.51.0
+2.51.2
 

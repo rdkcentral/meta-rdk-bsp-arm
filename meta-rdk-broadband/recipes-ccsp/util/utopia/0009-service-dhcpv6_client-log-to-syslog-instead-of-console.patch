@@ -1,4 +1,4 @@
-From 0c2ac9b65012fe7de022e5b038f8b7cf9d352877 Mon Sep 17 00:00:00 2001
+From c7bbcc80632cc1a523067a6b5276106f3013f03f Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Fri, 8 Nov 2024 14:59:17 +1100
 Subject: [PATCH 9/9] service: dhcpv6_client: log to syslog instead of
@@ -40,5 +40,5 @@ index 9b6888d..bcbf415 100755
        fi
        ;;
 -- 
-2.51.0
+2.51.2
 
