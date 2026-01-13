@@ -4,7 +4,7 @@
     <remote name="github" fetch="https://github.com" review=""/>
     <remote name="yocto" fetch="http://git.yoctoproject.org/git" review=""/>
     <remote name="openembedded" fetch="https://git.openembedded.org" review=""/>
-    <default remote="cmf" revision="rdk-next" sync-j="2"/>
+    <default remote="cmf" revision="rdkb-2025q4-kirkstone" sync-j="2"/>
     <include name="manifests/oe-layers.xml"/>
     <project name="rdkcentral/meta-rdk-bsp-arm" remote="github" path="meta-rdk-bsp-arm" revision="main"/>
     <project name="components/opensource/gdbus-client"/>
