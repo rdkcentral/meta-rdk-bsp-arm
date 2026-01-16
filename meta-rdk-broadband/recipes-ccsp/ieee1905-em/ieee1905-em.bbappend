@@ -3,7 +3,9 @@ SRC_URI = "git://github.com/rdkcentral/ieee1905-rs.git;branch=main;protocol=http
 SRCREV = "053ae8ac049e54f7267c7ce2b7cfaeab84eab44e"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
-SRC_URI:append = "file://0001-fixed-high-cpu-usage-when-listened-interface-is-down.patch"
+SRC_URI:append = "file://0001-fixed-high-cpu-usage-when-listened-interface-is-down.patch \
+    file://0002-decouple-tokio-console-filtering-from-main-logger.patch \
+    file://0003-fixes-flags-for-logs-output.patch"
 
 include ieee1905-em-crates.inc
 # Override the meta-cmf-broadband recipe to avoid installing
