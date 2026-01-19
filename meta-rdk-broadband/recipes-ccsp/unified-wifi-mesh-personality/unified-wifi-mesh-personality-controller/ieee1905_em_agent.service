@@ -29,7 +29,7 @@ ExecStartPre=/bin/sh -c 'sleep 5'
 ExecStartPre=/bin/sh -c 'mkdir -p /rdklogs/logs/ieee1905/agent'
 ExecStart=/bin/sh -c '/usr/bin/ieee1905-core -f ieee1905::al_sap=trace,ieee1905::cmdu_handler=trace,ieee1905::cmdu_proxy=trace,ieee1905::cmdu_observer=trace -i eth1_virt_peer --no-stdout-appender --file-appender /rdklogs/logs/ieee1905/agent &'
 Restart=always
-
+SyslogIdentifier=ieee1905_em_agent
 
 [Install]
 WantedBy=multi-user.target

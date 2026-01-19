@@ -28,6 +28,7 @@ ExecStartPre=/bin/sh -c 'if [ ! -e "/sys/class/net/eth1_virt_peer/address" ]; th
 ExecStartPre=/bin/sh -c 'sleep 5'
 ExecStart=/bin/sh -c '/usr/bin/ieee1905-core -f ieee1905::al_sap=trace,ieee1905::cmdu_handler=trace,ieee1905::cmdu_proxy=trace,ieee1905::cmdu_observer=trace -i eth1_virt_peer >> /tmp/ieee1905_agent_log.txt &'
 Restart=always
+SyslogIdentifier=ieee1905_em_ext_agent
 
 
 [Install]
