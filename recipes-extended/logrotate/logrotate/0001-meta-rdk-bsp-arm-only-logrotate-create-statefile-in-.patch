@@ -1,0 +1,23 @@
+From b78bd2a76c07256902e86801e55eb2c47efe6196 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Mon, 19 Jan 2026 11:17:58 +1100
+Subject: [PATCH] (meta-rdk-bsp-arm only) logrotate: create statefile in
+ /var/volatile
+
+---
+ examples/logrotate.service | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/examples/logrotate.service b/examples/logrotate.service
+index d7dd50f..877ce27 100644
+--- a/examples/logrotate.service
++++ b/examples/logrotate.service
+@@ -6,7 +6,7 @@ ConditionACPower=true
+ 
+ [Service]
+ Type=oneshot
+-ExecStart=/usr/sbin/logrotate /etc/logrotate.conf
++ExecStart=/usr/sbin/logrotate -s /var/volatile/logrotate.status /etc/logrotate.conf
+ 
+ # performance options
+ Nice=19
