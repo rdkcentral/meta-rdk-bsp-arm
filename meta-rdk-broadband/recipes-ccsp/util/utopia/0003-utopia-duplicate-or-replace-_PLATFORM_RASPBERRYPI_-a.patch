@@ -336,19 +336,6 @@ index 0cb72ca..92a64ac 100644
  
    #if 0
     /* RFC REFRESH for dynamic whitelisting of IPs */
-diff --git a/source/scripts/init/c_registration/02_bridge.c b/source/scripts/init/c_registration/02_bridge.c
-index 38cb24a..846be13 100644
---- a/source/scripts/init/c_registration/02_bridge.c
-+++ b/source/scripts/init/c_registration/02_bridge.c
-@@ -53,7 +53,7 @@ const char* SERVICE_CUSTOM_EVENTS[] = {"wan-start|/etc/utopia/service.d/service_
- #else
- const char* SERVICE_CUSTOM_EVENTS[] = { NULL };
- #endif
--#elif defined (_PLATFORM_RASPBERRYPI_)
-+#elif defined (_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
- const char* SERVICE_DEFAULT_HANDLER = "/etc/utopia/service.d/service_bridge_rpi.sh";
- const char* SERVICE_CUSTOM_EVENTS[] = { NULL };
- #elif defined (_PLATFORM_BANANAPI_R4_)
 diff --git a/source/service_wan/service_wan.c b/source/service_wan/service_wan.c
 index b9abc63..da3bbc2 100644
 --- a/source/service_wan/service_wan.c
