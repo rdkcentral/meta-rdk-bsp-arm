@@ -19,6 +19,7 @@ SRC_URI:append = " \
     file://0010-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch \
     file://0011-service-dhcpv6_client-log-to-syslog-instead-of-dev-c.patch \
     file://0012-firewall-disable-mac-filter.patch \
+    file://0013-scripts-fix-compile-errors-with-DNO_MTA_FEATURE_SUPP.patch \
     file://system_defaults \
 "
 
