@@ -1,7 +1,7 @@
-From 79bca5db5d8abb764ad86182cd6f7d1db5a1c3de Mon Sep 17 00:00:00 2001
+From 7985ffa674c0bfac456de062ff5bacb238be8305 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 7 Aug 2024 15:17:54 +1000
-Subject: [PATCH 6/9] dhcp: place dnsmasq.conf in RAM (/var/volatile)
+Subject: [PATCH 08/13] dhcp: place dnsmasq.conf in RAM (/var/volatile)
 
 On a completely read-only filesystem, it is not possible to create a file under /var itself
 
@@ -26,7 +26,7 @@ index 9f80373..4cf90a7 100755
  BIN=dnsmasq
  SERVER=${BIN}
 diff --git a/source/service_dhcp/dhcp_server_functions.c b/source/service_dhcp/dhcp_server_functions.c
-index 0c34285..1c17ad1 100644
+index df3adb3..6aae911 100644
 --- a/source/service_dhcp/dhcp_server_functions.c
 +++ b/source/service_dhcp/dhcp_server_functions.c
 @@ -59,7 +59,7 @@
@@ -39,7 +39,7 @@ index 0c34285..1c17ad1 100644
  #define DEFAULT_RESOLV_CONF     "/var/default/resolv.conf"
  #define DEFAULT_CONF_DIR      	"/var/default"
 diff --git a/source/service_dhcp/service_dhcp_server.c b/source/service_dhcp/service_dhcp_server.c
-index 92fe926..7d35f71 100644
+index a24375d..8250e12 100644
 --- a/source/service_dhcp/service_dhcp_server.c
 +++ b/source/service_dhcp/service_dhcp_server.c
 @@ -41,7 +41,7 @@
@@ -52,5 +52,5 @@ index 92fe926..7d35f71 100644
  #define RPC_CLIENT	"/usr/bin/rpcclient"
  #define XHS_IF_NAME "brlan1"
 -- 
-2.51.0
+2.51.2
 

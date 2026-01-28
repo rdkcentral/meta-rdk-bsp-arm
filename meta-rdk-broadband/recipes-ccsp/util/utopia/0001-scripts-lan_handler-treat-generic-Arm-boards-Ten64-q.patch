@@ -1,7 +1,7 @@
-From b822eb0fb8625f0693dc3c4ea77010ef6082212e Mon Sep 17 00:00:00 2001
+From d8b17d516140028ae99e55c9010dfc708b6da0e8 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Mon, 1 Jul 2024 12:29:06 +1000
-Subject: [PATCH 1/9] scripts: lan_handler: treat generic Arm boards (Ten64,
+Subject: [PATCH 01/13] scripts: lan_handler: treat generic Arm boards (Ten64,
  qemu-virt) similar to Raspberry Pi
 
 ---
@@ -12,7 +12,7 @@ Subject: [PATCH 1/9] scripts: lan_handler: treat generic Arm boards (Ten64,
  4 files changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/source/scripts/init/service.d/lan_handler.sh b/source/scripts/init/service.d/lan_handler.sh
-index 1ed07d9..d18877a 100755
+index 1bd53e7..995f9cd 100755
 --- a/source/scripts/init/service.d/lan_handler.sh
 +++ b/source/scripts/init/service.d/lan_handler.sh
 @@ -54,7 +54,9 @@ SERVICE_NAME="lan_handler"
@@ -84,5 +84,5 @@ index ba62cf1..56a499b 100755
                   if [ "$LAN_STATUS" = "stopped" ]; then
                        echo_t "service_ipv4 : Starting lan-status"
 -- 
-2.51.0
+2.51.2
 

@@ -1,0 +1,33 @@
+From fa7faa69831d031b969830c739297d7946d80146 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Wed, 14 Jan 2026 15:27:01 +1100
+Subject: [PATCH 3/3] [meta-rdk-bsp-arm only] remove pre and post start calls
+ from PsmSsp
+
+utopiaInitCheck.sh and log_psm_db.sh were already removed by the
+bbappend file.
+
+migration_to_psm.sh has no effect on our platform so remove it as
+well.
+---
+ systemd_units/PsmSsp.service | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/systemd_units/PsmSsp.service b/systemd_units/PsmSsp.service
+index 273498d..7972f5c 100644
+--- a/systemd_units/PsmSsp.service
++++ b/systemd_units/PsmSsp.service
+@@ -28,10 +28,7 @@ WorkingDirectory=/usr/ccsp
+ Environment="Subsys=eRT."
+ Environment="LOG4C_RCPATH=/etc"
+ EnvironmentFile=/etc/device.properties
+-ExecStartPre=/bin/sh -c '(/usr/ccsp/utopiaInitCheck.sh)'
+-ExecStartPre=-/bin/sh -c '(/usr/ccsp/log_psm.db.sh)'
+ ExecStart=/bin/sh -c '/usr/bin/PsmSsp -subsys $Subsys'
+-ExecStartPost=/bin/sh -c '(/etc/migration_to_psm.sh)'
+ ExecStopPost=/bin/sh -c 'echo "`date`: Stopping/Restarting PsmSsp" >> ${PROCESS_RESTART_LOG}'
+ Restart=always
+ SyslogIdentifier=PsmSsp
+-- 
+2.51.2
+

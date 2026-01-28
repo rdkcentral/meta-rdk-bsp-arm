@@ -23,12 +23,13 @@ After=ieee1905_em_ctrl.service
 [Service]
 Type=forking
 WorkingDirectory=/usr/ccsp/EasyMesh
-ExecStartPre=/bin/sh -c 'if [ ! -e "/sys/class/net/eth1_virt_peer/address" ]; then `/usr/ccsp/EasyMesh/setup_veth_for_em.sh brlan0 eth1 false`;fi'
+ExecStartPre=/bin/sh -c 'if [ ! -e "/sys/class/net/eth1_virt_peer/address" ]; then /usr/ccsp/EasyMesh/setup_veth_for_em.sh brlan0 eth1 false;fi'
 ExecStartPre=/bin/sh -c 'while [ ! -e /tmp/wifi_initialized ] && [ ! -e /tmp/wifi_dml_complete ] ;do sleep 1; done '
 ExecStartPre=/bin/sh -c 'sleep 5'
-ExecStart=/bin/sh -c '/usr/bin/ieee1905-core -f ieee1905::al_sap=trace,ieee1905::cmdu_handler=trace,ieee1905::cmdu_proxy=trace,ieee1905::cmdu_observer=trace -i eth1_virt_peer >> /tmp/ieee1905_agent_log.txt &'
+ExecStartPre=/bin/sh -c 'mkdir -p /rdklogs/logs/ieee1905/agent'
+ExecStart=/bin/sh -c '/usr/bin/ieee1905-core -f ieee1905::al_sap=trace,ieee1905::cmdu_handler=trace,ieee1905::cmdu_proxy=trace,ieee1905::cmdu_observer=trace -i eth1_virt_peer --no-stdout-appender --file-appender /rdklogs/logs/ieee1905/agent &'
 Restart=always
-
+SyslogIdentifier=ieee1905_em_agent
 
 [Install]
 WantedBy=multi-user.target

@@ -1,0 +1,25 @@
+From 1f59b49377ce45457c5b319b6fbed66a9ad55ee8 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Tue, 13 Jan 2026 11:39:28 +1100
+Subject: [PATCH 03/13] bridge: use service_bridge_rpi for generic arm platform
+
+---
+ source/scripts/init/c_registration/02_bridge.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/source/scripts/init/c_registration/02_bridge.c b/source/scripts/init/c_registration/02_bridge.c
+index 38cb24a..846be13 100644
+--- a/source/scripts/init/c_registration/02_bridge.c
++++ b/source/scripts/init/c_registration/02_bridge.c
+@@ -53,7 +53,7 @@ const char* SERVICE_CUSTOM_EVENTS[] = {"wan-start|/etc/utopia/service.d/service_
+ #else
+ const char* SERVICE_CUSTOM_EVENTS[] = { NULL };
+ #endif
+-#elif defined (_PLATFORM_RASPBERRYPI_)
++#elif defined (_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+ const char* SERVICE_DEFAULT_HANDLER = "/etc/utopia/service.d/service_bridge_rpi.sh";
+ const char* SERVICE_CUSTOM_EVENTS[] = { NULL };
+ #elif defined (_PLATFORM_BANANAPI_R4_)
+-- 
+2.51.2
+

@@ -19,33 +19,18 @@ SRC_URI:append = " \
     file://onewifi.service \
 "
 
-# we need to patch to code for rpi
-SRC_URI:remove = "file://0001-DBusLoop-SSL_state-TLS_ST_OK.patch"
-
-SRC_URI:append = " file://0001-DBusLoop-SSL_state-TLS_ST_OK.patch;apply=no"
-
 # Some systemd unit files invoke through '/bin/sh -c (...)' which causes
 # the true process name not to appear in syslog (e.g journalctl).
 # These patches update the unit files accordingly
 
-SRC_URI:append = " file://0001-service-set-systemd-SyslogIdentifier.patch;apply=no"
+SRC_URI:append = " file://0001-service-set-systemd-SyslogIdentifier.patch"
 
 # Fix the path of the 'wan_started' monitor so it reads the correct path
 # (it was moved into the /var/run to work under our read-only rootfs)
-SRC_URI:append = " file://0002-systemd_units-correct-wan_started-path-for-read-only.patch;apply=no"
-do_genericarm_patches () {
-    cd ${S}
-    if [ ! -e patch_applied ]; then
-        bbnote "Patching 0001-DBusLoop-SSL_state-TLS_ST_OK.patch"
-        patch -p1 < ${WORKDIR}/0001-DBusLoop-SSL_state-TLS_ST_OK.patch
-        bbnote "Patching 0001-service-set-systemd-SyslogIdentifier.patch"
-        patch -p1 < ${WORKDIR}/0001-service-set-systemd-SyslogIdentifier.patch
-        bbnote "Patching 0002-systemd_units-correct-wan_started-path-for-read-only.patch;apply=no"
-        patch -p1 < ${WORKDIR}/0002-systemd_units-correct-wan_started-path-for-read-only.patch
-        touch patch_applied
-    fi
-}
-addtask genericarm_patches after do_unpack before do_configure
+SRC_URI:append = " file://0002-systemd_units-correct-wan_started-path-for-read-only.patch"
+
+# Remove call to migration_to_psm.sh, utopiaInitCheck.sh and log_psm_db.sh
+SRC_URI:append = " file://0003-meta-rdk-bsp-arm-only-remove-pre-and-post-start-call.patch"
 
 do_configure:prepend:aarch64() {
 	sed -e '/len/ s/^\/*/\/\//' -i ${S}/source/ccsp/components/common/DataModel/dml/components/DslhObjRecord/dslh_objro_access.c
@@ -107,10 +92,6 @@ do_install:append:class-target () {
     #reduce sleep time to 12 sconds
     sed -i 's/300/12/g' ${D}${systemd_unitdir}/system/rfc.service
     sed -i "s/wan-initialized.target/multi-user.target/g" ${D}${systemd_unitdir}/system/rfc.service
-
-    #Remove pre execution script validation from Psm service
-    sed -i "/utopiaInitCheck.sh/d" ${D}${systemd_unitdir}/system/PsmSsp.service
-    sed -i "/log_psm.db.sh/d" ${D}${systemd_unitdir}/system/PsmSsp.service
 
     sed -i "/device.properties/a ExecStartPre=/bin/sh -c '(/usr/ccsp/utopiaInitCheck.sh)'"  ${D}${systemd_unitdir}/system/CcspPandMSsp.service
     #sed -i "/Description=CcspCrSsp service/a After=disable_systemd_restart_param.service" ${D}${systemd_unitdir}/system/CcspCrSsp.service
