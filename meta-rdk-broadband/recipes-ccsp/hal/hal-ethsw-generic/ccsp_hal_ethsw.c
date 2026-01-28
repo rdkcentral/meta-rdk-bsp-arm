@@ -1071,7 +1071,7 @@ bool rpiNet_isInterfaceLinkUp(const char *ifname)
     if (ioctl(skfd, SIOCGIFFLAGS, &intf) == -1) {
         isUp = 0;
     } else {
-        isUp = (intf.ifr_flags & (IFF_UP | IFF_RUNNING)) ? TRUE : FALSE;
+        isUp = (intf.ifr_flags & (IFF_RUNNING | IFF_LOWER_UP)) ? TRUE : FALSE;
     }
 
     close(skfd);
