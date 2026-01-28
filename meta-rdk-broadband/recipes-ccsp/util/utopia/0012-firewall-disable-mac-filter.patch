@@ -1,0 +1,26 @@
+From 990013b53c3a31ed8530d4b844483cbdfdcaef8c Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Wed, 21 Jan 2026 15:46:23 +1100
+Subject: [PATCH 12/13] firewall: do not run mac_filter.sh on meta-rdk-bsp-arm
+
+This function is not supported yet
+---
+ source/firewall/firewall.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/source/firewall/firewall.c b/source/firewall/firewall.c
+index f865745..02444c2 100644
+--- a/source/firewall/firewall.c
++++ b/source/firewall/firewall.c
+@@ -14891,7 +14891,7 @@ static int service_start ()
+ #endif
+    FIREWALL_DEBUG("iptables-restore for ipv6 ends\n");
+ 
+-   #if defined(_GENERIC_LINUX_DATA_PATH_)
++   #if defined(_GENERIC_LINUX_DATA_PATH_) && !defined(_PLATFORM_GENERICARM_)
+        /* Apply Mac Filtering rules */
+        v_secure_system("/bin/sh -c /tmp/mac_filter.sh");
+    #endif
+-- 
+2.51.2
+

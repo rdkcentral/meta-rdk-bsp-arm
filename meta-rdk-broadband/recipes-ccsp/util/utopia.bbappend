@@ -1,18 +1,24 @@
 require meta-rdk-broadband/recipes-ccsp/ccsp/ccsp_common_genericarm.inc
 
+SRCREV:utopia = "bf2b1f3cfe684c9dcc4e3cf578e32d9ee6c5f768"
+SRCPV:utopia = "2.0.0_stable2_20260123"
+
 DEPENDS:append = " kernel-autoconf utopia-headers libsyswrapper"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 SRC_URI:append = " \
-    file://0001-scripts-lan_handler-treat-generic-Arm-boards-Ten64-q.patch;apply=no \
-    file://0002-lan_handler-refresh-fix-lan-handler-for-rpi.patch.patch;apply=no \
-    file://0003-utopia-duplicate-or-replace-_PLATFORM_RASPBERRYPI_-a.patch;apply=no \
-    file://0004-scripts-utopia_init-do-nvram-restore_reboot-and-drop.patch;apply=no \
-    file://0005-scripts-lan_handler-create-flag-files-for-lan-start-.patch;apply=no \
-    file://0006-dhcp-place-dnsmasq.conf-in-RAM-var-volatile.patch;apply=no \
-    file://0007-igd-place-IGD-temporary-files-under-var-volatile.patch;apply=no \
-    file://0008-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch;apply=no \
-    file://0009-service-dhcpv6_client-log-to-syslog-instead-of-console.patch;apply=no \
+    file://0001-scripts-lan_handler-treat-generic-Arm-boards-Ten64-q.patch \
+    file://0002-lan_handler-refresh-fix-lan-handler-for-rpi.patch.patch \
+    file://0003-bridge-use-service_bridge_rpi-for-generic-arm-platfo.patch \
+    file://0004-firewall-use-_GENERIC_LINUX_DATA_PATH_-for-reference.patch \
+    file://0005-service_wan-use-_GENERIC_LINUX_DATA_PATH_-to-introdu.patch \
+    file://0006-scripts-utopia_init-do-nvram-restore_reboot-and-drop.patch \
+    file://0007-scripts-lan_handler-create-flag-files-for-lan-start-.patch \
+    file://0008-dhcp-place-dnsmasq.conf-in-RAM-var-volatile.patch \
+    file://0009-igd-place-IGD-temporary-files-under-var-volatile.patch \
+    file://0010-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch \
+    file://0011-service-dhcpv6_client-log-to-syslog-instead-of-dev-c.patch \
+    file://0012-firewall-disable-mac-filter.patch \
     file://system_defaults \
 "
 
@@ -20,35 +26,11 @@ LDFLAGS:append = " \
     -lsecure_wrapper \
 "
 
-CFLAGS:append = " -Wno-error=unused-function "
-CFLAGS:remove = " ${@bb.utils.contains('DISTRO_FEATURES', 'bci', '-DWAN_FAILOVER_SUPPORTED', '', d)}"
+CFLAGS:append = " -Wno-error=unused-function \
+    -D_GENERIC_LINUX_DATA_PATH_ \
+"
 
-# we need to patch to code for Generic ARM
-do_genericarm_patches() {
-    cd ${S}
-    if [ ! -e genericarm_patch_applied ]; then
-        bbnote "Patching 0001-scripts-lan_handler-treat-generic-Arm-boards-Ten64-q.patch"
-        patch -p1 -i "${WORKDIR}/0001-scripts-lan_handler-treat-generic-Arm-boards-Ten64-q.patch"
-        bbnote "Patching 0002-lan_handler-refresh-fix-lan-handler-for-rpi.patch.patch"
-        patch -p1 -i "${WORKDIR}/0002-lan_handler-refresh-fix-lan-handler-for-rpi.patch.patch"
-        bbnote "Patching 0003-utopia-duplicate-or-replace-_PLATFORM_RASPBERRYPI_-a.patch"
-        patch -p1 -i "${WORKDIR}/0003-utopia-duplicate-or-replace-_PLATFORM_RASPBERRYPI_-a.patch"
-        bbnote "Patching 0004-scripts-utopia_init-do-nvram-restore_reboot-and-drop.patch"
-        patch -p1 -i "${WORKDIR}/0004-scripts-utopia_init-do-nvram-restore_reboot-and-drop.patch"
-        bbnote "Patching 0005-scripts-lan_handler-create-flag-files-for-lan-start-.patch"
-        patch -p1 -i "${WORKDIR}/0005-scripts-lan_handler-create-flag-files-for-lan-start-.patch"
-        bbnote "Patching 0006-dhcp-place-dnsmasq.conf-in-RAM-var-volatile.patch"
-        patch -p1 -i "${WORKDIR}/0006-dhcp-place-dnsmasq.conf-in-RAM-var-volatile.patch"
-        bbnote "Patching 0007-igd-place-IGD-temporary-files-under-var-volatile.patch"
-        patch -p1 -i "${WORKDIR}/0007-igd-place-IGD-temporary-files-under-var-volatile.patch"
-        bbnote "Patching 0008-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch"
-        patch -p1 -i "${WORKDIR}/0008-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch"
-        bbnote "Patching 0009-service-dhcpv6_client-log-to-syslog-instead-of-console.patch"
-        patch -p1 -i "${WORKDIR}/0009-service-dhcpv6_client-log-to-syslog-instead-of-console.patch"
-        touch genericarm_patch_applied
-    fi
-}
-addtask genericarm_patches after do_unpack before do_compile
+CFLAGS:remove = " ${@bb.utils.contains('DISTRO_FEATURES', 'bci', '-DWAN_FAILOVER_SUPPORTED', '', d)}"
 
 do_install:append() {
 
