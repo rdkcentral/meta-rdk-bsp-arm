@@ -27,6 +27,7 @@ WorkingDirectory=/usr/ccsp/EasyMesh
 ExecStartPre=/bin/sh -c '/usr/ccsp/EasyMesh/em_ctrl_pre_start.sh'
 ExecStart=/bin/sh -c '/usr/bin/onewifi_em_ctrl bpi\@root >> /tmp/em_ctrl.log &'
 ExecStartPost=/bin/sh -c '/usr/ccsp/EasyMesh/setup_mysql_db_post.sh'
+ExecStopPost=/bin/sh -c 'sleep 10'
 Restart=always
 SyslogIdentifier=em_ctrl
 

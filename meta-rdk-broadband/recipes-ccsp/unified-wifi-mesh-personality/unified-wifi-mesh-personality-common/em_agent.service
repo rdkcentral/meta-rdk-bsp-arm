@@ -28,6 +28,7 @@ ExecStartPre=/bin/sh -c '/usr/ccsp/EasyMesh/em_agent_pre_start.sh'
 ExecStart=/bin/sh -c '/usr/bin/onewifi_em_agent >> /tmp/em_agent.log &'
 Restart=always
 SyslogIdentifier=em_agent
+ExecStopPost=/bin/sh -c 'sleep 10'
 
 [Install]
 WantedBy=multi-user.target
