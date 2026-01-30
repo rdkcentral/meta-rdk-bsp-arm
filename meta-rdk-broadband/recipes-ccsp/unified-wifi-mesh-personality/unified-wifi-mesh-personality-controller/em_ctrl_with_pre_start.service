@@ -19,6 +19,7 @@
 [Unit]
 Description=EasyMesh Controller service
 After=mysqld.service ieee1905_em_ctrl.service
+Requires=ieee1905_em_ctrl.service
 
 [Service]
 Type=forking
