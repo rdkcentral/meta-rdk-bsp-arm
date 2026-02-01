@@ -27,7 +27,7 @@ WorkingDirectory=/usr/ccsp/EasyMesh
 ExecStartPre=/bin/sh -c 'sleep 5'
 ExecStartPre=/bin/sh -c 'if [ ! -e "/sys/class/net/eth0_virt_peer/address" ]; then /usr/ccsp/EasyMesh/setup_veth_for_em.sh brlan0 eth0 true; fi'
 ExecStartPre=/bin/sh -c 'mkdir -p /rdklogs/logs/ieee1905/ctrl'
-ExecStart=/bin/sh -c '/usr/bin/ieee1905-core -f ieee1905::al_sap=trace,ieee1905::cmdu_handler=trace,ieee1905::cmdu_proxy=trace,ieee1905::cmdu_observer=trace -i eth0_virt_peer --sap-data-path /tmp/al_em_ctrl_data_socket --sap-control-path /tmp/al_em_ctrl_control_socket --no-stdout-appender --file-appender /rdklogs/logs/ieee1905/ctrl &'
+ExecStart=/bin/sh -c '/usr/bin/ieee1905 -f ieee1905::al_sap=trace,ieee1905::cmdu_handler=trace,ieee1905::cmdu_proxy=trace,ieee1905::cmdu_observer=trace -i eth0_virt_peer --sap-data-path /tmp/al_em_ctrl_data_socket --sap-control-path /tmp/al_em_ctrl_control_socket --no-stdout-appender --file-appender /rdklogs/logs/ieee1905/ctrl &'
 Restart=always
 SyslogIdentifier=ieee1905_em_ctrl
 
