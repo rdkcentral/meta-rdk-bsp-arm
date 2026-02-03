@@ -11,5 +11,12 @@ SRCREV_pn-ccsp-eth-agent = "3a0058c9699a15f9190fbdc02e411c9a541294f5"
 SRC_URI:append = "\
     file://0001-genericarm-increase-maximum-number-of-Ethernet-interfaces.patch \
     file://0002-cosa_ethernet_internal-force-CcspHalEthSw_RegisterLink.patch \
+    file://bring_up_all_eth.sh \
     "
 
+do_install:append() {
+   install -d ${D}/lib/rdk/
+   install -m 755 ${WORKDIR}/bring_up_all_eth.sh ${D}/lib/rdk/
+}
+
+FILES:${PN}:append = " /lib/rdk/bring_up_all_eth.sh"
