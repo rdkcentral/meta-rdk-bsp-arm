@@ -1113,7 +1113,13 @@ bool rpiNet_isInterfaceLinkUp(const char *ifname)
 INT GWP_GetEthWanLinkStatus()
 {
     INT status = 0;
-    CcspHalEthSwTrace(("%s called\n", __func__));
-    status = rpiNet_isInterfaceLinkUp(ETH_WAN_INTERFACE) ? TRUE : FALSE;
+    char wan_ifname[IFNAMSIZ];
+
+    if (GWP_GetEthWanInterfaceName(&wan_ifname, IFNAMSIZ) != RETURN_OK) {
+        fprintf(stderr, "%s: Failed to get WAN Interface name\n");
+        return RETURN_ERR;
+    }
+
+    status = rpiNet_isInterfaceLinkUp((char *)&wan_ifname) ? TRUE : FALSE;
     return status;
 }
