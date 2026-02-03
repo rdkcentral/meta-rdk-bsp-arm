@@ -1116,14 +1116,28 @@
   <Record name="eRT.com.cisco.spvtg.ccsp.webpa.Device.X_RDK_WebConfig.RfcEnable" type="astr">false</Record> 
   <Record name="eRT.com.cisco.spvtg.ccsp.webpa.WebConfigRfcEnable" type="astr">true</Record>
 
-  <Record name="dmsb.ethagent.ethifcount" type="astr">2</Record>
+  <Record name="dmsb.ethagent.ethifcount" type="astr">10</Record>
   <Record name="dmsb.ethagent.useforeth" type="astr" contentType="bool">TRUE</Record>
   <Record name="dmsb.ethagent.if.1.Name" type="astr">eth0</Record>
   <Record name="dmsb.ethagent.if.1.IsLinuxAPI" type="astr" contentType="bool">TRUE</Record>
-
-  <Record name="dmsb.ethagent.if.2.Name" type="astr">eth8</Record>
+  <Record name="dmsb.ethagent.if.2.Name" type="astr">eth1</Record>
   <Record name="dmsb.ethagent.if.2.IsLinuxAPI" type="astr" contentType="bool">TRUE</Record>
-
+  <Record name="dmsb.ethagent.if.3.Name" type="astr">eth2</Record>
+  <Record name="dmsb.ethagent.if.3.IsLinuxAPI" type="astr" contentType="bool">TRUE</Record>
+  <Record name="dmsb.ethagent.if.4.Name" type="astr">eth3</Record>
+  <Record name="dmsb.ethagent.if.4.IsLinuxAPI" type="astr" contentType="bool">TRUE</Record>
+  <Record name="dmsb.ethagent.if.5.Name" type="astr">eth4</Record>
+  <Record name="dmsb.ethagent.if.5.IsLinuxAPI" type="astr" contentType="bool">TRUE</Record>
+  <Record name="dmsb.ethagent.if.6.Name" type="astr">eth5</Record>
+  <Record name="dmsb.ethagent.if.6.IsLinuxAPI" type="astr" contentType="bool">TRUE</Record>
+  <Record name="dmsb.ethagent.if.7.Name" type="astr">eth6</Record>
+  <Record name="dmsb.ethagent.if.7.IsLinuxAPI" type="astr" contentType="bool">TRUE</Record>
+  <Record name="dmsb.ethagent.if.8.Name" type="astr">eth7</Record>
+  <Record name="dmsb.ethagent.if.8.IsLinuxAPI" type="astr" contentType="bool">TRUE</Record>
+  <Record name="dmsb.ethagent.if.9.Name" type="astr">eth8</Record>
+  <Record name="dmsb.ethagent.if.9.IsLinuxAPI" type="astr" contentType="bool">TRUE</Record>
+  <Record name="dmsb.ethagent.if.10.Name" type="astr">eth9</Record>
+  <Record name="dmsb.ethagent.if.10.IsLinuxAPI" type="astr" contentType="bool">TRUE</Record>
    <!-- ccsp-vlanmanager EthLink records -->
   <Record name="dmsb.ethlink.ifcount" type="astr">1</Record>
 
@@ -1152,7 +1166,7 @@
 
   <Record name="dmsb.wanmanager.group.1.policy" type="astr">6</Record>
   <Record name="dmsb.wanmanager.group.2.policy" type="astr">6</Record>
-  <Record name="dmsb.wanmanager.if.1.BaseInterface" type="astr">Device.Ethernet.X_RDK_Interface.2</Record>
+  <Record name="dmsb.wanmanager.if.1.BaseInterface" type="astr">Device.Ethernet.X_RDK_Interface.9</Record>
 
   <Record name="dmsb.wanmanager.if.1.Selection.Enable" type="astr">TRUE</Record>
   <Record name="dmsb.wanmanager.if.1.Selection.ActiveLink" type="astr">TRUE</Record>
