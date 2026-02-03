@@ -16,6 +16,7 @@ SRC_URI:append = " \
     file://brlan0_check.sh \
     file://brlan0_check.service \
     file://onewifi.service \
+    file://psmssp.service \
 "
 
 # Some systemd unit files invoke through '/bin/sh -c (...)' which causes
@@ -61,7 +62,8 @@ do_install:append:class-target () {
     install -d ${D}${systemd_unitdir}/system
     install -D -m 0644 ${S}/systemd_units/CcspCrSsp.service ${D}${systemd_unitdir}/system/CcspCrSsp.service
     install -D -m 0644 ${S}/systemd_units/CcspPandMSsp.service ${D}${systemd_unitdir}/system/CcspPandMSsp.service
-    install -D -m 0644 ${S}/systemd_units/PsmSsp.service ${D}${systemd_unitdir}/system/PsmSsp.service
+    #install -D -m 0644 ${S}/systemd_units/PsmSsp.service ${D}${systemd_unitdir}/system/PsmSsp.service
+    install -D -m 0644 ${WORKDIR}/psmssp.service ${D}${systemd_unitdir}/system/PsmSsp.service
     install -D -m 0644 ${S}/systemd_units/rdkbLogMonitor.service ${D}${systemd_unitdir}/system/rdkbLogMonitor.service
     install -D -m 0644 ${S}/systemd_units/CcspTandDSsp.service ${D}${systemd_unitdir}/system/CcspTandDSsp.service
     install -D -m 0644 ${S}/systemd_units/CcspLMLite.service ${D}${systemd_unitdir}/system/CcspLMLite.service
