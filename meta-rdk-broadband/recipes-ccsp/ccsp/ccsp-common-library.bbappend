@@ -32,6 +32,9 @@ SRC_URI:append = " file://0002-systemd_units-correct-wan_started-path-for-read-o
 # Remove call to migration_to_psm.sh, utopiaInitCheck.sh and log_psm_db.sh
 SRC_URI:append = " file://0003-meta-rdk-bsp-arm-only-remove-pre-and-post-start-call.patch"
 
+# Call pre-init script for CcspEthAgent (see ccsp-eth-agent.bbappend)
+SRC_URI:append = " file://0004-meta-rdk-bsp-arm-only-systemd-CcspEthAgent-bring-up-.patch"
+
 do_configure:prepend:aarch64() {
 	sed -e '/len/ s/^\/*/\/\//' -i ${S}/source/ccsp/components/common/DataModel/dml/components/DslhObjRecord/dslh_objro_access.c
 }
