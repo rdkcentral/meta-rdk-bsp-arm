@@ -1,1 +1,1 @@
-SYSTEMD_SERVICE_${PN}_remove = "RdkInterDeviceManager.service"
+SYSTEMD_SERVICE:${PN}:remove = "RdkInterDeviceManager.service"

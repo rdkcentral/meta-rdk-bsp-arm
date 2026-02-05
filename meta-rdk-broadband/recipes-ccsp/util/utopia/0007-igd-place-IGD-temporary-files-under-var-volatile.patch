@@ -1,7 +1,7 @@
-From b4b0449f6c7bce823178d46c8d501b583a062059 Mon Sep 17 00:00:00 2001
+From a01baf11ac6a61616a4af68d337debb9647b0176 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 7 Aug 2024 15:21:05 +1000
-Subject: [PATCH 07/11] igd: place IGD temporary files under /var/volatile
+Subject: [PATCH 7/9] igd: place IGD temporary files under /var/volatile
 
 Change-Id: I1b8f7e37b7739a04f63a80670d2539d07ab1f809
 ---
@@ -10,7 +10,7 @@ Change-Id: I1b8f7e37b7739a04f63a80670d2539d07ab1f809
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/source/igd/src/igd_device_root.c b/source/igd/src/igd_device_root.c
-index 0155cb29..5ed7d7b9 100644
+index 62eac23..698b2c1 100644
 --- a/source/igd/src/igd_device_root.c
 +++ b/source/igd/src/igd_device_root.c
 @@ -81,7 +81,7 @@
@@ -23,7 +23,7 @@ index 0155cb29..5ed7d7b9 100644
  #define DEFAULT_ADVR_EXPIRE 1800
  #define VERSION_MAJOR 		1
 diff --git a/source/scripts/init/service.d/service_igd.sh b/source/scripts/init/service.d/service_igd.sh
-index 8f50557b..cef57871 100755
+index 5f8018b..c51e5d4 100755
 --- a/source/scripts/init/service.d/service_igd.sh
 +++ b/source/scripts/init/service.d/service_igd.sh
 @@ -46,7 +46,7 @@ SELF_NAME="`basename $0`"
@@ -36,5 +36,5 @@ index 8f50557b..cef57871 100755
  PRIVATE_LAN_IF="brlan0"
  
 -- 
-2.39.5
+2.51.2
 

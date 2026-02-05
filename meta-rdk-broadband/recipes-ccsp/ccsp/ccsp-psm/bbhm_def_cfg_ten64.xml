@@ -228,9 +228,9 @@
   <Record name="dmsb.l2net.1.Type" type="astr">Bridge</Record>
   <Record name="dmsb.l2net.1.Members.SW" type="astr"></Record>
   <Record name="dmsb.l2net.1.Members.Eth" type="astr">eth0 eth1 eth2 eth3</Record>
-  <Record name="dmsb.l2net.1.Members.Moca" type="astr"> </Record>
-  <Record name="dmsb.l2net.1.Members.Gre" type="astr"> </Record>
-  <Record name="dmsb.l2net.1.Members.WiFi" type="astr">wifi0 wifi1</Record>
+  <Record name="dmsb.l2net.1.Members.Moca" type="astr"></Record>
+  <Record name="dmsb.l2net.1.Members.Gre" type="astr"></Record>
+  <Record name="dmsb.l2net.1.Members.WiFi" type="astr"></Record>
   <Record name="dmsb.l2net.1.Members.Link" type="astr">l2sd0-t</Record>
 
   <Record name="dmsb.l2net.1.Vlan.1.Alias" type="astr">CPE-VLAN1</Record>

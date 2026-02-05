@@ -1,7 +1,7 @@
-From 3c436d1afa1f217207aefefa7912e60c61d1e2d9 Mon Sep 17 00:00:00 2001
+From d397d4e3cb1d6750ba6dfe44935cca31a235b84d Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 4 Sep 2024 15:36:18 +1000
-Subject: [PATCH 08/11] RDKBDEV-XXXX: remove usages of get_current_wan_ifname()
+Subject: [PATCH 8/9] RDKBDEV-XXXX: remove usages of get_current_wan_ifname()
 
 get_current_wan_ifname() calls into the platform HAL, which bypasses
 WAN Manager if it is active. Furthermore, get_current_wan_ifname() needs
@@ -11,14 +11,14 @@ which isn't necessarily guaranteed on the current HAL implementations.
 Change-Id: I51e4fc756bbec11a548ca2d86aed2fd3f16790c6
 Signed-off-by: Mathew McBride <matt@traverse.com.au>
 ---
- source/firewall/firewall.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ source/firewall/firewall.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/source/firewall/firewall.c b/source/firewall/firewall.c
-index af6fea8b..b7093c29 100644
+index b919c92..4966974 100644
 --- a/source/firewall/firewall.c
 +++ b/source/firewall/firewall.c
-@@ -1335,7 +1335,7 @@ int do_mapt_rules_v4(FILE *nat_fp, FILE *filter_fp, FILE *mangle_fp)
+@@ -1187,7 +1187,7 @@ int do_mapt_rules_v4(FILE *nat_fp, FILE *filter_fp, FILE *mangle_fp)
  
      /* Add POSTROUTING rule. */
  #if defined(IVI_KERNEL_SUPPORT)
@@ -27,7 +27,7 @@ index af6fea8b..b7093c29 100644
  #elif defined(NAT46_KERNEL_SUPPORT) || defined (FEATURE_SUPPORT_MAPT_NAT46)
      fprintf(nat_fp, "-A POSTROUTING -o %s -j %s\n", NAT46_INTERFACE, MAPT_NAT_IPV4_POST_ROUTING_TABLE);
  #endif
-@@ -1434,9 +1434,9 @@ int do_mapt_rules_v4(FILE *nat_fp, FILE *filter_fp, FILE *mangle_fp)
+@@ -1287,9 +1287,9 @@ int do_mapt_rules_v4(FILE *nat_fp, FILE *filter_fp, FILE *mangle_fp)
                      finalPortValue = port;
              }
  #if defined(IVI_KERNEL_SUPPORT)
@@ -39,7 +39,7 @@ index af6fea8b..b7093c29 100644
                      initialPortValue, finalPortValue);
  #elif defined(NAT46_KERNEL_SUPPORT) || defined (FEATURE_SUPPORT_MAPT_NAT46)
  #if defined(_HUB4_PRODUCT_REQ_NO_DPORT_)
-@@ -1451,9 +1451,9 @@ int do_mapt_rules_v4(FILE *nat_fp, FILE *filter_fp, FILE *mangle_fp)
+@@ -1304,9 +1304,9 @@ int do_mapt_rules_v4(FILE *nat_fp, FILE *filter_fp, FILE *mangle_fp)
  #endif //IVI_KERNEL_SUPPORT
          }
  #ifdef IVI_KERNEL_SUPPORT
@@ -52,7 +52,7 @@ index af6fea8b..b7093c29 100644
  #endif //IVI_KERNEL_SUPPORT
      }
  
-@@ -12416,8 +12416,8 @@ static int prepare_subtables(FILE *raw_fp, FILE *mangle_fp, FILE *nat_fp, FILE *
+@@ -12278,8 +12278,8 @@ static int prepare_subtables(FILE *raw_fp, FILE *mangle_fp, FILE *nat_fp, FILE *
     fprintf(filter_fp, "-A INPUT -p udp -m udp --match multiport --dports 10161,10163 -j SNMP_FILTER\n");
  
     //DROP incoming New NTP packets on erouter interface
@@ -63,7 +63,7 @@ index af6fea8b..b7093c29 100644
  
     /* RDKB-57182 Blocking brlan0 ports 80,443 for interfaces other than lan */
     fprintf(filter_fp, "-A INPUT -i brlan0 -p tcp -m multiport --dports 80,443 ! -d %s -j DROP\n", lan_ipaddr);
-@@ -14014,11 +14014,11 @@ static int prepare_disabled_ipv4_firewall(FILE *raw_fp, FILE *mangle_fp, FILE *n
+@@ -13954,11 +13954,11 @@ static int prepare_disabled_ipv4_firewall(FILE *raw_fp, FILE *mangle_fp, FILE *n
     fprintf(filter_fp, "-A SNMPDROPLOG -j DROP\n");
  
     //DROP incoming  NTP packets on erouter interface
@@ -78,17 +78,6 @@ index af6fea8b..b7093c29 100644
  
     // Video Analytics Firewall rule to allow port 58081 only from LAN interface
     do_OpenVideoAnalyticsPort (filter_fp);
-@@ -15185,8 +15185,8 @@ static void do_ipv6_filter_table(FILE *fp){
-    fprintf(fp, "-A SNMPDROPLOG -j DROP\n");
- 
-    //DROP incoming  NTP packets on erouter interface
--   fprintf(fp, "-A INPUT -i %s -m state --state ESTABLISHED,RELATED -p udp --dport 123 -j ACCEPT \n", get_current_wan_ifname());
--   fprintf(fp, "-A INPUT -i %s  -m state --state NEW -p udp --dport 123 -j DROP \n",get_current_wan_ifname());
-+   fprintf(fp, "-A INPUT -i %s -m state --state ESTABLISHED,RELATED -p udp --dport 123 -j ACCEPT \n",current_wan_ifname);
-+   fprintf(fp, "-A INPUT -i %s  -m state --state NEW -p udp --dport 123 -j DROP \n",current_wan_ifname);
- 
-    // Video Analytics Firewall rule to allow port 58081 only from LAN interface
-    do_OpenVideoAnalyticsPort (fp);
 -- 
-2.39.5
+2.51.2
 

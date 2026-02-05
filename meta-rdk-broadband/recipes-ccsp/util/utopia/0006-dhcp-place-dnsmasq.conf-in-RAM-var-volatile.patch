@@ -1,7 +1,7 @@
-From 198cc353f6f6a0bd098cb67c61bf775fe33cf527 Mon Sep 17 00:00:00 2001
+From ca3640408273e2d5cc42a83dc6f299f0f3fb7195 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 7 Aug 2024 15:17:54 +1000
-Subject: [PATCH 06/11] dhcp: place dnsmasq.conf in RAM (/var/volatile)
+Subject: [PATCH 6/9] dhcp: place dnsmasq.conf in RAM (/var/volatile)
 
 On a completely read-only filesystem, it is not possible to create a file under /var itself
 
@@ -13,7 +13,7 @@ Change-Id: Ib87378d9627855d9e3665f2a277f1221afae3b86
  3 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/source/scripts/init/service.d/service_dhcp_server.sh b/source/scripts/init/service.d/service_dhcp_server.sh
-index cb4fdee2..4d1a9bea 100755
+index 9f80373..4cf90a7 100755
 --- a/source/scripts/init/service.d/service_dhcp_server.sh
 +++ b/source/scripts/init/service.d/service_dhcp_server.sh
 @@ -59,7 +59,7 @@ UTOPIA_PATH="/etc/utopia/service.d"
@@ -26,10 +26,10 @@ index cb4fdee2..4d1a9bea 100755
  BIN=dnsmasq
  SERVER=${BIN}
 diff --git a/source/service_dhcp/dhcp_server_functions.c b/source/service_dhcp/dhcp_server_functions.c
-index 9e76b97f..69c0d3d5 100644
+index c254a0f..f1a9dda 100644
 --- a/source/service_dhcp/dhcp_server_functions.c
 +++ b/source/service_dhcp/dhcp_server_functions.c
-@@ -53,7 +53,7 @@
+@@ -59,7 +59,7 @@
  #define STATIC_URLS_FILE        "/etc/static_urls"
  #define STATIC_DNS_URLS_FILE    "/etc/static_dns_urls"
  #define NETWORK_RES_FILE      	"/var/tmp/networkresponse.txt"
@@ -39,7 +39,7 @@ index 9e76b97f..69c0d3d5 100644
  #define DEFAULT_RESOLV_CONF     "/var/default/resolv.conf"
  #define DEFAULT_CONF_DIR      	"/var/default"
 diff --git a/source/service_dhcp/service_dhcp_server.c b/source/service_dhcp/service_dhcp_server.c
-index b2db05d7..40daec7a 100644
+index 92fe926..7d35f71 100644
 --- a/source/service_dhcp/service_dhcp_server.c
 +++ b/source/service_dhcp/service_dhcp_server.c
 @@ -41,7 +41,7 @@
@@ -52,5 +52,5 @@ index b2db05d7..40daec7a 100644
  #define RPC_CLIENT	"/usr/bin/rpcclient"
  #define XHS_IF_NAME "brlan1"
 -- 
-2.39.5
+2.51.2
 

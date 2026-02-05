@@ -1,10 +1,10 @@
 require meta-rdk-broadband/recipes-ccsp/ccsp/ccsp_common_genericarm.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-SRC_URI_append = " file://0001-scripts-fix-incorrect-call-arguments-for-utopia-dhcp.patch"
+SRC_URI:append = " file://0001-scripts-fix-incorrect-call-arguments-for-utopia-dhcp.patch"
 
-do_install_append () {
+do_install:append () {
     # Test and Diagonastics XML 
        install -m 644 ${S}/config/TestAndDiagnostic_arm.XML ${D}/usr/ccsp/tad/TestAndDiagnostic.XML
        install -m 644 ${S}/scripts/selfheal_reset_counts.sh ${D}/usr/ccsp/tad/selfheal_reset_counts.sh
@@ -14,7 +14,7 @@ do_install_append () {
        sed -i "/corrective_action.sh/a source /lib/rdk/t2Shared_api.sh" ${D}/usr/ccsp/tad/log_mem_cpu_info.sh 
        sed -i "/corrective_action.sh/a source /lib/rdk/t2Shared_api.sh" ${D}/usr/ccsp/tad/uptime.sh 
 }
-FILES_${PN}-ccsp += " \
+FILES:${PN}-ccsp += " \
                     ${prefix}/ccsp/tad/* \
                     /fss/gw/usr/ccsp/tad/* \
                     "

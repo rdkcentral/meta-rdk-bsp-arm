@@ -1,7 +1,7 @@
-From cf026187b3b3dde07b29a9a4e42445022168eb75 Mon Sep 17 00:00:00 2001
+From 15d67b7ac113096e32221fe8e7c88aa9a5c734a3 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Tue, 19 Nov 2024 16:34:16 +1100
-Subject: [PATCH] Remove erouter0 reference from Device.IP.Interface.
+Subject: [PATCH 1/3] Remove erouter0 reference from Device.IP.Interface.
 
 The generic Arm BSP uses WAN Manager exclusively and
 does not support erouter0.
@@ -15,18 +15,17 @@ names are removed as well.
 
 Change-Id: Ic251ea8ff5fbfab6e085f885843437612e8a3b71
 ---
- source-arm/TR-181/board_sbapi/cosa_ip_apis.c | 19 +------------------
- 1 file changed, 1 insertion(+), 18 deletions(-)
+ source-arm/TR-181/board_sbapi/cosa_ip_apis.c | 17 -----------------
+ 1 file changed, 17 deletions(-)
 
 diff --git a/source-arm/TR-181/board_sbapi/cosa_ip_apis.c b/source-arm/TR-181/board_sbapi/cosa_ip_apis.c
-index 652d17d6..a7eae7c8 100644
+index 4237230..fc94804 100644
 --- a/source-arm/TR-181/board_sbapi/cosa_ip_apis.c
 +++ b/source-arm/TR-181/board_sbapi/cosa_ip_apis.c
-@@ -325,24 +325,7 @@ typedef struct USG_IF_CFG
- }USG_IF_CFG_T;
+@@ -346,23 +346,6 @@ typedef struct USG_IF_CFG
  
  static USG_IF_CFG_T g_usg_if_cfg[] =
--{
+ {
 -#ifndef _WNXL11BWL_PRODUCT_REQ_
 -#if defined(FEATURE_RDKB_CONFIGURABLE_WAN_INTERFACE ) && defined( _HUB4_PRODUCT_REQ_ ) 
 -    /* added _HUB4_PRODUCT_REQ_ to restrict only VlanManger supported products */
@@ -35,7 +34,7 @@ index 652d17d6..a7eae7c8 100644
 -    {"erouter0",    COSA_DML_LINK_TYPE_EthLink, TRUE},
 -#endif
 -#endif
--#if defined(_COSA_INTEL_USG_ARM_) && !defined(_ENABLE_DSL_SUPPORT_)
+-#if defined(_COSA_INTEL_USG_ARM_) && !defined(_ENABLE_DSL_SUPPORT_) && !defined(_RDKB_GLOBAL_PRODUCT_REQ_)
 -#ifndef _PLATFORM_RASPBERRYPI_
 -#ifndef _PLATFORM_TURRIS_
 -#ifndef _PLATFORM_BANANAPI_R4_    
@@ -44,10 +43,9 @@ index 652d17d6..a7eae7c8 100644
 -#endif
 -#endif
 -#endif      
-+{ 
      {"lo",          COSA_DML_LINK_TYPE_EthLink, FALSE}, /*DH  change the value of gDmsbIpIfLoopbackInstNum too, if "lo" is moved to a different location */
      /*
       *  Multi-LAN -- still have to keep primary LAN interface for IPv6 settings -- overlapping with MLAN configuration
 -- 
-2.39.5
+2.51.0
 

@@ -1,25 +1,19 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/rdk-wifi-hal:"
+SRC_URI:remove = "git://github.com/rdkcentral/rdk-wifi-hal.git;protocol=https;branch=main;name=rdk-wifi-hal"
 
-# Patch an issue with the mainline mt76 (MediaTek) driver
-SRC_URI_append = "\
-        file://0001-wifi_hal-do-not-create-any-vaps-other-than-private.patch;apply=no \
-        file://0002-platform-raspberry-pi-remove-RPI-reference-default-SSID.patch;apply=no \
+SRC_URI += "git://github.com/rdkcentral/rdk-wifi-hal.git;protocol=https;branch=develop;name=rdk-wifi-hal"
+SRCREV_rdk-wifi-hal = "7cbf2c7a892e9d10be0fc8fa3ad85c7a7aeb511c"
+
+FILESEXTRAPATHS:prepend := "${THISDIR}/rdk-wifi-hal:"
+
+SRC_URI:append = "\
+  file://0001-platform-change-default-SSID-to-RDKB-ARM-AP.patch;patchdir=.. \
 "
 
-CFLAGS_append = " -D_PLATFORM_RASPBERRYPI_  -DRASPBERRY_PI_PORT "
-CFLAGS_append_kirkstone = " -fcommon"
-EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' ONE_WIFIBUILD=true ', '', d)}"
-EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' RASPBERRY_PI_PORT=true ', '', d)}"
+RDEPENDS_${PN}:append = "virtual/unified-wifi-mesh-personality"
 
-do_genericarm_patches() {
-    cd ${S} # This puts us in "rdk-wifi-hal/src, so use -p2 below"
-    if [ ! -e genericarm_patch_applied ]; then
-        bbnote "Applying 0001-wifi_hal-do-not-create-any-vaps-other-than-private.patch into ${S}"
-        patch -p2 -i ${WORKDIR}/0001-wifi_hal-do-not-create-any-vaps-other-than-private.patch
-        bbnote "Applying 0002-platform-raspberry-pi-remove-RPI-reference-default-SSID.patch into ${S}"
-        patch -d ${S}/.. -p1 -i ${WORKDIR}/0002-platform-raspberry-pi-remove-RPI-reference-default-SSID.patch
-        touch genericarm_patch_applied
-    fi
-}
-addtask genericarm_patches after do_unpack before do_compile
-
+# For the purposes of the EasyMesh bring up, we will "pretend" to be a
+# Banana Pi, which has the same WiFi vendor as us.
+CFLAGS:append = " -D_PLATFORM_BANANAPI_R4_ -DBANANA_PI_PORT"
+CFLAGS:append:kirkstone = " -fcommon"
+EXTRA_OECONF:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' ONE_WIFIBUILD=true ', '', d)}"
+EXTRA_OECONF:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' BANANA_PI_PORT=true ', '', d)}"

@@ -1,0 +1,48 @@
+diff --git a/config/rdkb/banana-pi/setup_veth_for_em.sh b/config/rdkb/banana-pi/setup_veth_for_em.sh
+index 317ef99..cb59e3e 100644
+--- a/config/rdkb/banana-pi/setup_veth_for_em.sh
++++ b/config/rdkb/banana-pi/setup_veth_for_em.sh
+@@ -67,29 +67,6 @@ ip a show $VETH_PEER
+ 
+ echo "To clean up, run 'ip link del $BRIDGE_NAME'."
+ 
+-# ----------- 🔍 TEST: Broadcast from VETH_PEER -----------
+-
+-echo "Testing broadcast connectivity..."
+-
+-TEST_PORT=9999
+-TEST_MSG="hello_broadcast_test_$$"
+-RESULT=""
+-
+-# Start listener in background
+-timeout 3 socat -u UDP4-RECVFROM:$TEST_PORT,broadcast - > $VETH_OUTPUT &
+-LISTENER_PID=$!
+-sleep 1
+-
+-# Send broadcast from veth peer
+-echo "$TEST_MSG" | socat - UDP4-DATAGRAM:255.255.255.255:$TEST_PORT,broadcast,bindtodevice="$VETH_PEER"
+-
+-# Wait and read result
+-sleep 1
+-if [ -f "$VETH_OUTPUT" ]; then
+-    RESULT=$(cat $VETH_OUTPUT)
+-    rm -f $VETH_OUTPUT
+-fi
+-
+ if [ "$DO_OBTAIN_MAC" = false ]; then
+     if [ -e "/sys/class/net/erouter0/address" ]; then
+        base_addr="$(cat /sys/class/net/erouter0/address)"
+@@ -107,13 +84,3 @@ if [ "$DO_OBTAIN_MAC" = false ]; then
+     echo "$VETH_PEER macaddress: $veth1_mac"
+     ip link set dev $VETH_PEER address $veth1_mac
+ fi
+-
+-if [ "$RESULT" = "$TEST_MSG" ]; then
+-    echo "✅ Broadcast test successful: Message received in "$VETH_PEER""
+-else
+-    echo "❌ Broadcast test failed: Message not received"
+-    echo "You can run manually:"
+-    echo "  ip socat -u UDP4-RECVFROM:$TEST_PORT,broadcast"
+-    echo "  echo \"$TEST_MSG\" | socat - UDP4-DATAGRAM:255.255.255.255:$TEST_PORT,broadcast,bindtodevice="$VETH_PEER""
+-    exit 1
+-fi

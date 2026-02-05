@@ -1,66 +1,29 @@
 require meta-rdk-broadband/recipes-ccsp/ccsp/ccsp_common_genericarm.inc
 
-DEPENDS_append = " kernel-autoconf utopia-headers libsyswrapper"
+DEPENDS:append = " kernel-autoconf utopia-headers libsyswrapper"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
-SRC_URI_append = " \
-    file://0001-scripts-lan_handler-treat-generic-Arm-boards-Ten64-q.patch;apply=no \
-    file://0002-lan_handler-refresh-fix-lan-handler-for-rpi.patch.patch;apply=no \
-    file://0003-utopia-duplicate-or-replace-_PLATFORM_RASPBERRYPI_-a.patch;apply=no \
-    file://0004-scripts-utopia_init-do-nvram-restore_reboot-and-drop.patch;apply=no \
-    file://0005-scripts-lan_handler-create-flag-files-for-lan-start-.patch;apply=no \
-    file://0006-dhcp-place-dnsmasq.conf-in-RAM-var-volatile.patch;apply=no \
-    file://0007-igd-place-IGD-temporary-files-under-var-volatile.patch;apply=no \
-    file://0008-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch;apply=no \
-    file://0009-service-dhcpv6_client-log-to-syslog-instead-of-console.patch;apply=no \
-    file://0010-utopia-remove-potd-service.patch;apply=no \
-    file://0011-remove-dead-code-from-service-wan.patch;apply=no \
-    file://0012-firewall-check-for-mac-filter-script-first.patch;apply=no \
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+SRC_URI:append = " \
+    file://0001-scripts-lan_handler-treat-generic-Arm-boards-Ten64-q.patch \
+    file://0002-lan_handler-refresh-fix-lan-handler-for-rpi.patch.patch \
+    file://0003-utopia-duplicate-or-replace-_PLATFORM_RASPBERRYPI_-a.patch \
+    file://0004-scripts-utopia_init-do-nvram-restore_reboot-and-drop.patch \
+    file://0005-scripts-lan_handler-create-flag-files-for-lan-start-.patch \
+    file://0006-dhcp-place-dnsmasq.conf-in-RAM-var-volatile.patch \
+    file://0007-igd-place-IGD-temporary-files-under-var-volatile.patch \
+    file://0008-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch \
+    file://0009-service-dhcpv6_client-log-to-syslog-instead-of-console.patch \
     file://system_defaults \
 "
 
-LDFLAGS_append = " \
+LDFLAGS:append = " \
     -lsecure_wrapper \
 "
 
-CFLAGS_append = " -Wno-error=unused-function "
-CFLAGS_remove = " ${@bb.utils.contains('DISTRO_FEATURES', 'bci', '-DWAN_FAILOVER_SUPPORTED', '', d)}"
+CFLAGS:append = " -Wno-error=unused-function "
+CFLAGS:remove = " ${@bb.utils.contains('DISTRO_FEATURES', 'bci', '-DWAN_FAILOVER_SUPPORTED', '', d)}"
 
-# we need to patch to code for Generic ARM
-do_genericarm_patches() {
-    cd ${S}
-    if [ ! -e genericarm_patch_applied ]; then
-        bbnote "Patching 0001-scripts-lan_handler-treat-generic-Arm-boards-Ten64-q.patch"
-        patch -p1 -i "${WORKDIR}/0001-scripts-lan_handler-treat-generic-Arm-boards-Ten64-q.patch"
-        bbnote "Patching 0002-lan_handler-refresh-fix-lan-handler-for-rpi.patch.patch"
-        patch -p1 -i "${WORKDIR}/0002-lan_handler-refresh-fix-lan-handler-for-rpi.patch.patch"
-        bbnote "Patching 0003-utopia-duplicate-or-replace-_PLATFORM_RASPBERRYPI_-a.patch"
-        patch -p1 -i "${WORKDIR}/0003-utopia-duplicate-or-replace-_PLATFORM_RASPBERRYPI_-a.patch"
-        bbnote "Patching 0004-scripts-utopia_init-do-nvram-restore_reboot-and-drop.patch"
-        patch -p1 -i "${WORKDIR}/0004-scripts-utopia_init-do-nvram-restore_reboot-and-drop.patch"
-        bbnote "Patching 0005-scripts-lan_handler-create-flag-files-for-lan-start-.patch"
-        patch -p1 -i "${WORKDIR}/0005-scripts-lan_handler-create-flag-files-for-lan-start-.patch"
-        bbnote "Patching 0006-dhcp-place-dnsmasq.conf-in-RAM-var-volatile.patch"
-        patch -p1 -i "${WORKDIR}/0006-dhcp-place-dnsmasq.conf-in-RAM-var-volatile.patch"
-        bbnote "Patching 0007-igd-place-IGD-temporary-files-under-var-volatile.patch"
-        patch -p1 -i "${WORKDIR}/0007-igd-place-IGD-temporary-files-under-var-volatile.patch"
-        bbnote "Patching 0008-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch"
-        patch -p1 -i "${WORKDIR}/0008-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch"
-        bbnote "Patching 0009-service-dhcpv6_client-log-to-syslog-instead-of-console.patch"
-        patch -p1 -i "${WORKDIR}/0009-service-dhcpv6_client-log-to-syslog-instead-of-console.patch"
-        bbnote "Patching 0010-utopia-remove-potd-service.patch"
-        patch -p1 -i "${WORKDIR}/0010-utopia-remove-potd-service.patch"
-        bbnote "Patching 0011-remove-dead-code-from-service-wan.patch"
-        patch -p1 -i "${WORKDIR}/0011-remove-dead-code-from-service-wan.patch"
-        bbnote "Patching 0012-firewall-check-for-mac-filter-script-first.patch"
-        patch -p1 -i "${WORKDIR}/0012-firewall-check-for-mac-filter-script-first.patch"
-        touch genericarm_patch_applied
-    fi
-}
-addtask genericarm_patches after do_unpack before do_compile
-
-do_install_append() {
-
+do_install:append() {
     # Don't install header files which are provided by utopia-headers
     rm -f ${D}${includedir}/utctx/autoconf.h
     rm -f ${D}${includedir}/utctx/utctx.h
@@ -193,7 +156,7 @@ echo 1 > \/proc\/sys\/net\/ipv4\/ip_forward ' ${D}${sysconfdir}/utopia/utopia_in
     echo "touch -f /tmp/utopia_inited" >> ${D}${sysconfdir}/utopia/utopia_init.sh
 }
 
-do_install_append_aarch64 () {
+do_install:append:aarch64 () {
 	#Enabling rbus support on 64bit arch
 	DISTRO_WAN_ENABLED="${@bb.utils.contains('DISTRO_FEATURES','rdkb_wan_manager','true','false',d)}"
         if [ $DISTRO_WAN_ENABLED = 'true' ]; then
@@ -202,17 +165,17 @@ touch \/nvram\/rbus_support ' ${D}${sysconfdir}/utopia/utopia_init.sh
 	fi
 }
 
-do_install_append () {
+do_install:append () {
     sed -i "s/\$user_password_3=/\$user_password_3=password/g"  ${D}${sysconfdir}/utopia/system_defaults
 }
 
-pkg_postinst_ontarget_${PN} () {
+pkg_postinst:ontarget:${PN} () {
     #!/bin/sh
     #Stub postinst to suppress default
     exit 0
 }
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     /rdklogs/ \
     /fss/gw/bin/ \
     /fss/gw/usr/bin/ \
@@ -224,5 +187,5 @@ FILES_${PN} += " \
 "
 
 # 0001-fix-lan-handler-for-rpi.patch contains bash specific syntax which doesn't run with busybox sh
-RDEPENDS_${PN} += "bash"
+RDEPENDS:${PN} += "bash"
 

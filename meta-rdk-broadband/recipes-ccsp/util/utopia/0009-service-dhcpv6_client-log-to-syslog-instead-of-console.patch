@@ -1,7 +1,7 @@
-From 008db153e2cade615b6a8f7b3020f910f01d3c10 Mon Sep 17 00:00:00 2001
+From c7bbcc80632cc1a523067a6b5276106f3013f03f Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Fri, 8 Nov 2024 14:59:17 +1100
-Subject: [PATCH 09/11] service: dhcpv6_client: log to syslog instead of
+Subject: [PATCH 9/9] service: dhcpv6_client: log to syslog instead of
  /dev/console
 
 During bring up of the Arm generic machine, I noticed quite a few logs to
@@ -18,7 +18,7 @@ Signed-off-by: Mathew McBride <matt@traverse.com.au>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/source/scripts/init/service.d/service_dhcpv6_client.sh b/source/scripts/init/service.d/service_dhcpv6_client.sh
-index 9b6888d5..bcbf415e 100755
+index 9b6888d..bcbf415 100755
 --- a/source/scripts/init/service.d/service_dhcpv6_client.sh
 +++ b/source/scripts/init/service.d/service_dhcpv6_client.sh
 @@ -369,6 +369,8 @@ call_back_remove_prefix ()
@@ -40,5 +40,5 @@ index 9b6888d5..bcbf415e 100755
        fi
        ;;
 -- 
-2.39.5
+2.51.2
 
