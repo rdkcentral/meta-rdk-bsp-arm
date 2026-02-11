@@ -2,9 +2,9 @@ require ccsp_common_genericarm.inc
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/ccsp-one-wifi:${THISDIR}/files:"
 
-SRC_URI:remove = "${CMF_GIT_ROOT}/rdkb/components/opensource/ccsp/OneWifi;protocol=${CMF_GIT_PROTOCOL};branch=${CMF_GIT_BRANCH};name=OneWifi"
+#SRC_URI:remove = "${CMF_GIT_ROOT}/rdkb/components/opensource/ccsp/OneWifi;protocol=${CMF_GIT_PROTOCOL};branch=${CMF_GIT_BRANCH};name=OneWifi"
 SRC_URI = "git://github.com/rdkcentral/OneWifi.git;protocol=https;branch=develop;name=OneWifi"
-SRCREV_OneWifi = "3b7620e682234e92b269d77a84eaf1fc7a1b6176"
+SRCREV_OneWifi = "74ea1f6ca37612b13cfccba6213fe3fb06beb982"
 DEPENDS:append = " mesh-agent "
 DEPENDS:remove = " opensync "
 DEPENDS += " ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', ' rdk-wifi-libhostap ', '', d)}"
