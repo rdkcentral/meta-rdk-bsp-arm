@@ -66,8 +66,6 @@ SRC_URI += " \
     file://2.11/mdu_radius_psk_auth_2_11.patch \
     file://2.11/supplicant_new.patch \
     file://2.11/bpi.patch \
-    file://2.11/fixed_disassoc_after_assoc_retry.patch \
-    file://2.11/mlo_fix.patch \
     "
 
 CFLAGS:append = " -D_PLATFORM_BANANAPI_R4_  -DCONFIG_SME -DCONFIG_GAS -DCONFIG_AP "
