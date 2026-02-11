@@ -1,31 +1,34 @@
-From 6dd47d0ef0d189a03d34a86d04d7b6f204afd531 Mon Sep 17 00:00:00 2001
+From cdc40e20961b358060bf0cd4200138e1f17a8a98 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 10 Sep 2025 14:12:33 +1000
 Subject: [PATCH] platform: change default SSID to 'RDKB-ARM-AP%d'
 
 ---
- platform/banana-pi/platform.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ platform/banana-pi/platform.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/platform/banana-pi/platform.c b/platform/banana-pi/platform.c
-index 4be1efb..3065e02 100644
+index 53055b5..d0d72f0 100644
 --- a/platform/banana-pi/platform.c
 +++ b/platform/banana-pi/platform.c
-@@ -220,9 +220,9 @@ int platform_get_ssid_default(char *ssid, int vap_index)
-         }
+@@ -240,9 +240,9 @@ int platform_get_ssid_default(char *ssid, int vap_index)
+ 	    wifi_hal_dbg_print("%s:%d, appending serial is :%s \n", __func__, __LINE__, serial);
      }
  #ifdef CONFIG_GENERIC_MLO
--    snprintf(ssid, BPI_LEN_16, "BPI-RDKB-MLO-AP");
-+    snprintf(ssid, BPI_LEN_16, "RDKB-ARM-MLO-AP");
+-    snprintf(ssid, BPI_LEN_32, "BPI-RDKB-MLO-AP-%s", serial);
++    snprintf(ssid, BPI_LEN_32, "RDKB-ARM-MLO-AP-%s", serial);
  #else    
--    snprintf(ssid,BPI_LEN_16,"BPI_RDKB-AP%d",vap_index);
-+    snprintf(ssid,BPI_LEN_16,"RDKB-ARM-AP%d",vap_index);
+-    snprintf(ssid, BPI_LEN_32, "BPI_RDKB-AP%d-%s", vap_index, serial);
++    snprintf(ssid, BPI_LEN_32, "RDKB-ARM-AP%d-%s", vap_index, serial);
  #endif    
      return 0;
  }
-@@ -261,7 +261,7 @@ int nvram_get_current_ssid(char *l_ssid, int vap_index)
+@@ -279,9 +279,9 @@ int nvram_get_current_ssid(char *l_ssid, int vap_index)
+ {
+     wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);
  #ifdef CONFIG_GENERIC_MLO    
-     snprintf(l_ssid, BPI_LEN_16, "BPI-RDKB-MLO-AP");
+-    snprintf(l_ssid, BPI_LEN_16, "BPI-RDKB-MLO-AP");
++    snprintf(l_ssid, BPI_LEN_16, "RDKB-ARM-MLO-AP");
  #else    
 -    snprintf(l_ssid,BPI_LEN_16,"BPI_RDKB-AP%d",vap_index);
 +    snprintf(l_ssid,BPI_LEN_16,"RDKB-ARM-AP%d",vap_index);
@@ -33,5 +36,5 @@ index 4be1efb..3065e02 100644
      return 0;
  }
 -- 
-2.51.0
+2.51.2
 

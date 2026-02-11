@@ -1,7 +1,7 @@
 SRC_URI:remove = "git://github.com/rdkcentral/rdk-wifi-hal.git;protocol=https;branch=main;name=rdk-wifi-hal"
 
 SRC_URI += "git://github.com/rdkcentral/rdk-wifi-hal.git;protocol=https;branch=develop;name=rdk-wifi-hal"
-SRCREV_rdk-wifi-hal = "7cbf2c7a892e9d10be0fc8fa3ad85c7a7aeb511c"
+SRCREV_rdk-wifi-hal = "783ce174a08eb37a77ba8730437eba1b665dbe06"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/rdk-wifi-hal:"
 
