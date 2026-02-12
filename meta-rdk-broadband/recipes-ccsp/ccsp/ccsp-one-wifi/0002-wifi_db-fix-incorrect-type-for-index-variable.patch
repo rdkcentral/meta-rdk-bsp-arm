@@ -1,0 +1,30 @@
+From 4966d811ba135a11e7dc229f491b66b750f8d203 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Thu, 12 Feb 2026 15:51:33 +1100
+Subject: [PATCH] wifi_db: fix incorrect type for index variable
+
+source/db/wifi_db.c: In function 'init_wifidb_data':
+source/db/wifi_db.c:632:27: error: comparison of integer expressions of different signedness:
+  'int' and 'unsigned int' [-Werror=sign-compare]
+  632 |     for (index = 0; index < getTotalNumberVAPs(); index++)
+      |                           ^
+---
+ source/db/wifi_db.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/source/db/wifi_db.c b/source/db/wifi_db.c
+index 50b2967..4d1eb03 100644
+--- a/source/db/wifi_db.c
++++ b/source/db/wifi_db.c
+@@ -605,7 +605,7 @@ static int init_vap_config_default(int vap_index, wifi_vap_info_t *config,
+ 
+ void init_wifidb_data(void)
+ {
+-    int index, vap_index;
++    unsigned int index, vap_index;
+     int num_radio = getNumberRadios();
+     wifi_radio_operationParam_t *radio_oper_conf;
+     wifi_radio_feature_param_t *radio_feat_conf;
+-- 
+2.51.2
+
