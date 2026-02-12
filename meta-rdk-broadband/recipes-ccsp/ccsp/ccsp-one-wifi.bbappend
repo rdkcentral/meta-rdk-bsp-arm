@@ -10,6 +10,12 @@ SRC_URI:append = " \
     file://onewifi_pre_start.sh \
 "
 
+EXTRA_OECONF:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', ' --enable-em-app ', '', d)}"
+CFLAGS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', ' -DEASY_MESH_NODE ', '', d)}"
+
+EXTRA_OECONF:remove = " ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', ' ONEWIFI_CAC_APP_SUPPORT=true ', '', d)}"
+CFLAGS:remove = " ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', ' -DONEWIFI_CAC_APP_SUPPORT -DONEWIFI_DB_SUPPORT  ', '', d)}"
+
 do_install:append() {
     install -d ${D}/usr/ccsp/wifi/
     install -m 644 ${WORKDIR}/wifi_defaults.txt ${D}/usr/ccsp/wifi/
