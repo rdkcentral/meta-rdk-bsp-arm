@@ -1,0 +1,29 @@
+From 8b7a615d5865ba95e9f3c3abebfb3fbab8ed36df Mon Sep 17 00:00:00 2001
+From: Dharmalakshmi Annamalai <Dharmalakshmi_Annamalai@comcast.com>
+Date: Fri, 26 Sep 2025 05:31:41 +0000
+Subject: [PATCH] XF3-6292 code cleanup
+
+Reason for change: To test the changes
+Test Procedure: Debugging
+Risks: Low
+Signed-off-by: Dharmalakshmi A <Dharmalakshmi_Annamalai@comcast.com>
+(cherry picked from commit 1e89a135d8129d5931a4ab4ec5587342e97c50e6)
+---
+ include/wifi_hal_ap.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/wifi_hal_ap.h b/include/wifi_hal_ap.h
+index 42a4c32..7a999c8 100644
+--- a/include/wifi_hal_ap.h
++++ b/include/wifi_hal_ap.h
+@@ -3114,6 +3114,7 @@ typedef struct
+     wifi_vap_security_t security; /**< Security settings. */
+     mac_address_t mac;        /**< MAC address. */
+     wifi_mld_info_sta_t mld_info; /**< MLD information. */
++    BOOL ignite_enabled; /* Ignite enable */
+ } __attribute__((packed)) wifi_back_haul_sta_t;
+ 
+ /**
+-- 
+2.51.2
+
