@@ -1,0 +1,34 @@
+From a38559001d59737eff84ee2defb6f6d54a06aed0 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Thu, 12 Feb 2026 15:36:55 +1100
+Subject: [PATCH] db: fix compile error when ONEWIFI_DB_SUPPORT not set
+ (EasyMesh)
+
+source/db/wifi_db.c:606:6: error: conflicting types for 'init_wifidb_data'; have 'void(void)' [-Werror]
+606 | void init_wifidb_data(void)
+source/db/wifi_db.c:57:5: note: previous implicit declaration of 'init_wifidb_data' with type 'void(void)'
+ 57 |     init_wifidb_data();
+
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+---
+ source/db/wifi_db.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/source/db/wifi_db.c b/source/db/wifi_db.c
+index 19b9cf6..50b2967 100644
+--- a/source/db/wifi_db.c
++++ b/source/db/wifi_db.c
+@@ -23,9 +23,9 @@
+ #include "wifi_util.h"
+ #include "wifi_mgr.h"
+ 
++extern void init_wifidb_data(void);
+ #ifdef ONEWIFI_DB_SUPPORT
+ extern void init_wifidb(void);
+-extern void init_wifidb_data(void);
+ extern int update_wifi_radio_config(int radio_index, wifi_radio_operationParam_t *config, wifi_radio_feature_param_t *feat_config);
+ extern int start_wifidb();
+ extern void wifidb_print(char *format, ...);
+-- 
+2.51.2
+

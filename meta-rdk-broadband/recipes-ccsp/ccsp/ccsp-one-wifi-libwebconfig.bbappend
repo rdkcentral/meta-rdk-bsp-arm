@@ -1,7 +1,11 @@
-SRC_URI:remove = "${CMF_GIT_ROOT}/rdkb/components/opensource/ccsp/OneWifi;protocol=${CMF_GIT_PROTOCOL};branch=${CMF_GIT_BRANCH};name=libwebconfig"
-
-SRC_URI = "git://github.com/rdkcentral/OneWifi.git;protocol=https;branch=develop;name=libwebconfig"
-SRCREV_libwebconfig = "3b7620e682234e92b269d77a84eaf1fc7a1b6176"
+# Only override SRC_URI when EasyMesh is enabled
+# (OneWiFi "main" branch does not recognize --enable-em-app as of 2026-02-12)
+python() {
+    distro_features = d.getVar("DISTRO_FEATURES")
+    if (distro_features.find("EasyMesh") > 0):
+        d.setVar("SRC_URI","git://github.com/rdkcentral/OneWifi.git;protocol=https;branch=develop;name=libwebconfig")
+        d.setVar("SRCREV_libwebconfig","74ea1f6ca37612b13cfccba6213fe3fb06beb982")
+}
 
 DEPENDS += " ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', ' rdk-wifi-libhostap unified-wifi-mesh-header ', '', d)}"
 EXTRA_OECONF:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', ' --enable-easymesh ', '', d)}"

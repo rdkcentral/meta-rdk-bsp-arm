@@ -1,4 +1,4 @@
-SRC_URI:append = " \
+SRC_URI_append = " \
     ${CMF_GIT_ROOT}/rdkb/devices/raspberrypi/hal;protocol=${CMF_GIT_PROTOCOL};branch=${CMF_GIT_BRANCH};destsuffix=git/source/wifi/devices_rpi;name=wifihal-raspberrypi \
 "
 
@@ -29,5 +29,5 @@ CFLAGS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'extender', '-D_RPI_EX
 CFLAGS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'halVersion3', ' -DWIFI_HAL_VERSION_3 ', '', d)}"
 CFLAGS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' -D_ONE_WIFI_ ', '', d)}"
 
-RDEPENDS_${PN} += "wpa-supplicant"
+RDEPENDS:${PN} += "wpa-supplicant"
 
