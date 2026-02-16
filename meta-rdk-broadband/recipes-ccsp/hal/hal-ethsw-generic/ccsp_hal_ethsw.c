@@ -179,48 +179,40 @@ INT
  ULONG           maxSize
  )
 {
-    FILE *fp = NULL;
-    char temp_ifname[20] = {0};
-
     CcspHalEthSwTrace(("%s called\n", __func__));
-    if( Interface == NULL )
-    {
-        printf("ERROR: Invalid argument NULL argument. \n");
-        return RETURN_ERR;
-    }
+    FILE *fp;
+    char temp_ifname[20] = {0};
+    const char *nvram_file = "/nvram/wan_ifname";
 
-    fp = popen("psmcli get dmsb.wanmanager.if.1.Name", "r");
+    if (!Interface || maxSize == 0)
+        return RETURN_ERR;
+
+    fp = fopen(nvram_file, "r");
     if (!fp)
     {
-        CcspHalEthSwTrace(("%s: Failed to run psmcli\n", __FUNCTION__));
+        CcspHalEthSwTrace(("Failed to open %s\n", nvram_file));
         return RETURN_ERR;
     }
 
     if (!fgets(temp_ifname, sizeof(temp_ifname), fp))
     {
-        CcspHalEthSwTrace(("%s: No output from psmcli (WAN interface not found)\n",
-                            __FUNCTION__));
-        pclose(fp);
+        fclose(fp);
         return RETURN_ERR;
     }
 
-    pclose(fp);
-    temp_ifname[strcspn(temp_ifname, "\n")] = 0;
+    fclose(fp);
+
+    temp_ifname[strcspn(temp_ifname, "\n")] = '\0';
 
     if (strlen(temp_ifname) == 0)
-    {
-        CcspHalEthSwTrace(("%s: ERROR: WAN interface empty after psmcli\n",
-                            __FUNCTION__));
         return RETURN_ERR;
-    }
 
-    if (maxSize < strlen(temp_ifname) + 1)
-    {
-        CcspHalEthSwTrace(("WARNING: Buffer too small for interface (%s)\n",
-                            temp_ifname));
+    if (strlen(temp_ifname) + 1 > maxSize)
         return RETURN_ERR;
-    }
-    snprintf(Interface, maxSize, "%s", temp_ifname);
+
+    strncpy((char*)Interface, temp_ifname, maxSize - 1);
+    Interface[maxSize - 1] = '\0';
+
     return RETURN_OK;
 }
 #endif
