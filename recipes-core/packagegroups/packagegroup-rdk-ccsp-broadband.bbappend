@@ -10,7 +10,6 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "rdktelcovoicemanager"
 
 RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-adv-security"
 
-RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-webui-jst"
 RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-webui-php"
 
 RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "parodus"
@@ -26,4 +25,4 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband:append = "\
 "
 
 # Set the gwprov app for RPi
-GWPROVAPP = "${@bb.utils.contains('DISTRO_FEATURES','rdkb_wan_manager','','ccsp-gwprovapp-ethwan',d)}"
+GWPROVAPP = "${@bb.utils.contains('DISTRO_FEATURES','rdkb_wan_manager','ccsp-gwprovapp','',d)}"

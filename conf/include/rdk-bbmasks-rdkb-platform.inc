@@ -120,7 +120,6 @@ BBMASK .= "|meta-rdk-broadband/recipes-ccsp/ccsp/ccsp-gwprovapp-epon.bb"
 BBMASK .= "|meta-rdk-broadband/recipes-ccsp/ccsp/ccsp-wifi-agent.bb"
 BBMASK .= "|meta-rdk-broadband/recipes-ccsp/ccsp/ccsp-mta-agent.bb"
 BBMASK .= "|meta-rdk-broadband/recipes-ccsp/ccsp/rdktelcovoicemanager.bb"
-BBMASK .= "|meta-rdk-broadband/recipes-ccsp/ccsp/ccsp-webui-jst.bb"
 BBMASK .= "|meta-rdk-broadband/recipes-ccsp/ccsp/ccsp-webui-php.bb"
 
 BBMASK .= "|meta-cmf-broadband/recipes-core/util-linux/util-linux_%.bbappend"

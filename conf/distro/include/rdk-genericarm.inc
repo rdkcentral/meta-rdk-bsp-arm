@@ -167,8 +167,6 @@ DISTRO_FEATURES:append:broadband = " partner_default_ext"
 # RDKBDEV-755: Add Asterisk IP PBX voice HAL for TelcoVoiceManager
 #DISTRO_FEATURES:append:broadband = " Asterisk"
 
-# Remove WebUI (does not work without erouter0)
-DISTRO_FEATURES:remove:broadband = " webui_jst"
 
 # Add new EasyMesh
 DISTRO_FEATURES:append:broadband = " EasyMesh"
