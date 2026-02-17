@@ -23,7 +23,8 @@ $ bitbake rdk-generic-broadband-image
 ```
 
 If you need to enable features such as unified-wifi-mesh/EasyMesh, you can do this
-by creating the `conf/distro/include/local-settings.inc` file, like so:
+by creating the `conf/distro/include/local-settings.inc` (under your local
+copy of `meta-rdk-bsp-arm`), like so:
 
 ```
 echo 'DISTRO_FEATURES:append:broadband = " EasyMesh"' >> conf/distro/include/local-settings.inc
