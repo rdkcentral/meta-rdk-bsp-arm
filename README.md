@@ -22,6 +22,14 @@ $ source meta-rdk-bsp-arm/setup-environment
 $ bitbake rdk-generic-broadband-image
 ```
 
+If you need to enable features such as unified-wifi-mesh/EasyMesh, you can do this
+by creating the `conf/distro/include/local-settings.inc` file, like so:
+
+```
+echo 'DISTRO_FEATURES:append:broadband = " EasyMesh"' >> conf/distro/include/local-settings.inc
+echo 'DISTRO_FEATURES:append:broadband = " with_alsap"' >> conf/distro/include/local-settings.inc
+```
+
 At the current time, the `main` branch mainfest will build RDK-B 2025Q1 (based on Yocto `kirkstone`),
 and will be updated following the next major RDK-B release.
 
