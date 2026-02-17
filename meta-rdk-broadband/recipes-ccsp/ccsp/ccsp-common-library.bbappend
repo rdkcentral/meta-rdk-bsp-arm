@@ -35,6 +35,9 @@ SRC_URI:append = " file://0003-meta-rdk-bsp-arm-only-remove-pre-and-post-start-c
 # Call pre-init script for CcspEthAgent (see ccsp-eth-agent.bbappend)
 SRC_URI:append = " file://0004-meta-rdk-bsp-arm-only-systemd-CcspEthAgent-bring-up-.patch"
 
+# Remove mkdir in CcspCrSsp unit file (not required, causes error on read-only rootfs)
+SRC_URI:append = " file://0004-CcspCrSsp-remove-mkdir-rdklogs.patch"
+
 do_configure:prepend:aarch64() {
 	sed -e '/len/ s/^\/*/\/\//' -i ${S}/source/ccsp/components/common/DataModel/dml/components/DslhObjRecord/dslh_objro_access.c
 }

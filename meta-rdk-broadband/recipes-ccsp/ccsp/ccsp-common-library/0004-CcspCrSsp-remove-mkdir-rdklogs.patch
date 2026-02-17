@@ -1,0 +1,23 @@
+From 29933d25342902578ccea1e6aa82fa0462798219 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Tue, 17 Feb 2026 12:08:25 +1100
+Subject: [PATCH] (meta-rdk-bsp-arm only) CcspCrSsp: remove 'mkdir
+ /rdklogs/logs'
+
+This will fail under a read-only rootfs environment
+---
+ systemd_units/CcspCrSsp.service | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/systemd_units/CcspCrSsp.service b/systemd_units/CcspCrSsp.service
+index a73813c..99383c6 100644
+--- a/systemd_units/CcspCrSsp.service
++++ b/systemd_units/CcspCrSsp.service
+@@ -27,7 +27,6 @@ WorkingDirectory=/usr/ccsp
+ Environment="Subsys=eRT."
+ Environment="LOG4C_RCPATH=/etc"
+ EnvironmentFile=/etc/device.properties
+-ExecStartPre=-/bin/sh -c 'mkdir -p /rdklogs/logs/'
+ ExecStartPre=/bin/sh -c '(/usr/ccsp/ccspSysConfigEarly.sh)'
+ ExecStart=/bin/sh -c '/usr/bin/CcspCrSsp -subsys $Subsys'
+ ExecStopPost=/bin/sh -c 'echo 0 >> /tmp/CcspCrSsp_Restarted'
