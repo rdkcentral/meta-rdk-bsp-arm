@@ -1,0 +1,34 @@
+From bbfd1b81f62dd32c8bc14a52d1d9fbcf61984e66 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Mon, 16 Feb 2026 22:09:25 +1100
+Subject: [PATCH] cosa_ethernet_internal: force
+ CcspHalEthSw_RegisterLinkEventCallback use on generic arm
+
+---
+ source/TR-181/middle_layer_src/cosa_ethernet_internal.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/source/TR-181/middle_layer_src/cosa_ethernet_internal.c b/source/TR-181/middle_layer_src/cosa_ethernet_internal.c
+index f13eb0b..e48d018 100644
+--- a/source/TR-181/middle_layer_src/cosa_ethernet_internal.c
++++ b/source/TR-181/middle_layer_src/cosa_ethernet_internal.c
+@@ -394,10 +394,15 @@ CosaEthernetInitialize
+ 	    EthWanLinkUp_callback();
+     }
+ #endif //WAN_FAILOVER_SUPPORTED
+-#elif defined(FEATURE_RDKB_WAN_AGENT)
++#if defined(_PLATFORM_GENERICARM_)
+     CosaDmlEthInit(NULL, (PANSC_HANDLE)pMyObject);
+     CcspHalEthSw_RegisterLinkEventCallback(CosaDmlEthPortLinkStatusCallback); //Register cb for link event.
+ #endif
++
++#elif defined(FEATURE_RDKB_WAN_AGENT)
++    CosaDmlEthInit(NULL, (PANSC_HANDLE)pMyObject);
++    CcspHalEthSw_RegisterLinkEventCallback(CosaDmlEthPortLinkStatusCallback); //Register cb for link event.
++#endif // FEATURE_RDKB_WAN_MANAGER
+     CcspHalExtSw_ethAssociatedDevice_callback_register(CosaDmlEth_AssociatedDevice_callback);
+     CosaEthTelemetryxOpsLogSettingsSync();
+     if (CosaEthTelemetryInit() < 0) {
+-- 
+2.51.2
+
