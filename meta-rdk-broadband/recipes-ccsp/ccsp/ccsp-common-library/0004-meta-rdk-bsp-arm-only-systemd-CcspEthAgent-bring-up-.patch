@@ -1,0 +1,26 @@
+From ef84fe084564e149c15855c67ecb267498353f44 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Tue, 3 Feb 2026 00:28:01 +0000
+Subject: [PATCH] (meta-rdk-bsp-arm only) systemd: CcspEthAgent: bring up all
+ ethX before starting
+
+This is so WAN Manager will consider them as eligible interfaces in
+it's selection policy.
+
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+---
+ systemd_units/CcspEthAgent.service | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/systemd_units/CcspEthAgent.service b/systemd_units/CcspEthAgent.service
+index 260ac94..d548aa5 100644
+--- a/systemd_units/CcspEthAgent.service
++++ b/systemd_units/CcspEthAgent.service
+@@ -28,6 +28,7 @@ Environment="Subsys=eRT."
+ Environment="LOG4C_RCPATH=/etc"
+ EnvironmentFile=/etc/device.properties
+ ExecStart=/bin/sh -c '/usr/bin/CcspEthAgent -subsys $Subsys'
++ExecStartPre=/bin/sh -c '/lib/rdk/bring_up_all_eth.sh'
+ ExecStopPost=/bin/sh -c 'echo "`date`: Stopping/Restarting CcspEthAgent" >> ${PROCESS_RESTART_LOG}'
+ SyslogIdentifier=CcspEthAgent
+ Restart=always

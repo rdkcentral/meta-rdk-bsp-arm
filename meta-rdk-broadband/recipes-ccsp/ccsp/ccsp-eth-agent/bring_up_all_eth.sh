@@ -1,8 +1,9 @@
-####################################################################################
+#!/bin/sh
+##################################################################################
 # If not stated otherwise in this file or this component's LICENSE file the
 # following copyright and licenses apply:
 #
-#  Copyright 2021 RDK Management
+#  Copyright 2024 RDK Management
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,19 +17,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##################################################################################
-[Unit]
-Description=Utopia service
 
-After=mount-nonvol.service
+set -e
 
-[Service]
-Type=forking
-WorkingDirectory=/etc/utopia
-EnvironmentFile=/etc/device.properties
-ExecStart=/bin/sh /etc/utopia/utopia_init.sh
-ExecStop=/bin/sh -c 'echo "Stopping/Restarting utopia_init.sh" >> ${PROCESS_RESTART_LOG}'
-SyslogIdentifier=Utopia
-StandardOutput=journal+console
-
-[Install]
-WantedBy=multi-user.target
+# Bring up all Ethernet interfaces before EthAgent starts
+for x in $(find /sys/class/net -name 'eth*'); do
+    # Ignore any interface that is not originating from
+    # a "real" device (for example, no veth pairs)
+    if [ ! -d "${x}/device" ]; then
+        continue
+    fi
+    eth_intf_name=$(basename "${x}")
+    echo "Bringing ${eth_intf_name} up"
+    ip link set "${eth_intf_name}" up
+done
