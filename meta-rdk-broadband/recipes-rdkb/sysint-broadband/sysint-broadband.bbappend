@@ -68,6 +68,7 @@ do_install:append() {
     install -m 0755 ${S}/devicegenericarm/lib/rdk/task_health_monitor.sh ${D}/usr/ccsp/tad
     install -m 0644 ${S}/devicegenericarm/systemd_units/disable_systemd_restart_param.service ${D}${systemd_unitdir}/system
     install -m 0755 ${S}/devicegenericarm/lib/rdk/disable_systemd_restart_param.sh ${D}${base_libdir}/rdk
+    install -m 0755 ${S}/devicegenericarm/lib/rdk/run_rm_key.sh   ${D}${base_libdir}/rdk
 }
 
 
