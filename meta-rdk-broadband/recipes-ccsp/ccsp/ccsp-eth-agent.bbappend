@@ -10,5 +10,6 @@ SRCREV_pn-ccsp-eth-agent = "e350f19aa5c0802c35ec520d9e1484b0033fc250"
 
 SRC_URI:append = "\
     file://0001-genericarm-increase-maximum-number-of-Ethernet-interfaces.patch \
+    file://0002-cosa_ethernet_internal-force-CcspHalEthSw_RegisterLink.patch \
     "
 
