@@ -90,6 +90,12 @@ typedef enum {
 } previous_link_status_t;
 
 #define ETH_INTF_MAX 10
+#if defined(EROUTER0_COMPATIBILITY)
+#define TOTAL_ETHERNET_TO_MONITOR (ETH_INTF_MAX+1)
+#else
+#define TOTAL_ETHERNET_TO_MONITOR ETH_INTF_MAX
+#endif
+
 
 /* Why does CosaDmlEthPortLinkStatusCallback want these? */
 #define ETHOE_STATUS_UP_TEXT        "Up"
@@ -110,13 +116,13 @@ void *ethsw_thread_main(void *context __attribute__((unused)))
      * to handle interfaces appearing/disappearing,
      * especially during the boot process
      */
-    previous_link_status_t link_statuses[ETH_INTF_MAX];
+    previous_link_status_t link_statuses[TOTAL_ETHERNET_TO_MONITOR];
     
     CcspHalEthSwTrace(("%s called\n", __func__));
 
     sleep(60);
   
-    for(x=0; x<ETH_INTF_MAX; x++) {
+    for(x=0; x<TOTAL_ETHERNET_TO_MONITOR; x++) {
         link_statuses[x] = FIRST_RUN;
     }
 
@@ -126,8 +132,11 @@ void *ethsw_thread_main(void *context __attribute__((unused)))
             sleep(1);
             continue;
         }
-        for(x=0; x<ETH_INTF_MAX; x++) {
-            snprintf(eth_intf_names,32,"eth%d", x);
+        for(x=0; x<TOTAL_ETHERNET_TO_MONITOR; x++) {
+            if (x<ETH_INTF_MAX)
+                snprintf(eth_intf_names,32,"eth%d", x);
+            else
+                snprintf(eth_intf_names,32,"erouter0");
             if ((err = rtnl_link_get_kernel(sk, 0, &eth_intf_names, &link)) < 0) {
                 /* Ignore "missing" interfaces */
                 if (err == -NLE_NODEV)

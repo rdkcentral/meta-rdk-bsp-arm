@@ -7,6 +7,8 @@ SRC_URI:append = " \
 DEPENDS += "libnl"
 
 CFLAGS:append  = " ${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', '-DFEATURE_RDKB_WAN_MANAGER', '', d)}"
+CFLAGS:append  = " ${@bb.utils.contains('DISTRO_FEATURES', 'erouter0_compatibility', '-DEROUTER0_COMPATIBILITY', '', d)}"
+
 CFLAGS:append  = " -I${STAGING_INCDIR}/libnl3"
 LDFLAGS:append = " -lnl-3 -lnl-route-3"
 
