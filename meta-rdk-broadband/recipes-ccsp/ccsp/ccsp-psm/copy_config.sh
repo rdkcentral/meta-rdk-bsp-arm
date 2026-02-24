@@ -31,4 +31,9 @@ if [ "${WAN_IS_EROUTER0}" = "true" ]; then
         -e 's#<Record name="dmsb.wanmanager.if.1.VirtualInterface.1.Name".*</Record>#<Record name="dmsb.wanmanager.if.1.VirtualInterface.1.Name" type="astr">erouter0</Record>#' \
         -e 's#<Record name="dmsb.ethlink.1.name".*</Record>#<Record name="dmsb.ethlink.1.name" type="astr">erouter0</Record>#' \
         "${DEFAULT_CONFIG_FILE}"
+    sed -i \
+        -E 's#<Record name=\"([A-za-z0-9\.]+)\".+m:erouterIf="true".+>#<Record name=\"\1\" type="astr">erouter0</Record>#' \
+        "${DEFAULT_CONFIG_FILE}"
+    #EROUTER_IF_PSM_NAME=$(grep "m:erouterIf" "${DEFAULT_CONFIG_FILE}" | sed -nE 's#.+\<Record name=\"([A-za-z0-9\.]+)\".+#\1#p')
+
 fi

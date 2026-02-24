@@ -35,7 +35,7 @@
    limitations under the License.
 -->
 
-<Provision>
+<Provision xmlns:m="https://github.com/rdkcentral/meta-rdk-bsp-arm/">
   <Record name="com.cisco.spvtg.ccsp.tr069pa.PmNotif.Device.ManagementServer.ConnectionRequestURL" type="astr" contentType="ip4Addr">2</Record>
   <Record name="eRT.com.cisco.spvtg.ccsp.tr069pa.PmNotif.Device.ManagementServer.ConnectionRequestURL" type="astr" contentType="ip4Addr">2</Record>
   <Record name="eMG.com.cisco.spvtg.ccsp.tr069pa.PmNotif.Device.ManagementServer.ConnectionRequestURL" type="astr" contentType="ip4Addr">2</Record>
@@ -1135,9 +1135,9 @@
   <Record name="dmsb.ethagent.useforeth" type="astr" contentType="bool">TRUE</Record>
   <Record name="dmsb.ethagent.if.1.Name" type="astr">eth0</Record>
   <Record name="dmsb.ethagent.if.1.IsLinuxAPI" type="astr" contentType="bool">TRUE</Record>
-  <Record name="dmsb.ethagent.if.2.Name" type="astr">eth1</Record>
+  <Record name="dmsb.ethagent.if.2.Name" type="astr" m:erouterIf="true">eth1</Record>
   <Record name="dmsb.ethagent.if.2.IsLinuxAPI" type="astr" contentType="bool">TRUE</Record>
-
+  
    <!-- ccsp-vlanmanager EthLink records -->
   <Record name="dmsb.ethlink.ifcount" type="astr">1</Record>
 
