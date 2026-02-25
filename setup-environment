@@ -67,5 +67,6 @@ if [ "${BUILD_ALL_MACHINES}" = "1" ]; then
 	echo -e 'MACHINE="armefi64-rdk-broadband"' > "conf/multiconfig/generic.conf"
 	echo -e 'MACHINE="raspberrypi64-rdk-broadband"' > "conf/multiconfig/raspberrypi.conf"
 	echo -e 'MACHINE="ten64-rdk-broadband"' > "conf/multiconfig/ten64.conf"
+	echo -e 'MACHINE="armefi64-qemu-broadband"' > "conf/multiconfig/qemu.conf"
 	echo -e 'BBMULTICONFIG="generic raspberrypi ten64"' >> "conf/local.conf"
 fi
