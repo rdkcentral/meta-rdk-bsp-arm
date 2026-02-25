@@ -29,6 +29,8 @@ do_install:append() {
     ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', 'echo "OneWiFiEnabled=true" >> ${D}${sysconfdir}/device.properties', '', d)}
     echo "MODEL_NUM=RPI_MOD" >> ${D}${sysconfdir}/device.properties
 
+    ${@bb.utils.contains('DISTRO_FEATURES', 'erouter0_compatibility', 'echo "WAN_IS_EROUTER0=true" >> ${D}${sysconfdir}/device.properties', '', d)}
+
     #For rfc Support
     sed -i '/DEVICE_TYPE/c\DEVICE_TYPE=broadband' ${D}${sysconfdir}/device.properties
     sed -i '/LOG_PATH/c\LOG_PATH=/rdklogs/logs/' ${D}${sysconfdir}/device.properties

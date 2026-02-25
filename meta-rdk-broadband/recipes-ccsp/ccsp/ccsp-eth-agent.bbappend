@@ -8,8 +8,19 @@ SRC_URI:remove = "${CMF_GITHUB_ROOT}/ethernet-agent;protocol=https;nobranch=1"
 SRC_URI = "git://github.com/rdkcentral/ethernet-agent.git;protocol=https;branch=develop"
 SRCREV_pn-ccsp-eth-agent = "3a0058c9699a15f9190fbdc02e411c9a541294f5"
 
+EROUTER0_COMPAT_PATCH = "${@bb.utils.contains('DISTRO_FEATURES', 'erouter0_compatibility', 'file://RDKBACCL-1082-erouter0-compat-patch.patch', ' ', d)}"
+
 SRC_URI:append = "\
     file://0001-genericarm-increase-maximum-number-of-Ethernet-interfaces.patch \
     file://0002-cosa_ethernet_internal-force-CcspHalEthSw_RegisterLink.patch \
+    ${EROUTER0_COMPAT_PATCH} \
+    file://bring_up_all_eth.sh \
     "
 
+
+do_install:append() {
+   install -d ${D}/lib/rdk/
+   install -m 755 ${WORKDIR}/bring_up_all_eth.sh ${D}/lib/rdk/
+}
+
+FILES:${PN}:append = " /lib/rdk/bring_up_all_eth.sh"

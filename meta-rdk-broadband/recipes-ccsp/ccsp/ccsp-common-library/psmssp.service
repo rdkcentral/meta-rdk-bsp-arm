@@ -1,0 +1,20 @@
+[Unit]
+Description=PsmSsp service
+
+After=CcspCrSsp.service
+
+[Service]
+Type=forking
+PIDFile=/var/tmp/PsmSsp.pid
+WorkingDirectory=/usr/ccsp
+Environment="Subsys=eRT."
+Environment="LOG4C_RCPATH=/etc"
+EnvironmentFile=/etc/device.properties
+ExecStart=/bin/sh -c '/usr/bin/PsmSsp -subsys $Subsys'
+ExecStartPre="/usr/ccsp/psm/copy_config.sh"
+ExecStopPost=/bin/sh -c 'echo "`date`: Stopping/Restarting PsmSsp" >> ${PROCESS_RESTART_LOG}'
+Restart=always
+SyslogIdentifier=PsmSsp
+
+[Install]
+WantedBy=multi-user.target

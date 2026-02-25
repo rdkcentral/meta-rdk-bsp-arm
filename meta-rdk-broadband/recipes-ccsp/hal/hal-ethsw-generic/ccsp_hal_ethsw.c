@@ -57,7 +57,6 @@
 #define  CcspHalEthSwTrace(msg)                     printf("%s - ", __FUNCTION__); printf msg;
 #define MAX_BUF_SIZE 1024
 #define MACADDRESS_SIZE 6
-#define ETH_WAN_INTERFACE  "eth8"
 #define LM_ARP_ENTRY_FORMAT  "%63s %63s %63s %63s %17s %63s"
 
 #if defined(FEATURE_RDKB_WAN_MANAGER)
@@ -66,7 +65,6 @@ static int hal_init_done = 0;
 appCallBack ethWanCallbacks;
 #define  ETH_INITIALIZE  "/tmp/ethagent_initialized"
 #define  LINK_VALUE_SIZE  50
-#define  ETH_WAN_IFNAME   "eth8"
 #endif
 
 INT (*linkEventCallback)(CHAR *ifname, CHAR *state) = NULL;
@@ -92,6 +90,12 @@ typedef enum {
 } previous_link_status_t;
 
 #define ETH_INTF_MAX 10
+#if defined(EROUTER0_COMPATIBILITY)
+#define TOTAL_ETHERNET_TO_MONITOR (ETH_INTF_MAX+1)
+#else
+#define TOTAL_ETHERNET_TO_MONITOR ETH_INTF_MAX
+#endif
+
 
 /* Why does CosaDmlEthPortLinkStatusCallback want these? */
 #define ETHOE_STATUS_UP_TEXT        "Up"
@@ -112,13 +116,13 @@ void *ethsw_thread_main(void *context __attribute__((unused)))
      * to handle interfaces appearing/disappearing,
      * especially during the boot process
      */
-    previous_link_status_t link_statuses[ETH_INTF_MAX];
+    previous_link_status_t link_statuses[TOTAL_ETHERNET_TO_MONITOR];
     
     CcspHalEthSwTrace(("%s called\n", __func__));
 
     sleep(60);
   
-    for(x=0; x<ETH_INTF_MAX; x++) {
+    for(x=0; x<TOTAL_ETHERNET_TO_MONITOR; x++) {
         link_statuses[x] = FIRST_RUN;
     }
 
@@ -128,8 +132,11 @@ void *ethsw_thread_main(void *context __attribute__((unused)))
             sleep(1);
             continue;
         }
-        for(x=0; x<ETH_INTF_MAX; x++) {
-            snprintf(eth_intf_names,32,"eth%d", x);
+        for(x=0; x<TOTAL_ETHERNET_TO_MONITOR; x++) {
+            if (x<ETH_INTF_MAX)
+                snprintf(eth_intf_names,32,"eth%d", x);
+            else
+                snprintf(eth_intf_names,32,"erouter0");
             if ((err = rtnl_link_get_kernel(sk, 0, &eth_intf_names, &link)) < 0) {
                 /* Ignore "missing" interfaces */
                 if (err == -NLE_NODEV)
@@ -180,15 +187,49 @@ INT
  ULONG           maxSize
  )
 {
+    FILE *fp = NULL;
+    char temp_ifname[20] = {0};
+
     CcspHalEthSwTrace(("%s called\n", __func__));
-    //Maxsize param should be minimum 4charecters(eth0) including NULL charecter	
-    if( ( Interface == NULL ) || ( maxSize < ( strlen( ETH_WAN_IFNAME ) + 1 ) ) )
+
+    if (!Interface)
     {
-        printf("ERROR: Invalid argument. \n");
+        printf("ERROR: Invalid argument (NULL Interface).\n");
         return RETURN_ERR;
     }
 
-    snprintf(Interface, maxSize, "%s", ETH_WAN_IFNAME);
+    fp = popen("psmcli get dmsb.wanmanager.if.1.Name", "r");
+    if (!fp)
+    {
+        CcspHalEthSwTrace(("%s: Failed to run psmcli\n", __FUNCTION__));
+        return RETURN_ERR;
+    }
+
+    if (!fgets(temp_ifname, sizeof(temp_ifname), fp))
+    {
+        CcspHalEthSwTrace(("%s: No output from psmcli (WAN interface not found)\n",
+                            __FUNCTION__));
+        pclose(fp);
+        return RETURN_ERR;
+    }
+
+    pclose(fp);
+    temp_ifname[strcspn(temp_ifname, "\n")] = 0;
+
+    if (strlen(temp_ifname) == 0)
+    {
+        CcspHalEthSwTrace(("%s: ERROR: WAN interface empty after psmcli\n",
+                            __FUNCTION__));
+        return RETURN_ERR;
+    }
+
+    if (maxSize < strlen(temp_ifname) + 1)
+    {
+        CcspHalEthSwTrace(("WARNING: Buffer too small for interface (%s)\n",
+                            temp_ifname));
+        return RETURN_ERR;
+    }
+    snprintf(Interface, maxSize, "%s", temp_ifname);
     return RETURN_OK;
 }
 #endif
@@ -1081,7 +1122,13 @@ bool rpiNet_isInterfaceLinkUp(const char *ifname)
 INT GWP_GetEthWanLinkStatus()
 {
     INT status = 0;
-    CcspHalEthSwTrace(("%s called\n", __func__));
-    status = rpiNet_isInterfaceLinkUp(ETH_WAN_INTERFACE) ? TRUE : FALSE;
+    char wan_ifname[IFNAMSIZ];
+
+    if (GWP_GetEthWanInterfaceName(&wan_ifname, IFNAMSIZ) != RETURN_OK) {
+        fprintf(stderr, "%s: Failed to get WAN Interface name\n");
+        return RETURN_ERR;
+    }
+
+    status = rpiNet_isInterfaceLinkUp((char *)&wan_ifname) ? TRUE : FALSE;
     return status;
 }

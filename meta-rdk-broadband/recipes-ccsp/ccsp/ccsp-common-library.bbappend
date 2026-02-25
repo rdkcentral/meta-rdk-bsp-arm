@@ -13,10 +13,10 @@ CXXFLAGS:append = " \
 SRC_URI:append = " \
     file://ccsp_vendor.h \
     file://utopia.service \
-    file://ethwan_intf.sh \
     file://brlan0_check.sh \
     file://brlan0_check.service \
     file://onewifi.service \
+    file://psmssp.service \
 "
 
 # Some systemd unit files invoke through '/bin/sh -c (...)' which causes
@@ -31,6 +31,12 @@ SRC_URI:append = " file://0002-systemd_units-correct-wan_started-path-for-read-o
 
 # Remove call to migration_to_psm.sh, utopiaInitCheck.sh and log_psm_db.sh
 SRC_URI:append = " file://0003-meta-rdk-bsp-arm-only-remove-pre-and-post-start-call.patch"
+
+# Call pre-init script for CcspEthAgent (see ccsp-eth-agent.bbappend)
+SRC_URI:append = " file://0004-meta-rdk-bsp-arm-only-systemd-CcspEthAgent-bring-up-.patch"
+
+# Remove mkdir in CcspCrSsp unit file (not required, causes error on read-only rootfs)
+SRC_URI:append = " file://0004-CcspCrSsp-remove-mkdir-rdklogs.patch"
 
 do_configure:prepend:aarch64() {
 	sed -e '/len/ s/^\/*/\/\//' -i ${S}/source/ccsp/components/common/DataModel/dml/components/DslhObjRecord/dslh_objro_access.c
@@ -59,7 +65,8 @@ do_install:append:class-target () {
     install -d ${D}${systemd_unitdir}/system
     install -D -m 0644 ${S}/systemd_units/CcspCrSsp.service ${D}${systemd_unitdir}/system/CcspCrSsp.service
     install -D -m 0644 ${S}/systemd_units/CcspPandMSsp.service ${D}${systemd_unitdir}/system/CcspPandMSsp.service
-    install -D -m 0644 ${S}/systemd_units/PsmSsp.service ${D}${systemd_unitdir}/system/PsmSsp.service
+    #install -D -m 0644 ${S}/systemd_units/PsmSsp.service ${D}${systemd_unitdir}/system/PsmSsp.service
+    install -D -m 0644 ${WORKDIR}/psmssp.service ${D}${systemd_unitdir}/system/PsmSsp.service
     install -D -m 0644 ${S}/systemd_units/rdkbLogMonitor.service ${D}${systemd_unitdir}/system/rdkbLogMonitor.service
     install -D -m 0644 ${S}/systemd_units/CcspTandDSsp.service ${D}${systemd_unitdir}/system/CcspTandDSsp.service
     install -D -m 0644 ${S}/systemd_units/CcspLMLite.service ${D}${systemd_unitdir}/system/CcspLMLite.service
@@ -108,7 +115,6 @@ do_install:append:class-target () {
      install -D -m 0644 ${S}/systemd_units/CcspXdnsSsp.service ${D}${systemd_unitdir}/system/CcspXdnsSsp.service
 
      install -d ${D}${base_libdir}/rdk
-     install -m 755 ${WORKDIR}/ethwan_intf.sh ${D}${base_libdir}/rdk/
      install -m 755 ${WORKDIR}/brlan0_check.sh ${D}${base_libdir}/rdk/
 #WanManager - RdkWanManager.service
      DISTRO_WAN_ENABLED="${@bb.utils.contains('DISTRO_FEATURES','rdkb_wan_manager','true','false',d)}"
@@ -181,7 +187,6 @@ FILES:${PN}:append = " \
     /usr/ccsp/utopiaInitCheck.sh \
     /usr/ccsp/ccspPAMCPCheck.sh \
     /usr/ccsp/ProcessResetCheck.sh \
-    ${base_libdir}/rdk/ethwan_intf.sh \
     ${base_libdir}/rdk/brlan0_check.sh \
     ${systemd_unitdir}/system/brlan0_check.service \
     ${systemd_unitdir}/system/CcspCrSsp.service \
