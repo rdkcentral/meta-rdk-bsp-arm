@@ -1,0 +1,38 @@
+From 40a1cd849dd19524365660e1d73073ea10295ed5 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Thu, 12 Feb 2026 11:18:40 +1100
+Subject: [PATCH 2/3] platform: raspberry-pi: use RDKB-ARM-AP-%d on
+ meta-rdk-bsp-arm
+
+---
+ platform/raspberry-pi/platform_pi.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/platform/raspberry-pi/platform_pi.c b/platform/raspberry-pi/platform_pi.c
+index f96957b..73104ee 100644
+--- a/platform/raspberry-pi/platform_pi.c
++++ b/platform/raspberry-pi/platform_pi.c
+@@ -202,7 +202,11 @@ int platform_get_ssid_default(char *ssid, int vap_index)
+             return 0;
+         }
+     }
++#if defined(_PLATFORM_GENERICARM_)
++    sprintf(ssid, "RDKB-ARM-AP%d", vap_index);
++#else
+     sprintf(ssid, "RPI_RDKB-AP%d", vap_index);
++#endif
+     return 0;
+ }
+ 
+@@ -237,7 +241,7 @@ int nvram_get_current_password(char *l_password, int vap_index)
+ int nvram_get_current_ssid(char *l_ssid, int vap_index)
+ {
+     wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__); 
+-    sprintf(l_ssid,"RPI_RDKB-AP%d",vap_index);
++    sprintf(l_ssid,"RDKB-ARM-AP%d",vap_index);
+     return 0;
+ }
+ 
+-- 
+2.51.2
+

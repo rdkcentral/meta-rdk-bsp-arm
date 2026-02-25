@@ -1,0 +1,51 @@
+From c568fe1c2099bc6a1993d9d42f81d0149fc7aac7 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Thu, 12 Feb 2026 12:27:47 +1100
+Subject: [PATCH 3/3] platform: raspberry-pi: use
+ "refboard_default_wifi_password" as key on meta-rdk-bsp-arm
+
+---
+ platform/raspberry-pi/platform_pi.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/platform/raspberry-pi/platform_pi.c b/platform/raspberry-pi/platform_pi.c
+index 73104ee..0bbc352 100644
+--- a/platform/raspberry-pi/platform_pi.c
++++ b/platform/raspberry-pi/platform_pi.c
+@@ -42,6 +42,12 @@ Licensed under the BSD-3 License
+ #define MAX_SSID_LEN 33
+ #define INVALID_KEY                      "12345678"
+ 
++#if defined(_PLATFORM_GENERICARM_)
++#define NVRAM_PASSWORD_KEY "refboard_default_wifi_password"
++#else
++#define NVRAM_PASSWORD_KEY "rpi_wifi_password"
++#endif
++
+ int wifi_nvram_defaultRead(char *in,char *out);
+ int _syscmd(char *cmd, char *retBuf, int retBufSize);
+ 
+@@ -181,7 +187,7 @@ int platform_get_keypassphrase_default(char *password, int vap_index)
+         }
+     }
+     /*password is not sensitive,won't grant access to real devices*/
+-    wifi_nvram_defaultRead("rpi_wifi_password", password);
++    wifi_nvram_defaultRead(NVRAM_PASSWORD_KEY, password);
+     if (strlen(password) == 0) {
+         wifi_hal_error_print("%s:%d nvram default password not found, "
+                              "enforced alternative default password\n",
+@@ -233,8 +239,9 @@ int platform_get_country_code_default(char *code)
+ int nvram_get_current_password(char *l_password, int vap_index)
+ {
+     wifi_hal_dbg_print("%s:%d \n",__func__,__LINE__);
+-    /*password is not sensitive,won't grant access to real devices*/ 
+-    wifi_nvram_defaultRead("rpi_wifi_password",l_password);
++    /*password is not sensitive,won't grant access to real devices*/
++    wifi_nvram_defaultRead(NVRAM_PASSWORD_KEY,l_password);
++
+     return 0;
+ }
+ 
+-- 
+2.51.2
+

@@ -58,6 +58,8 @@ do_install:append() {
     touch ${D}/nvram2/.placeholder
     ln -s -r ${D}/rdklogs/logs2 ${D}/nvram2/logs
 
+    sed -i "/if \[ \! -f \/usr\/bin\/GetConfigFile \]\;then/,+4d" ${D}/rdklogger/logfiles.sh
+
     #self heal support
     install -d ${D}/usr/ccsp/tad
     install -m 0755 ${S}/devicegenericarm/lib/rdk/corrective_action.sh ${D}/usr/ccsp/tad

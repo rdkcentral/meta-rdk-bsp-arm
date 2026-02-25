@@ -122,9 +122,6 @@ DISTRO_FEATURES:append:broadband = " device_gateway_association"
 # REFPLTB-1546 : WiFi HAL 3.0 support for RPI
 DISTRO_FEATURES:append:broadband = " halVersion3"
 
-# RDKBDEV-866: EasyMesh Controller support
-DISTRO_FEATURES:append:broadband = " easymesh-controller"
-
 # RDKB-44824: CoreNetLib move bb file location
 DISTRO_FEATURES:append:broadband = " core-net-lib"
 
