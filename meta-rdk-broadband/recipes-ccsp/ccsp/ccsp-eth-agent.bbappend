@@ -13,3 +13,10 @@ SRC_URI:append = "\
     file://0002-cosa_ethernet_internal-force-CcspHalEthSw_RegisterLink.patch \
     "
 
+# For systemd notifications
+
+CFLAGS:append = " -DUSE_SYSTEMD_NOTIFICATIONS"
+DEPENDS:append = " systemd"
+LDFLAGS:append = " -lsystemd"
+
+SRC_URI:append = " file://0003-Send-READY-notification-to-systemd-when-data-model-ready.patch"
