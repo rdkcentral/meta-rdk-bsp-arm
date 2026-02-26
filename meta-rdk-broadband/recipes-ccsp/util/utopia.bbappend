@@ -21,6 +21,7 @@ SRC_URI:append = " \
     file://0012-firewall-disable-mac-filter.patch \
     file://0013-scripts-fix-compile-errors-with-DNO_MTA_FEATURE_SUPP.patch \
     file://system_defaults \
+    file://service_bridge_arm.sh \
 "
 
 LDFLAGS:append = " \
@@ -84,7 +85,8 @@ do_install:append() {
     install -m 755 ${S}/source/scripts/init/service.d/service_cosa_arm.sh ${D}${sysconfdir}/utopia/service.d/service_cosa.sh
     install -m 755 ${S}/source/scripts/init/system/need_wifi_default.sh ${D}${sysconfdir}/utopia/
     touch ${D}${sysconfdir}/dhcp_static_hosts
-    install -m 755 ${S}/source/scripts/init/service.d/service_bridge_rpi.sh ${D}${sysconfdir}/utopia/service.d/service_bridge.sh
+    install -m 755 ${WORKDIR}/service_bridge_arm.sh ${D}${sysconfdir}/utopia/service.d/
+    install -m 755 ${WORKDIR}/service_bridge_arm.sh ${D}${sysconfdir}/utopia/service.d/service_bridge.sh
     install -m 755 ${S}/source/scripts/init/service.d/service_dynamic_dns.sh ${D}${sysconfdir}/utopia/service.d/service_dynamic_dns.sh     
 
     # Creating symbolic links to install files in specific directory as in legacy builds
