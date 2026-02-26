@@ -40,6 +40,8 @@
 #include <pthread.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
+#include <sys/stat.h>
+
 #include <net/if.h>
 #include <stdbool.h>
 #include <pthread.h>
@@ -67,7 +69,10 @@ appCallBack ethWanCallbacks;
 #define  ETH_INITIALIZE  "/tmp/ethagent_initialized"
 #define  LINK_VALUE_SIZE  50
 #define  ETH_WAN_IFNAME   "eth8"
+#define WAN_MANAGER_INITIALIZED_PATH "/tmp/wanmanager_initialized"
+
 #endif
+
 
 INT (*linkEventCallback)(CHAR *ifname, CHAR *state) = NULL;
 
@@ -98,6 +103,19 @@ typedef enum {
 #define ETHOE_STATUS_DOWN_TEXT      "Down"
 
 #if defined(FEATURE_RDKB_WAN_MANAGER)
+
+int wait_for_wan_manager(void)
+{
+    struct stat statbuf;
+    int stat_ret = -1;
+
+    while((stat_ret == stat(WAN_MANAGER_INITIALIZED_PATH, &statbuf)) != 0) {
+        sleep(1);
+    }
+
+    return stat_ret;
+}
+
 void *ethsw_thread_main(void *context __attribute__((unused)))
 {
     FILE *fp = NULL;
@@ -115,12 +133,14 @@ void *ethsw_thread_main(void *context __attribute__((unused)))
     previous_link_status_t link_statuses[ETH_INTF_MAX];
     
     CcspHalEthSwTrace(("%s called\n", __func__));
-
-    sleep(60);
   
     for(x=0; x<ETH_INTF_MAX; x++) {
         link_statuses[x] = FIRST_RUN;
     }
+
+    CcspHalEthSwTrace(("%s: Waiting for WAN Manager to start\n", __func__));
+    /* Wait for WAN Manager to start and become ready */
+    wait_for_wan_manager();
 
     CcspHalEthSwTrace(("%s: Netlink version active\n", __func__));
     while(1) {
