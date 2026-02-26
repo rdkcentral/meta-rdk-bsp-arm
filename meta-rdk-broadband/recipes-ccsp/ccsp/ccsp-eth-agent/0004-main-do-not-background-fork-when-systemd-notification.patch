@@ -1,0 +1,28 @@
+From 9426c04bd2f96ef0dcf9f61fcfa900bd48dc1398 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Tue, 3 Mar 2026 10:06:54 +1100
+Subject: [PATCH] main: do not background / fork when systemd notification
+ feature enabled
+
+systemd notifications require the  main process thread to remain active
+---
+ source/EthSsp/ssp_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/source/EthSsp/ssp_main.c b/source/EthSsp/ssp_main.c
+index f87704e..5154f76 100644
+--- a/source/EthSsp/ssp_main.c
++++ b/source/EthSsp/ssp_main.c
+@@ -320,9 +320,10 @@ int main(int argc, char* argv[])
+     }
+ 
+     pComponentName          = CCSP_COMPONENT_NAME_ETHAGENT;
+-
+-    if ( bRunAsDaemon )
++    #if !defined(USE_SYSTEMD_NOTIFICATIONS)
++    if ( bRunAsDaemon)
+         daemonize();
++    #endif
+ 
+ CcspTraceInfo(("\nAfter daemonize before signal\n"));
+ 

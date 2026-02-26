@@ -32,6 +32,11 @@ SRC_URI:append = " file://0002-systemd_units-correct-wan_started-path-for-read-o
 # Remove call to migration_to_psm.sh, utopiaInitCheck.sh and log_psm_db.sh
 SRC_URI:append = " file://0003-meta-rdk-bsp-arm-only-remove-pre-and-post-start-call.patch"
 
+# Modify CcspEthAgent systemd unit to use systemd notifications,
+# and RdkWanManager wait for CcspEthAgent's notify event
+SRC_URI:append = " file://0004-systemd-ccsp-eth-agent-sd-notify.patch"
+SRC_URI:append = " file://0005-systemd-rdk-wan-manager-eth-agent.patch"
+
 do_configure:prepend:aarch64() {
 	sed -e '/len/ s/^\/*/\/\//' -i ${S}/source/ccsp/components/common/DataModel/dml/components/DslhObjRecord/dslh_objro_access.c
 }
@@ -114,8 +119,6 @@ do_install:append:class-target () {
      DISTRO_WAN_ENABLED="${@bb.utils.contains('DISTRO_FEATURES','rdkb_wan_manager','true','false',d)}"
      if [ $DISTRO_WAN_ENABLED = 'true' ]; then
      install -D -m 0644 ${S}/systemd_units/RdkWanManager.service ${D}${systemd_unitdir}/system/RdkWanManager.service
-     sed -i "s/After=CcspCrSsp.service/After=CcspCrSsp.service utopia.service /g" ${D}${systemd_unitdir}/system/RdkWanManager.service
-     sed -i "s/CcspPandMSsp.service/CcspCrSsp.service CcspPandMSsp.service/g" ${D}${systemd_unitdir}/system/CcspEthAgent.service
      install -D -m 0644 ${WORKDIR}/utopia.service ${D}${systemd_unitdir}/system/utopia.service
      install -D -m 0644 ${S}/systemd_units/RdkTelcoVoiceManager.service ${D}${systemd_unitdir}/system/RdkTelcoVoiceManager.service
      install -D -m 0644 ${S}/systemd_units/RdkVlanManager.service ${D}${systemd_unitdir}/system/RdkVlanManager.service
