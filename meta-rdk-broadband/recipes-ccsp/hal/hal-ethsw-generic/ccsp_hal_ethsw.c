@@ -150,7 +150,7 @@ void *ethsw_thread_main(void *context __attribute__((unused)))
         }
         for(x=0; x<ETH_INTF_MAX; x++) {
             snprintf(eth_intf_names,32,"eth%d", x);
-            if ((err = rtnl_link_get_kernel(sk, 0, &eth_intf_names, &link)) < 0) {
+            if ((err = rtnl_link_get_kernel(sk, 0, (char *)&eth_intf_names[0], &link)) < 0) {
                 /* Ignore "missing" interfaces */
                 if (err == -NLE_NODEV)
                     continue;
