@@ -1,10 +1,11 @@
-From d1c4308057ceffeccf3bfc2ad6d1e5eb968ea0aa Mon Sep 17 00:00:00 2001
+From 0ff8852c32d7c307b4f187d9d92836f25e8550c0 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 11 Jun 2025 16:00:48 +1000
-Subject: [PATCH 2/3] systemd_units: correct wan_started path for read-only
- rootfs operation
+Subject: [PATCH] systemd_units: correct wan_started path for read-only rootfs
+ operation
 
 Change-Id: Ic2ea67894ac51797867cb72625c2a0b127350302
+
 ---
  systemd_units/wan-initialized.path | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -22,6 +23,3 @@ index 8136280..40d5b8f 100644
  Unit=wan-initialized.target
  
  [Install]
--- 
-2.51.2
-
