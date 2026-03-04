@@ -1,0 +1,41 @@
+From db11581e29d7bb3fe88b9695f2c43a05cf33e4fe Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Fri, 27 Feb 2026 09:59:44 +1100
+Subject: [PATCH] Send READY notification to systemd when data model ready.
+
+This is to allow the start of consumer services (by systemd)
+to be correctly sequenced based on Ethernet Agent's availability.
+
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+---
+ source/TR-181/middle_layer_src/plugin_main_apis.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/source/TR-181/middle_layer_src/plugin_main_apis.c b/source/TR-181/middle_layer_src/plugin_main_apis.c
+index 9961260..ee64f30 100644
+--- a/source/TR-181/middle_layer_src/plugin_main_apis.c
++++ b/source/TR-181/middle_layer_src/plugin_main_apis.c
+@@ -77,6 +77,10 @@
+ extern int sock;
+ #endif
+ 
++#if defined(USE_SYSTEMD_NOTIFICATIONS)
++#include <systemd/sd-daemon.h>
++#endif
++
+ /**********************************************************************
+ 
+     caller:     owner of the object
+@@ -173,6 +177,9 @@ CosaBackEndManagerInitialize
+ 
+     printf("CosaEthInferface initialization done!\n");
+ 
++#if defined(USE_SYSTEMD_NOTIFICATIONS)
++    sd_notify(0,"READY=1");
++#endif
+     return returnStatus;
+ }
+ 
+-- 
+2.51.2
+
