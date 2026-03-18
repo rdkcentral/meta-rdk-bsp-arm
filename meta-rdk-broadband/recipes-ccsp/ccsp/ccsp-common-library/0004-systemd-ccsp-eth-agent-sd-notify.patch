@@ -1,0 +1,35 @@
+From 874755e3181fc681d6bce992f7111ae67aee4ce2 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Thu, 26 Feb 2026 13:14:41 +1100
+Subject: [PATCH] (meta-rdk-bsp-arm only) CcspEthAgent: use systemd
+ notifications
+
+We will use sd_notify to signal (in our ethernet monitoring thread)
+that we are ready to generate events for downstream consumers
+(such as WanManager)
+---
+ systemd_units/CcspEthAgent.service | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/systemd_units/CcspEthAgent.service b/systemd_units/CcspEthAgent.service
+index 260ac94..b5ff2f9 100644
+--- a/systemd_units/CcspEthAgent.service
++++ b/systemd_units/CcspEthAgent.service
+@@ -22,12 +22,12 @@ Description=CcspEthAgent service
+ After=CcspPandMSsp.service
+ 
+ [Service]
+-Type=forking
++Type=notify
+ WorkingDirectory=/usr/ccsp/ethagent
+ Environment="Subsys=eRT."
+ Environment="LOG4C_RCPATH=/etc"
+ EnvironmentFile=/etc/device.properties
+-ExecStart=/bin/sh -c '/usr/bin/CcspEthAgent -subsys $Subsys'
++ExecStart=/usr/bin/CcspEthAgent -subsys ${Subsys}
+ ExecStopPost=/bin/sh -c 'echo "`date`: Stopping/Restarting CcspEthAgent" >> ${PROCESS_RESTART_LOG}'
+ SyslogIdentifier=CcspEthAgent
+ Restart=always
+-- 
+2.51.2
+
