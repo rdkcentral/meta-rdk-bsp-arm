@@ -1226,7 +1226,7 @@
   <Record name="dmsb.wanmanager.if.1.Selection.Enable" type="astr">TRUE</Record>
   <Record name="dmsb.wanmanager.if.1.Selection.ActiveLink" type="astr">FALSE</Record>
   <Record name="dmsb.wanmanager.if.1.Selection.RequiresReboot" type="astr">FALSE</Record>
-  <Record name="dmsb.wanmanager.if.1.Selection.Group" type="astr">2</Record>
+  <Record name="dmsb.wanmanager.if.1.Selection.Group" type="astr">1</Record>
   <Record name="dmsb.wanmanager.if.1.Selection.Priority" type="astr">1</Record>
   <Record name="dmsb.wanmanager.if.1.Selection.Timeout" type="astr">60</Record>
 
