@@ -167,6 +167,9 @@ DISTRO_FEATURES:remove:broadband = " webui_jst"
 # Disable eMTA feature
 DISTRO_FEATURES:append:broadband = " no_mta_support"
 
+# Disable RDM
+DISTRO_FEATURES:remove:broadband = " RDM"
+
 SESSIONMGR_WS_RPC_ENABLE = "1"
 
 #REFPLTB-2784 : easymesh controller arch only supports with wifiagent
