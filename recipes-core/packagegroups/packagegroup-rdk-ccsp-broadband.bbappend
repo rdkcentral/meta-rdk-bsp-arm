@@ -15,6 +15,10 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-webui-php"
 
 RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "parodus"
 
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "\
+    ${@bb.utils.contains('DISTRO_FEATURES', 'RDM', '', ' rdm-agent', d)} \
+"
+
 RDEPENDS_packagegroup-rdk-ccsp-broadband:append = "\
     rdk-logger \
     libseshat \

@@ -131,9 +131,6 @@ DISTRO_FEATURES:append:broadband = " dac"
 # REFPLTB-1775: Sky team's fix for erouter0 IP issue
 DISTRO_FEATURES:append:broadband = " RbusBuildFlagEnable"
 
-#MeshAgent support for broadband
-DISTRO_FEATURES:append:broadband = " meshwifi"
-
 #rdk-wifi-libhostap support for broadband
 DISTRO_FEATURES:append:broadband = " HOSTAPD_2_11"
 
@@ -169,6 +166,9 @@ DISTRO_FEATURES:remove:broadband = " webui_jst"
 
 # Disable eMTA feature
 DISTRO_FEATURES:append:broadband = " no_mta_support"
+
+# Disable RDM
+DISTRO_FEATURES:remove:broadband = " RDM"
 
 SESSIONMGR_WS_RPC_ENABLE = "1"
 
