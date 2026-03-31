@@ -4,7 +4,7 @@ LDFLAGS:append:aarch64 = " -lnanomsg "
 FILES:${PN}:append = " /lib/systemd/system "
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/ccsp-dhcp-mgr:"
-
+CFLAGS_append  += " ${@bb.utils.contains('DISTRO_FEATURES', 'dhcp_manager', '-DFEATURE_RDKB_DHCP_MANAGER', '', d)}"
 SRC_URI += "\
         file://0001-ccsp-dhcp-manager-fix-non-moca-compile-error.patch \
 "
