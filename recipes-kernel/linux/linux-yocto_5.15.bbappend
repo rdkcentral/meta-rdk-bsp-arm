@@ -20,7 +20,7 @@ SRC_URI:append:broadband = " \
     file://rdkb.cfg \
     file://netfilter.cfg \
     file://proc-event.cfg \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'cellular_hybrid_support', 'file://rdkb-usb.cfg', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'cellular_hybrid_support', 'file://rdkb_usb.cfg', '', d)} \
 "
 
 # Patches required to allow backported mt76 driver
