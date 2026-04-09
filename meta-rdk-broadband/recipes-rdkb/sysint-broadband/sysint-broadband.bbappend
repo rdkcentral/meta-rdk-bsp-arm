@@ -28,6 +28,10 @@ do_install:append() {
 
     ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', 'echo "OneWiFiEnabled=true" >> ${D}${sysconfdir}/device.properties', '', d)}
     echo "MODEL_NUM=RPI_MOD" >> ${D}${sysconfdir}/device.properties
+    
+    echo "PARODUS_URL=tcp://127.0.0.1:6666" >> ${D}${sysconfdir}/device.properties
+    echo "WEBPA_CLIENT_URL=tcp://192.168.101.3:6667" >> ${D}${sysconfdir}/device.properties
+    echo "SERVERURL=https://webpa.rdkcentral.com:8080" >> ${D}${sysconfdir}/device.properties
 
     #For rfc Support
     sed -i '/DEVICE_TYPE/c\DEVICE_TYPE=broadband' ${D}${sysconfdir}/device.properties

@@ -13,8 +13,6 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-adv-security"
 RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-webui-jst"
 RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-webui-php"
 
-RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "parodus"
-
 RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'RDM', '', ' rdm-agent', d)} \
 "
