@@ -5,7 +5,7 @@ SRC_URI += "\
     file://parodus_create_file.sh \
     file://webpa_pre_setup.sh \
 "
-EXTRA_OECMAKE += "-DBUILD_BANANAPI_R4=ON "
+EXTRA_OECMAKE += "-DBUILD_GENERICARM=ON "
 
 do_install_append () {
     install -d ${D}${base_libdir_native}/rdk

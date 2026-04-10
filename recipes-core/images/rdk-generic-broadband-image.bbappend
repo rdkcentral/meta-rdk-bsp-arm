@@ -31,6 +31,9 @@ IMAGE_INSTALL:append = " resolvconf-placeholder"
 IMAGE_INSTALL:append = "${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh',' unified-wifi-mesh unified-wifi-mesh-cli socat','',d)}"
 IMAGE_INSTALL:append = "${@bb.utils.contains('DISTRO_FEATURES', 'with_alsap',' ieee1905-em ','',d)}"
 
+# Webpa
+IMAGE_INSTALL:append = " parodus parodus2ccsp"
+
 require image-exclude-files.inc
 
 remove_unused_file() {
