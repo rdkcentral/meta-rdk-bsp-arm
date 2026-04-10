@@ -23,6 +23,8 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband:append = "\
     rdk-logger \
     libseshat \
     notify-comp \
+    start-parodus \
+    parodus2ccsp \
     ${@bb.utils.contains('DISTRO_FEATURES', 'CPUPROCANALYZER_BROADBAND', 'cpuprocanalyzer', ' ', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_cellular_manager_mm', 'rdk-cellularmanager-mm', ' ', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'rdk_ledmanager', 'rdk-ledmanager', ' ', d)} \

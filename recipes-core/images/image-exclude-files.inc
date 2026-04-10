@@ -10,7 +10,6 @@ usr/bin/xcal-device \
 usr/bin/CcspEPONAgentSsp \
 usr/lib/libepon_tr181.so* \
 usr/ccsp/epon \
-usr/bin/parodusStart \
 usr/lib/libgupnp-1.2.so.0* \
 usr/bin/smartctl \
 usr/bin/smartd \

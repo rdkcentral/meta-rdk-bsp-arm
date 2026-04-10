@@ -74,6 +74,13 @@ do_install:append:class-target () {
     install -D -m 0644 ${S}/systemd_units/notifyComp.service ${D}${systemd_unitdir}/system/notifyComp.service
     install -D -m 0644 ${S}/systemd_units/CcspTelemetry.service ${D}${systemd_unitdir}/system/CcspTelemetry.service
 
+    #webpa service
+    install -D -m 0644 ${S}/systemd_units/parodus.service ${D}${systemd_unitdir}/system/parodus.service
+    install -D -m 0644 ${S}/systemd_units/webpa.service ${D}${systemd_unitdir}/system/webpa.service
+    sed -i 's/parodusCmd.cmd &/parodusCmd.cmd/' ${D}${systemd_unitdir}/system/parodus.service
+    sed -i '/ExecStart=/a ExecStartPost\=\sysevent set webserver started'  ${D}${systemd_unitdir}/system/parodus.service
+    sed -i "/WorkingDirectory=/a ExecStartPre\=\/bin/sh -c '\/lib/rdk/webpa_pre_setup.sh'\\;" ${D}${systemd_unitdir}/system/webpa.service
+    
     #rfc service file
     install -D -m 0644 ${S}/systemd_units/rfc.service ${D}${systemd_unitdir}/system/rfc.service
 
@@ -176,6 +183,8 @@ SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'fwupgr
 SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', 'onewifi.service ', 'ccspwifiagent.service', d)}"
 SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'webconfig_bin', 'webconfig.service', '', d)}"
 SYSTEMD_SERVICE:${PN}:append = " brlan0_check.service"
+SYSTEMD_SERVICE:${PN}:append = " parodus.service"
+SYSTEMD_SERVICE:${PN}:append = " webpa.service"
 
 FILES:${PN}:append = " \
     /usr/ccsp/ccspSysConfigEarly.sh \
@@ -203,6 +212,8 @@ FILES:${PN}:append = " \
     ${systemd_unitdir}/system/CcspXdnsSsp.service \
     ${systemd_unitdir}/system/wan-initialized.target \
     ${systemd_unitdir}/system/wan-initialized.path \
+    ${systemd_unitdir}/system/parodus.service \
+    ${systemd_unitdir}/system/webpa.service \
 "
 FILES:${PN}:append = "${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', ' ${systemd_unitdir}/system/RdkWanManager.service ${systemd_unitdir}/system/utopia.service ${systemd_unitdir}/system/RdkVlanManager.service  ', '', d)}"
 FILES:${PN}:append = "${@bb.utils.contains('DISTRO_FEATURES', 'fwupgrade_manager', ' ${systemd_unitdir}/system/RdkFwUpgradeManager.service ', '', d)}"
