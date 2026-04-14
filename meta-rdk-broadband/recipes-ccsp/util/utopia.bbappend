@@ -33,6 +33,8 @@ CFLAGS:append = " -Wno-error=unused-function \
 
 CFLAGS:remove = " ${@bb.utils.contains('DISTRO_FEATURES', 'bci', '-DWAN_FAILOVER_SUPPORTED', '', d)}"
 
+EXTRA_OECONF:remove = "--with-machine=${MACHINE}"
+
 do_install:append() {
 
     # Don't install header files which are provided by utopia-headers
