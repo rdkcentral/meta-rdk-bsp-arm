@@ -42,6 +42,7 @@ SRC_URI:append = " file://0005-systemd-rdk-wan-manager-eth-agent.patch"
 SRC_URI:append = " file://0006-util_api-fix-compile-error-under-debug-build.patch \
                    file://0007-util_api-al_pki-resolve-uninitialized-variable-compi.patch \
                    file://0008-util_api-al_pkcs12-fix-uninitialized-variable-error.patch \
+                   file://0009-cosa-assert-AnscCopyString-can-not-be-called-same.patch \
 "
 
 do_configure:prepend:aarch64() {

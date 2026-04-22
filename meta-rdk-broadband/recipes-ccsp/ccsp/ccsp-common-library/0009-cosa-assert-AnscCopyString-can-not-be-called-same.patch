@@ -1,0 +1,27 @@
+From 58aa5f466030a34eb76bcb8bf9ef7a2c0477bb3b Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Wed, 22 Apr 2026 04:37:33 +0000
+Subject: [PATCH] cosa: assert AnscCopyString can not be called with same
+ source/destination
+
+This is to resolve a compile error found elsewhere in RDK-B
+when BitBake DEBUG_BUILD="1" is active.
+---
+ source/cosa/include/ansc_string.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/source/cosa/include/ansc_string.h b/source/cosa/include/ansc_string.h
+index 6048cab..2ffb320 100644
+--- a/source/cosa/include/ansc_string.h
++++ b/source/cosa/include/ansc_string.h
+@@ -86,6 +86,7 @@ static inline size_t AnscSizeOfString (const char *s)
+ 
+ static inline void AnscCopyString (char *d, const char *s)
+ {
++    assert(s != d);
+     if (!s)
+         *d = 0;
+     else
+-- 
+2.39.5
+
