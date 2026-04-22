@@ -1,0 +1,62 @@
+From a94e45d7efbf37427cfeddd630e03a9104f4a722 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Wed, 22 Apr 2026 00:25:39 +0000
+Subject: [PATCH] util_api: al_pki: resolve uninitialized variable compile
+ errors
+
+When debug related options are enabled in the BitBake environment,
+the following compile error may occur:
+
+smartcard_sample_entity.c: In function 'SmartCardSignData':
+smartcard_sample_entity.c:143:37: error: 'retStatus' may be used
+	uninitialized in this function [-Werror=maybe-uninitialized]
+
+pki_entity_base.c: In function 'PKIEntitySignData':
+pki_entity_base.c:1974:16: error: 'retStatus' may be used
+	uninitialized in this function [-Werror=maybe-uninitialized]
+
+pki_entity_base.c: In function 'PKIEntityVerify':
+pki_entity_base.c:2074:24: error: 'retStatus' may be used
+	uninitialized in this function [-Werror=maybe-uninitialized]
+
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+---
+ source/util_api/asn.1/components/al_pki/pki_entity_base.c     | 4 ++--
+ .../asn.1/components/al_pki/smartcard_sample_entity.c         | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/source/util_api/asn.1/components/al_pki/pki_entity_base.c b/source/util_api/asn.1/components/al_pki/pki_entity_base.c
+index 02b280a..7419fa7 100644
+--- a/source/util_api/asn.1/components/al_pki/pki_entity_base.c
++++ b/source/util_api/asn.1/components/al_pki/pki_entity_base.c
+@@ -1878,7 +1878,7 @@ PKIEntitySignData
+     PKI_KEY_TYPE                    keyType;
+     int                             nHashMethod;
+     PANSC_CRYPTO_PUB_KEY_GEN_PARAMS pGenParams;
+-    ANSC_STATUS                     retStatus;
++    ANSC_STATUS                     retStatus   = ANSC_STATUS_FAILURE;
+ 
+     if( hThisObject == NULL || pDataWillBeSigned == NULL || pDataSigned == NULL || pLength == NULL)
+     {
+@@ -1990,7 +1990,7 @@ PKIEntityVerify
+     PANSC_CRYPTO_PUB_SSLEAY_OBJECT  pSSLCrypto   = NULL;
+     ANSC_CRYPTO_PUB_KEY_PARAMS      params;
+     PKI_KEY_TYPE                    keyType;
+-    ANSC_STATUS                     retStatus;
++    ANSC_STATUS                     retStatus   = ANSC_STATUS_FAILURE;
+     ANSC_CRYPTO_PUB_KEY_GEN_PARAMS  genParams;
+     UINT                            nHashMethod;
+ 
+diff --git a/source/util_api/asn.1/components/al_pki/smartcard_sample_entity.c b/source/util_api/asn.1/components/al_pki/smartcard_sample_entity.c
+index fb3a1cc..a3fdcab 100644
+--- a/source/util_api/asn.1/components/al_pki/smartcard_sample_entity.c
++++ b/source/util_api/asn.1/components/al_pki/smartcard_sample_entity.c
+@@ -140,7 +140,7 @@ SmartCardSignData
+     PKI_KEY_TYPE                    keyType;
+     int                             nHashMethod;
+     PANSC_CRYPTO_PUB_KEY_GEN_PARAMS pGenParams;
+-    ANSC_STATUS                     retStatus;
++    ANSC_STATUS                     retStatus = ANSC_STATUS_FAILURE;
+ 
+     pSSLCrypto = (PANSC_CRYPTO_PUB_SSLEAY_OBJECT)pThisObject->hCryptoSSL;
+ 
