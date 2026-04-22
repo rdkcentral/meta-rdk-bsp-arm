@@ -8,6 +8,7 @@ SRC_URI:append = " \
 
 CFLAGS:append = " \
 	-fcommon \
+	-Wno-error=maybe-uninitialized \
 "
 
 # Use Raspberry Pi platform file as a base
