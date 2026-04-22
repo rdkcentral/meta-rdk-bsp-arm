@@ -9,7 +9,6 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 SRC_URI:append = " \
     file://0001-scripts-lan_handler-treat-generic-Arm-boards-Ten64-q.patch \
     file://0002-lan_handler-refresh-fix-lan-handler-for-rpi.patch.patch \
-    file://0003-bridge-use-service_bridge_rpi-for-generic-arm-platfo.patch \
     file://0004-firewall-use-_GENERIC_LINUX_DATA_PATH_-for-reference.patch \
     file://0005-service_wan-use-_GENERIC_LINUX_DATA_PATH_-to-introdu.patch \
     file://0006-scripts-utopia_init-do-nvram-restore_reboot-and-drop.patch \
@@ -21,6 +20,7 @@ SRC_URI:append = " \
     file://0012-firewall-disable-mac-filter.patch \
     file://0013-scripts-fix-compile-errors-with-DNO_MTA_FEATURE_SUPP.patch \
     file://system_defaults \
+    file://service_bridge_arm.sh \
 "
 
 LDFLAGS:append = " \
@@ -86,7 +86,8 @@ do_install:append() {
     install -m 755 ${S}/source/scripts/init/service.d/service_cosa_arm.sh ${D}${sysconfdir}/utopia/service.d/service_cosa.sh
     install -m 755 ${S}/source/scripts/init/system/need_wifi_default.sh ${D}${sysconfdir}/utopia/
     touch ${D}${sysconfdir}/dhcp_static_hosts
-    install -m 755 ${S}/source/scripts/init/service.d/service_bridge_rpi.sh ${D}${sysconfdir}/utopia/service.d/service_bridge.sh
+    install -m 755 ${WORKDIR}/service_bridge_arm.sh ${D}${sysconfdir}/utopia/service.d/
+    install -m 755 ${WORKDIR}/service_bridge_arm.sh ${D}${sysconfdir}/utopia/service.d/service_bridge.sh
     install -m 755 ${S}/source/scripts/init/service.d/service_dynamic_dns.sh ${D}${sysconfdir}/utopia/service.d/service_dynamic_dns.sh     
 
     # Creating symbolic links to install files in specific directory as in legacy builds
