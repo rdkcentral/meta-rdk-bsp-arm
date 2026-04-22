@@ -22,6 +22,9 @@ IMAGE_INSTALL:append =" ${@bb.utils.contains('DISTRO_FEATURES', 'Asterisk', ' ha
 # For Rust environment verification
 IMAGE_INSTALL:append = " rust-hello-world"
 
+#RNDIS SUPPORT
+IMAGE_INSTALL:append = " network-hotplug"
+
 IMAGE_INSTALL:append = " efi-image-manager"
 
 # Placeholder for resolv.conf
