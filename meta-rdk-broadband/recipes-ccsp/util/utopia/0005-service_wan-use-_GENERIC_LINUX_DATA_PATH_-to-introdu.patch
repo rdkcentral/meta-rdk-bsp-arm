@@ -1,7 +1,7 @@
-From a5a1861f4be644b9ca7069df886c75ccc0467229 Mon Sep 17 00:00:00 2001
+From ec15ae64a6eced3b24d6bed5d0fad67d8952963d Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Tue, 13 Jan 2026 11:33:17 +1100
-Subject: [PATCH 05/13] service_wan: use _GENERIC_LINUX_DATA_PATH_ to introduce
+Subject: [PATCH] service_wan: use _GENERIC_LINUX_DATA_PATH_ to introduce
  generic Arm support
 
 Similar to the previous commit for the firewall changes, introduce
@@ -12,6 +12,7 @@ This will add support for the generic Arm reference platform and
 any other future platforms with the same configuration.
 
 Signed-off-by: Mathew McBride <matt@traverse.com.au>
+
 ---
  source/service_wan/service_wan.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
@@ -38,6 +39,3 @@ index b9abc63..9fd4102 100644
      		fprintf(stderr, "[%s] ready is set from misc handler. Doing gw_lan_refresh\n", PROG_NAME);
              #if defined (_XB6_PRODUCT_REQ_) && defined (_COSA_BCM_ARM_)
                  v_secure_system("firewall");
--- 
-2.51.2
-

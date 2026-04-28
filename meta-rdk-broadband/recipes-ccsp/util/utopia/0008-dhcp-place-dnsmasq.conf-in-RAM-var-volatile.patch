@@ -1,11 +1,12 @@
-From 7985ffa674c0bfac456de062ff5bacb238be8305 Mon Sep 17 00:00:00 2001
+From 02ee4c3373c48fc98da19d9a6a73bd563c7c744c Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 7 Aug 2024 15:17:54 +1000
-Subject: [PATCH 08/13] dhcp: place dnsmasq.conf in RAM (/var/volatile)
+Subject: [PATCH] dhcp: place dnsmasq.conf in RAM (/var/volatile)
 
 On a completely read-only filesystem, it is not possible to create a file under /var itself
 
 Change-Id: Ib87378d9627855d9e3665f2a277f1221afae3b86
+
 ---
  source/scripts/init/service.d/service_dhcp_server.sh | 2 +-
  source/service_dhcp/dhcp_server_functions.c          | 2 +-
@@ -13,7 +14,7 @@ Change-Id: Ib87378d9627855d9e3665f2a277f1221afae3b86
  3 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/source/scripts/init/service.d/service_dhcp_server.sh b/source/scripts/init/service.d/service_dhcp_server.sh
-index 9f80373..4cf90a7 100755
+index 60c0dec..2057fcf 100755
 --- a/source/scripts/init/service.d/service_dhcp_server.sh
 +++ b/source/scripts/init/service.d/service_dhcp_server.sh
 @@ -59,7 +59,7 @@ UTOPIA_PATH="/etc/utopia/service.d"
@@ -39,7 +40,7 @@ index df3adb3..6aae911 100644
  #define DEFAULT_RESOLV_CONF     "/var/default/resolv.conf"
  #define DEFAULT_CONF_DIR      	"/var/default"
 diff --git a/source/service_dhcp/service_dhcp_server.c b/source/service_dhcp/service_dhcp_server.c
-index a24375d..8250e12 100644
+index 77b2d35..5e6d1c1 100644
 --- a/source/service_dhcp/service_dhcp_server.c
 +++ b/source/service_dhcp/service_dhcp_server.c
 @@ -41,7 +41,7 @@
@@ -51,6 +52,3 @@ index a24375d..8250e12 100644
  #define PID_FILE    "/var/run/dnsmasq.pid"
  #define RPC_CLIENT	"/usr/bin/rpcclient"
  #define XHS_IF_NAME "brlan1"
--- 
-2.51.2
-
