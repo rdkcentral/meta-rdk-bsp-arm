@@ -95,7 +95,7 @@ DISTRO_FEATURES_append_broadband = " cellular_hybrid_support"
 DISTRO_FEATURES:append:broadband = " rdkb_power_manager"
 #DISTRO_FEATURES:append:broadband = " rdkb_gpon_manager"
 DISTRO_FEATURES:append:broadband = " rdkb_wan_manager"
-#DISTRO_FEATURES:append:broadband = " rdkb_configurable_wan_interface"
+DISTRO_FEATURES:append:broadband = " rdkb_configurable_wan_interface"
 #DISTRO_FEATURES:append:broadband = " rdkb_voice_manager_dmltr104_v2"
 DISTRO_FEATURES:append:broadband = " rdkb_xdsl_ppp_manager"
 DISTRO_FEATURES:append:broadband = " fwupgrade_manager"
@@ -155,7 +155,7 @@ DISTRO_FEATURES:append:broadband = " lld_support"
 
 # RDKB-48800: Install DHCP Manager service file
 # 2025-09: Disable DHCP Manager (RDKBNETWOR-3)
-# DISTRO_FEATURES:append:broadband = " dhcp_manager"
+DISTRO_FEATURES:append:broadband = " dhcp_manager"
 
 # RDKBDEV-694: Adding Partner Default Ext
 DISTRO_FEATURES:append:broadband = " partner_default_ext"
