@@ -1,3 +1,5 @@
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+
 SRCREV_machine:armefi64 = "5a4667da1ebc1750b1ddaaf93a1f3f98634360e3"
 LINUX_VERSION = "5.15.162"
 
@@ -11,6 +13,8 @@ SRC_URI:append:armefi64 = " \
     file://02_dpaa2_add_more_10G_modes.patch \
     file://03_rk3568-pcie-phy-backports.patch \
     "
+SRC_URI:append = "file://0001-add-support-for-port-triggering.patch \
+                  file://0002_arm_port_triggering.patch"
 
 RDKBFILESPATHS := "${THISDIR}/rdkb:"
 FILESEXTRAPATHS:prepend:broadband = "${RDKBFILESPATHS}"
