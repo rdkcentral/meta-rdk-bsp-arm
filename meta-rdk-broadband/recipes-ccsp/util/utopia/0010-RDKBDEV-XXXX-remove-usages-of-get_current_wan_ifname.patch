@@ -1,7 +1,7 @@
-From e09432beb5f7b7db9e6bb8f75b143f220c055c42 Mon Sep 17 00:00:00 2001
+From 0c761afb7956f91ab9db0b7476e4e164e2d807a7 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 4 Sep 2024 15:36:18 +1000
-Subject: [PATCH 10/13] RDKBDEV-XXXX: remove usages of get_current_wan_ifname()
+Subject: [PATCH] RDKBDEV-XXXX: remove usages of get_current_wan_ifname()
 
 get_current_wan_ifname() calls into the platform HAL, which bypasses
 WAN Manager if it is active. Furthermore, get_current_wan_ifname() needs
@@ -10,15 +10,16 @@ which isn't necessarily guaranteed on the current HAL implementations.
 
 Change-Id: I51e4fc756bbec11a548ca2d86aed2fd3f16790c6
 Signed-off-by: Mathew McBride <matt@traverse.com.au>
+
 ---
  source/firewall/firewall.c | 22 +++++++++++-----------
  1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/source/firewall/firewall.c b/source/firewall/firewall.c
-index 9621b6d..f865745 100644
+index 6867134..dbad3be 100644
 --- a/source/firewall/firewall.c
 +++ b/source/firewall/firewall.c
-@@ -1173,7 +1173,7 @@ int do_mapt_rules_v4(FILE *nat_fp, FILE *filter_fp, FILE *mangle_fp)
+@@ -1184,7 +1184,7 @@ int do_mapt_rules_v4(FILE *nat_fp, FILE *filter_fp, FILE *mangle_fp)
  
      /* Add POSTROUTING rule. */
  #if defined(IVI_KERNEL_SUPPORT)
@@ -27,7 +28,7 @@ index 9621b6d..f865745 100644
  #elif defined(NAT46_KERNEL_SUPPORT) || defined (FEATURE_SUPPORT_MAPT_NAT46)
      fprintf(nat_fp, "-A POSTROUTING -o %s -j %s\n", NAT46_INTERFACE, MAPT_NAT_IPV4_POST_ROUTING_TABLE);
  #endif
-@@ -1273,9 +1273,9 @@ int do_mapt_rules_v4(FILE *nat_fp, FILE *filter_fp, FILE *mangle_fp)
+@@ -1284,9 +1284,9 @@ int do_mapt_rules_v4(FILE *nat_fp, FILE *filter_fp, FILE *mangle_fp)
                      finalPortValue = port;
              }
  #if defined(IVI_KERNEL_SUPPORT)
@@ -39,7 +40,7 @@ index 9621b6d..f865745 100644
                      initialPortValue, finalPortValue);
  #elif defined(NAT46_KERNEL_SUPPORT) || defined (FEATURE_SUPPORT_MAPT_NAT46)
  #if defined(_HUB4_PRODUCT_REQ_NO_DPORT_)
-@@ -1290,9 +1290,9 @@ int do_mapt_rules_v4(FILE *nat_fp, FILE *filter_fp, FILE *mangle_fp)
+@@ -1301,9 +1301,9 @@ int do_mapt_rules_v4(FILE *nat_fp, FILE *filter_fp, FILE *mangle_fp)
  #endif //IVI_KERNEL_SUPPORT
          }
  #ifdef IVI_KERNEL_SUPPORT
@@ -52,7 +53,7 @@ index 9621b6d..f865745 100644
  #endif //IVI_KERNEL_SUPPORT
      }
  
-@@ -12320,8 +12320,8 @@ static int prepare_subtables(FILE *raw_fp, FILE *mangle_fp, FILE *nat_fp, FILE *
+@@ -12541,8 +12541,8 @@ static int prepare_subtables(FILE *raw_fp, FILE *mangle_fp, FILE *nat_fp, FILE *
     fprintf(filter_fp, "-A INPUT -p udp -m udp --match multiport --dports 10161,10163 -j SNMP_FILTER\n");
  
     //DROP incoming New NTP packets on erouter interface
@@ -63,7 +64,7 @@ index 9621b6d..f865745 100644
  
     /* RDKB-57182 Blocking brlan0 ports 80,443 for interfaces other than lan */
     fprintf(filter_fp, "-A INPUT -i brlan0 -p tcp -m multiport --dports 80,443 ! -d %s -j DROP\n", lan_ipaddr);
-@@ -14001,11 +14001,11 @@ static int prepare_disabled_ipv4_firewall(FILE *raw_fp, FILE *mangle_fp, FILE *n
+@@ -14271,11 +14271,11 @@ static int prepare_disabled_ipv4_firewall(FILE *raw_fp, FILE *mangle_fp, FILE *n
     fprintf(filter_fp, "-A SNMPDROPLOG -j DROP\n");
  
     //DROP incoming  NTP packets on erouter interface
@@ -78,6 +79,3 @@ index 9621b6d..f865745 100644
  
     // Video Analytics Firewall rule to allow port 58081 only from LAN interface
     do_OpenVideoAnalyticsPort (filter_fp);
--- 
-2.51.2
-
