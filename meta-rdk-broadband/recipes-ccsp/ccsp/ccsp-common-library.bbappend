@@ -37,6 +37,14 @@ SRC_URI:append = " file://0003-meta-rdk-bsp-arm-only-remove-pre-and-post-start-c
 SRC_URI:append = " file://0004-systemd-ccsp-eth-agent-sd-notify.patch"
 SRC_URI:append = " file://0005-systemd-rdk-wan-manager-eth-agent.patch"
 
+# Fix compile errors when debug symbol generation / compiler flags
+# are enabled in the BitBake EnvironmentFile
+SRC_URI:append = " file://0006-util_api-fix-compile-error-under-debug-build.patch \
+                   file://0007-util_api-al_pki-resolve-uninitialized-variable-compi.patch \
+                   file://0008-util_api-al_pkcs12-fix-uninitialized-variable-error.patch \
+                   file://0009-cosa-assert-AnscCopyString-can-not-be-called-same.patch \
+"
+
 do_configure:prepend:aarch64() {
 	sed -e '/len/ s/^\/*/\/\//' -i ${S}/source/ccsp/components/common/DataModel/dml/components/DslhObjRecord/dslh_objro_access.c
 }

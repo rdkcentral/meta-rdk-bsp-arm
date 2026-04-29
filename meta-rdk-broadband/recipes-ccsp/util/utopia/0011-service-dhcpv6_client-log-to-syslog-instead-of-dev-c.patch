@@ -1,8 +1,7 @@
-From bc03fd39d7501d5a377c228377045205dc572e0d Mon Sep 17 00:00:00 2001
+From fbe5043100d869dbda75e8ed1ff0db007ae39502 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Fri, 8 Nov 2024 14:59:17 +1100
-Subject: [PATCH 11/13] service: dhcpv6_client: log to syslog instead of
- /dev/console
+Subject: [PATCH] service: dhcpv6_client: log to syslog instead of /dev/console
 
 During bring up of the Arm generic machine, I noticed quite a few logs to
 console with this message:
@@ -13,6 +12,7 @@ for these logs to go to syslog (/var/log/user)
 
 Change-Id: I15f1745a63a3e69bb4448d96269096f90e2ee1a2
 Signed-off-by: Mathew McBride <matt@traverse.com.au>
+
 ---
  source/scripts/init/service.d/service_dhcpv6_client.sh | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
@@ -39,6 +39,3 @@ index 9b6888d..bcbf415 100755
  	exit 3
        fi
        ;;
--- 
-2.51.2
-

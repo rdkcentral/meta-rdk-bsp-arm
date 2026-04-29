@@ -1,7 +1,7 @@
-From 5e2272f2f6f6f053180d034a6a8a2d249d0d1d13 Mon Sep 17 00:00:00 2001
+From 1e52d69e0b92c498f05e87d01b0d59a82de8fbf9 Mon Sep 17 00:00:00 2001
 From: Simon Chung <simon.c.chung@accenture.com>
 Date: Wed, 10 Mar 2021 10:11:41 +0000
-Subject: [PATCH 02/13] lan_handler: refresh "fix-lan-handler-for-rpi.patch"
+Subject: [PATCH] lan_handler: refresh "fix-lan-handler-for-rpi.patch"
 
 Refresh of the patch originally added by:
 
@@ -22,15 +22,16 @@ Signed-off-by: Andre McCurdy <armccurdy@gmail.com>
 
 Signed-off-by: Mathew McBride <matt@traverse.com.au>
 [Refreshed patch title for Generic ARM port, 2024-09-05]
+
 ---
  source/scripts/init/service.d/lan_handler.sh | 18 ++++++++++++++++++
  1 file changed, 18 insertions(+)
 
 diff --git a/source/scripts/init/service.d/lan_handler.sh b/source/scripts/init/service.d/lan_handler.sh
-index 995f9cd..61a0f29 100755
+index d83430f..3d5d6fc 100755
 --- a/source/scripts/init/service.d/lan_handler.sh
 +++ b/source/scripts/init/service.d/lan_handler.sh
-@@ -304,6 +304,24 @@ case "$1" in
+@@ -311,6 +311,24 @@ case "$1" in
              sysevent set multinet-up 9
          fi
  
@@ -55,6 +56,3 @@ index 995f9cd..61a0f29 100755
          echo_t "LAN HANDLER : Triggering RDKB_FIREWALL_RESTART after nfqhandler"
  	t2CountNotify "RF_INFO_RDKB_FIREWALL_RESTART"
          sysevent set firewall-restart
--- 
-2.51.2
-
