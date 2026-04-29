@@ -75,7 +75,7 @@ IMAGE_FEATURES:remove = "read-only-rootfs"
 ENABLE_UART = "1"
 
 # 2024-11-11: meta-cmf-arm: usppa disabled due to erouter0 dependency
-# DISTRO_FEATURES:append:broadband = " usppa"
+DISTRO_FEATURES:append:broadband = " usppa"
 
 # REFPLTV-1137: DLNA support for xupnp
 DISTRO_FEATURES:append:broadband = " dlna"
