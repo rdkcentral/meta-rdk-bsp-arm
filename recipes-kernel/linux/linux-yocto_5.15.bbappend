@@ -21,9 +21,11 @@ SRC_URI:append:broadband = " \
     file://netfilter.cfg \
     file://proc-event.cfg \
     ${@bb.utils.contains('DISTRO_FEATURES', 'cellular_hybrid_support', 'file://rdkb_usb.cfg', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES','dac', 'file://container.cfg', '', d)} \
 "
 
 # Patches required to allow backported mt76 driver
 SRC_URI:append:armefi64 = " file://04_mtk-backports-for-5-15.patch \
                             file://05_net-allow-PAGE_POOL-to-be-user-selected.patch \
 "
+CMDLINE_append = "${@bb.utils.contains('DISTRO_FEATURES','dac', 'cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1', '', d)}"

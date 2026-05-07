@@ -54,6 +54,13 @@ if [ "${RDK_ENABLE_REFERENCE_IMAGE}" = "y" ]; then
     fi
 fi
 
+if [[ -z $(grep 'meta-rdk-broadband-apps' conf/bblayers.conf) ]] && [[ -d  ../meta-rdk-broadband-apps ]]
+then
+    cat >> conf/bblayers.conf <<EOF
+BBLAYERS =+ "\${RDKROOT}/meta-rdk-broadband-apps"
+EOF
+fi
+
 # Setup BitBake multi-build to build both the generic
 # and derived machines (like the RaspberryPi) in the
 # one build structure.

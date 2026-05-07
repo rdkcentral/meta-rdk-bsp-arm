@@ -124,7 +124,7 @@ BBMASK .= "|meta-rdk-broadband/recipes-ccsp/ccsp/ccsp-webui-jst.bb"
 BBMASK .= "|meta-rdk-broadband/recipes-ccsp/ccsp/ccsp-webui-php.bb"
 
 BBMASK .= "|meta-cmf-broadband/recipes-core/util-linux/util-linux_%.bbappend"
-
+BBMASK .= "|meta-rdk-broadband-apps/recipes-kernel/linux/linux-%.bbappend"
 # 2026-04-07 meta-cmf-broadband change breaks DHCP Manager install
 BBMASK .= "|meta-cmf-broadband/recipes-ccsp/ccsp/ccsp-dhcp-mgr.bbappend"
 
