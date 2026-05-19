@@ -1,0 +1,14 @@
+[Unit]
+Description=Incus agent auto installation
+ConditionVirtualization=kvm
+ConditionPathExists=!/lib/systemd/incus-agent-setup
+Requires=btrfs-subvolume.service
+After=btrfs-subvolume.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/install-incus-agent.sh
+SyslogIdentifier=install-incus-agent
+
+[Install]
+WantedBy=multi-user.target
