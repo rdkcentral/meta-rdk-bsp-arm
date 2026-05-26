@@ -45,3 +45,4 @@ if (grep -q -E " / btrfs" /proc/mounts) && ! (grep -q -E "/nvram btrfs" /proc/mo
 	fi
 	mkdir -p "/rdklogs/logs2"
 fi
+systemd-notify --ready
