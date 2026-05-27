@@ -1,0 +1,35 @@
+From 79978c6bd461637ff7a9b16291643897da0e3962 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Mon, 25 May 2026 06:06:56 +0000
+Subject: [PATCH] rdk-wps-monitor: handle power key events separately to WPS
+
+Power button events are used by virtual machine managers
+to signal the child VM to shutdown gracefully.
+
+On a "normal" Linux system this would be handled by systemd-logind
+or perhaps the older acpid.
+
+---
+ rdk-wps-monitor/source/button_callback.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/rdk-wps-monitor/source/button_callback.c b/rdk-wps-monitor/source/button_callback.c
+index 4d3dec3..3031010 100644
+--- a/rdk-wps-monitor/source/button_callback.c
++++ b/rdk-wps-monitor/source/button_callback.c
+@@ -63,6 +63,15 @@ void default_button_callback(const char *device, int button_code, int value) {
+     char button_name[32];
+     snprintf(button_name, sizeof(button_name), "wps_button_%d", button_code);
+ 
++    // Code 116 = KEY_POWER
++    // This is used in virtual machines for the host manager
++    // to implement a graceful shutdown of the VM
++    if (button_code == 116) {
++        log_message(LOG_INFO, "Power button pressed on device %s, issuing power off command", device);
++        system("poweroff");
++        return;
++    }
++
+     // Initialize RBus
+     //err = rbus_open(&handle, "wps_push_button");
+     err = rbus_open(&handle, button_name);
