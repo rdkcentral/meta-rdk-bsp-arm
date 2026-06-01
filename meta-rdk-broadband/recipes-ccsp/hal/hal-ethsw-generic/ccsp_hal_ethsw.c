@@ -118,62 +118,52 @@ int wait_for_wan_manager(void)
 
 void *ethsw_thread_main(void *context __attribute__((unused)))
 {
-    FILE *fp = NULL;
-    char cmd[128], buff[LINK_VALUE_SIZE], *pLink, *previousLinkDetected = "no";
-    int retries = 180;
-    int err;
-    unsigned int link_flags;
-    struct rtnl_link *link;
-    uint8_t x;
-    char eth_intf_names[32];
-    /* TODO: Get link list dynamically on each run,
-     * to handle interfaces appearing/disappearing,
-     * especially during the boot process
-     */
-    previous_link_status_t link_statuses[ETH_INTF_MAX];
-    
     CcspHalEthSwTrace(("%s called\n", __func__));
-  
-    for(x=0; x<ETH_INTF_MAX; x++) {
-        link_statuses[x] = FIRST_RUN;
-    }
+    int previousLinkDetected = 0;
+    int currentLinkDeteced = 0;
+    int timeout = 0;
+    int file = 0;
+
 
     CcspHalEthSwTrace(("%s: Waiting for WAN Manager to start\n", __func__));
     /* Wait for WAN Manager to start and become ready */
     wait_for_wan_manager();
-
-    CcspHalEthSwTrace(("%s: Netlink version active\n", __func__));
-    while(1) {
-        if (linkEventCallback == NULL) {
+    while(timeout != 180)
+    {
+        if (file == access(ETH_INITIALIZE, R_OK))
+	{
+	    CcspHalEthSwTrace(("Eth agent initialized \n"));
+            break;
+        }
+        else
+        {
+            timeout = timeout+1;
             sleep(1);
-            continue;
         }
-        for(x=0; x<ETH_INTF_MAX; x++) {
-            snprintf(eth_intf_names,32,"eth%d", x);
-            if ((err = rtnl_link_get_kernel(sk, 0, (char *)&eth_intf_names[0], &link)) < 0) {
-                /* Ignore "missing" interfaces */
-                if (err == -NLE_NODEV)
-                    continue;
-                CcspHalEthSwTrace(("%s: Unable to get link for interface %s (%d)\n",__func__, eth_intf_names, err));
-                continue;
-            }
-            link_flags = rtnl_link_get_flags(link);
-            if (link_flags & IFF_RUNNING) {
-                if (link_statuses[x] != LINK_WAS_UP) {
-                    CcspHalEthSwTrace(("%s: Reporting interface %s as UP\n",__func__, eth_intf_names));
-                    linkEventCallback((char *)&eth_intf_names[0], "Up");
-                    link_statuses[x] = LINK_WAS_UP;
-                }
-            } else if (link_statuses[x] != LINK_WAS_DOWN) {
-                    CcspHalEthSwTrace(("%s: Reporting interface %s as DOWN\n",__func__, eth_intf_names));
-                    linkEventCallback((char *)&eth_intf_names[0], "Down");
-                    link_statuses[x] = LINK_WAS_DOWN;
-            }
-        }
-        sleep(1);
     }
 
+    while(1)
+    {
+        currentLinkDeteced = GWP_GetEthWanLinkStatus();
+        if (currentLinkDeteced != previousLinkDetected)
+        {
+            if (currentLinkDeteced)
+            {
+                CcspHalEthSwTrace(("send_link_event: Got Link UP Event\n"));
+                ethWanCallbacks.pGWP_act_EthWanLinkUP();
+            }
+            else
+            {
+                CcspHalEthSwTrace(("send_link_event: Got Link DOWN Event\n"));
+                ethWanCallbacks.pGWP_act_EthWanLinkDown();
+            }
+            previousLinkDetected = currentLinkDeteced;
+        }
+        sleep(5);
+        }
+
     return NULL;
+
 }
 
 void CcspHalEthSw_RegisterLinkEventCallback(INT (*newLinkEventCallback)(CHAR *ifname, CHAR *state))
