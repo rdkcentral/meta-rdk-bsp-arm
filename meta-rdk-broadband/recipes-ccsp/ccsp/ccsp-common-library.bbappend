@@ -110,7 +110,8 @@ do_install:append:class-target () {
     #reduce sleep time to 12 sconds
     sed -i 's/300/12/g' ${D}${systemd_unitdir}/system/rfc.service
     sed -i "s/wan-initialized.target/multi-user.target/g" ${D}${systemd_unitdir}/system/rfc.service
-
+    sed -i 's/ CcspPandMSsp.service//g' ${D}${systemd_unitdir}/system/CcspEthAgent.service
+    sed -i "s/After=/After=CcspCrSsp.service/g" ${D}${systemd_unitdir}/system/CcspEthAgent.service
     sed -i "/device.properties/a ExecStartPre=/bin/sh -c '(/usr/ccsp/utopiaInitCheck.sh)'"  ${D}${systemd_unitdir}/system/CcspPandMSsp.service
     #sed -i "/Description=CcspCrSsp service/a After=disable_systemd_restart_param.service" ${D}${systemd_unitdir}/system/CcspCrSsp.service
 
