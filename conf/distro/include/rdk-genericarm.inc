@@ -91,7 +91,7 @@ DISTRO_FEATURES:append:broadband = " cellular_mgr_lite"
 DISTRO_FEATURES:append:broadband = " cellular_libqmi_support"
 
 #RNDIS Feature
-DISTRO_FEATURES_append_broadband = " cellular_hybrid_support"
+#DISTRO_FEATURES_append_broadband = " cellular_hybrid_support"
 DISTRO_FEATURES:append:broadband = " rdkb_power_manager"
 #DISTRO_FEATURES:append:broadband = " rdkb_gpon_manager"
 DISTRO_FEATURES:append:broadband = " rdkb_wan_manager"
