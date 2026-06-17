@@ -1,4 +1,4 @@
-From 0efa1346ad8d57f6a44bdf9a1677c4862f4ef39a Mon Sep 17 00:00:00 2001
+From 5f715e0664867d6c4ee5a3773e5143f0509389a0 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Mon, 1 Jul 2024 12:29:06 +1000
 Subject: [PATCH] scripts: lan_handler: treat generic Arm boards (Ten64,

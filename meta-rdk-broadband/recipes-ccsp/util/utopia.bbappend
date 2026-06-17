@@ -1,7 +1,7 @@
 require meta-rdk-broadband/recipes-ccsp/ccsp/ccsp_common_genericarm.inc
 
-SRCREV:utopia = "9d6535c9476c3ef52c6cb04fccd9abefa0de592c"
-SRCPV:utopia = "2.4.0"
+SRCREV:utopia = "066b37115e316748585d79d51ae0c9b00d163cd4"
+PV_pn-utopia = "2.6.0"
 
 DEPENDS:append = " kernel-autoconf utopia-headers libsyswrapper"
 

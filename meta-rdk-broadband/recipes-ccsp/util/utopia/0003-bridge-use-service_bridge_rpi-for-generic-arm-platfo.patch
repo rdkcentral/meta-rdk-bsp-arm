@@ -1,4 +1,4 @@
-From 099adc2b0bbe29555d7018f9f846247b68e38d89 Mon Sep 17 00:00:00 2001
+From 7d9df6fbaa2ba885fe9444fb09db9c440fb24352 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Tue, 13 Jan 2026 11:39:28 +1100
 Subject: [PATCH] bridge: use service_bridge_rpi for generic arm platform

@@ -1,4 +1,4 @@
-From 72fa8e4d81fc0a36a48e0d824e6ef6e745bf5c61 Mon Sep 17 00:00:00 2001
+From d3830a5029216f8ed7b4bafff06164147596acc4 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Mon, 1 Jul 2024 14:35:10 +1000
 Subject: [PATCH] scripts: utopia_init: do nvram restore_reboot and dropbear on

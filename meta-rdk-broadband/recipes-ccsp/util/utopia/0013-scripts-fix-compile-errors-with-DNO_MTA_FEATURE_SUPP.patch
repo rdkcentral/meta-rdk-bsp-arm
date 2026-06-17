@@ -1,4 +1,4 @@
-From 8a735672768ffc8f3d9704689bb763a7c7415d49 Mon Sep 17 00:00:00 2001
+From 11551a244518ca6e4ddc7112425893eaea392ee2 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Mon, 26 Jan 2026 19:57:14 +1100
 Subject: [PATCH] scripts: fix compile errors with -DNO_MTA_FEATURE_SUPPORT

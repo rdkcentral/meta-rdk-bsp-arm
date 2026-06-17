@@ -1,4 +1,4 @@
-From ec15ae64a6eced3b24d6bed5d0fad67d8952963d Mon Sep 17 00:00:00 2001
+From 6bac1f7d4917483b8f6129961a48b2d16b98600a Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Tue, 13 Jan 2026 11:33:17 +1100
 Subject: [PATCH] service_wan: use _GENERIC_LINUX_DATA_PATH_ to introduce

@@ -1,4 +1,4 @@
-From 1e52d69e0b92c498f05e87d01b0d59a82de8fbf9 Mon Sep 17 00:00:00 2001
+From 42bbb214fb1026c93174ccd79c68820b3cafd6a7 Mon Sep 17 00:00:00 2001
 From: Simon Chung <simon.c.chung@accenture.com>
 Date: Wed, 10 Mar 2021 10:11:41 +0000
 Subject: [PATCH] lan_handler: refresh "fix-lan-handler-for-rpi.patch"

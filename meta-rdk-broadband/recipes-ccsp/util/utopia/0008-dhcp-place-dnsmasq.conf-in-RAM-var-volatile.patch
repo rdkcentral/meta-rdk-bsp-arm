@@ -1,4 +1,4 @@
-From 02ee4c3373c48fc98da19d9a6a73bd563c7c744c Mon Sep 17 00:00:00 2001
+From 38acd9b6b4402def4ad424fdae121329a9f98f68 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 7 Aug 2024 15:17:54 +1000
 Subject: [PATCH] dhcp: place dnsmasq.conf in RAM (/var/volatile)

@@ -1,4 +1,4 @@
-From fbe5043100d869dbda75e8ed1ff0db007ae39502 Mon Sep 17 00:00:00 2001
+From fea46a0b8fb69b6345b42fd7f9ec607e068550ab Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Fri, 8 Nov 2024 14:59:17 +1100
 Subject: [PATCH] service: dhcpv6_client: log to syslog instead of /dev/console
