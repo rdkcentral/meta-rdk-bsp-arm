@@ -32,6 +32,8 @@ do_install:append:broadband () {
     install -m 0755 ${S}/devices/broadband/parodus/scripts/parodus_start.sh ${D}${base_libdir_native}/rdk
     sed -i 's/parodusCmd.cmd &/parodusCmd.cmd/' ${D}${systemd_unitdir}/system/parodus.service
     sed -i '/ExecStart=/a ExecStartPost\=\sysevent set webserver started'  ${D}${systemd_unitdir}/system/parodus.service
+    sed -i "s/After=utopia.service RdkWanManager.service PsmSsp.service CcspPandMSsp.service CcspLMLite.service/After=RdkWanManager.service PsmSsp.service CcspPandMSsp.service CcspLMLite.service/g" ${D}${systemd_unitdir}/system/parodus.service
+    sed -i "s/Requires=utopia.service RdkWanManager.service/Requires=RdkWanManager.service/g" ${D}${systemd_unitdir}/system/parodus.service
 }
 
 SYSTEMD_SERVICE:${PN}:append:broadband = " parodus.service"
