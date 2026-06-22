@@ -23,8 +23,6 @@ SRC_URI:append = " \
     file://onewifi.service \
 "
 
-SRC_URI:append = " file://0009-cosa-assert-AnscCopyString-can-not-be-called-same.patch"
-
 do_configure:prepend:aarch64() {
 	sed -e '/len/ s/^\/*/\/\//' -i ${S}/source/ccsp/components/common/DataModel/dml/components/DslhObjRecord/dslh_objro_access.c
 }
@@ -142,30 +140,11 @@ fi' ${D}/usr/ccsp/ccspPAMCPCheck.sh
     # Fix wan_started path for read-only rootfs operation (/var/wan_started -> /var/run/wan_started)
     sed -i 's|PathChanged=/var/wan_started|PathChanged=/var/run/wan_started|' ${D}${systemd_unitdir}/system/wan-initialized.path
 
-    # Add SyslogIdentifier to systemd service files so the correct process name appears in syslog/journalctl
-    sed -i '/Restart=always/a SyslogIdentifier=CcspCrSsp' ${D}${systemd_unitdir}/system/CcspCrSsp.service
-    sed -i '/Restart=always/a SyslogIdentifier=CcspEthAgent' ${D}${systemd_unitdir}/system/CcspEthAgent.service
-    # Modify CcspEthAgent to use systemd notifications
-    sed -i 's|Type=forking|Type=notify|' ${D}${systemd_unitdir}/system/CcspEthAgent.service
-    sed -i "s|ExecStart=/bin/sh -c '/usr/bin/CcspEthAgent -subsys \$Subsys'|ExecStart=/usr/bin/CcspEthAgent -subsys \${Subsys}|" ${D}${systemd_unitdir}/system/CcspEthAgent.service
-    sed -i '/Restart=always/a SyslogIdentifier=CcspLMLite' ${D}${systemd_unitdir}/system/CcspLMLite.service
-    sed -i '/Restart=always/a SyslogIdentifier=CcspPandMSsp' ${D}${systemd_unitdir}/system/CcspPandMSsp.service
-    sed -i '/Restart=always/a SyslogIdentifier=CcspTandDSsp' ${D}${systemd_unitdir}/system/CcspTandDSsp.service
-    sed -i '/Restart=always/a SyslogIdentifier=CcspTr069PaSsp' ${D}${systemd_unitdir}/system/CcspTr069PaSsp.service
-    sed -i '/Restart=always/a SyslogIdentifier=CcspXdnsSsp' ${D}${systemd_unitdir}/system/CcspXdnsSsp.service
-    sed -i '/Restart=always/a SyslogIdentifier=PsmSsp' ${D}${systemd_unitdir}/system/PsmSsp.service
     # Remove ExecStartPre and ExecStartPost calls from PsmSsp.service
     sed -i '/ExecStartPre=.*utopiaInitCheck.sh/d' ${D}${systemd_unitdir}/system/PsmSsp.service
     sed -i '/ExecStartPre=.*log_psm.db.sh/d' ${D}${systemd_unitdir}/system/PsmSsp.service
     sed -i '/ExecStartPre=.*migration_for_psm.sh/d' ${D}${systemd_unitdir}/system/PsmSsp.service
     sed -i '/ExecStartPost=.*migration_to_psm.sh/d' ${D}${systemd_unitdir}/system/PsmSsp.service
-    sed -i '/Restart=always/a SyslogIdentifier=notifyComp' ${D}${systemd_unitdir}/system/notifyComp.service
-    if [ $DISTRO_WAN_ENABLED = 'true' ]; then
-        sed -i '/Restart=always/a SyslogIdentifier=RdkWanManager' ${D}${systemd_unitdir}/system/RdkWanManager.service
-        # Make RdkWanManager wait for CcspEthAgent
-        sed -i '/^Description=.*Wan Manager/a Requires=CcspEthAgent.service' ${D}${systemd_unitdir}/system/RdkWanManager.service
-        sed -i 's|After=CcspCrSsp.service PsmSsp.service|After=CcspEthAgent.service|' ${D}${systemd_unitdir}/system/RdkWanManager.service
-    fi
 
     if ${@bb.utils.contains('DISTRO_FEATURES', 'partner_default_ext', 'true', 'false', d)}; then
         sed -i "/^After=.*/a Requires=ApplySystemDefaults.service " ${D}${systemd_unitdir}/system/CcspPandMSsp.service
