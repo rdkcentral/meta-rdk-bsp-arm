@@ -104,18 +104,6 @@ typedef enum {
 
 #if defined(FEATURE_RDKB_WAN_MANAGER)
 
-int wait_for_wan_manager(void)
-{
-    struct stat statbuf;
-    int stat_ret = -1;
-
-    while((stat_ret == stat(WAN_MANAGER_INITIALIZED_PATH, &statbuf)) != 0) {
-        sleep(1);
-    }
-
-    return stat_ret;
-}
-
 void *ethsw_thread_main(void *context __attribute__((unused)))
 {
     CcspHalEthSwTrace(("%s called\n", __func__));
@@ -125,9 +113,6 @@ void *ethsw_thread_main(void *context __attribute__((unused)))
     int file = 0;
 
 
-    CcspHalEthSwTrace(("%s: Waiting for WAN Manager to start\n", __func__));
-    /* Wait for WAN Manager to start and become ready */
-    wait_for_wan_manager();
     while(timeout != 180)
     {
         if (file == access(ETH_INITIALIZE, R_OK))
