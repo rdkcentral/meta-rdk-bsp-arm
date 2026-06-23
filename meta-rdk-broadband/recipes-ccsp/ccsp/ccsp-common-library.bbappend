@@ -8,7 +8,10 @@ DEPENDS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' safec', " 
 CXXFLAGS:append = " \
     -I${STAGING_INCDIR}/breakpad \
     -std=c++11 \
+    -Wno-error=maybe-uninitialized \
 "
+# Suppress maybe-uninitialized warnings treated as errors in debug builds
+CFLAGS:append = " -Wno-error=maybe-uninitialized"
 
 SRC_URI:append = " \
     file://ccsp_vendor.h \
@@ -19,31 +22,6 @@ SRC_URI:append = " \
     file://onewifi.service \
 "
 
-# Some systemd unit files invoke through '/bin/sh -c (...)' which causes
-# the true process name not to appear in syslog (e.g journalctl).
-# These patches update the unit files accordingly
-
-SRC_URI:append = " file://0001-service-set-systemd-SyslogIdentifier.patch"
-
-# Fix the path of the 'wan_started' monitor so it reads the correct path
-# (it was moved into the /var/run to work under our read-only rootfs)
-SRC_URI:append = " file://0002-systemd_units-correct-wan_started-path-for-read-only.patch"
-
-# Remove call to migration_to_psm.sh, utopiaInitCheck.sh and log_psm_db.sh
-SRC_URI:append = " file://0003-meta-rdk-bsp-arm-only-remove-pre-and-post-start-call.patch"
-
-# Modify CcspEthAgent systemd unit to use systemd notifications,
-# and RdkWanManager wait for CcspEthAgent's notify event
-SRC_URI:append = " file://0004-systemd-ccsp-eth-agent-sd-notify.patch"
-SRC_URI:append = " file://0005-systemd-rdk-wan-manager-eth-agent.patch"
-
-# Fix compile errors when debug symbol generation / compiler flags
-# are enabled in the BitBake EnvironmentFile
-SRC_URI:append = " file://0006-util_api-fix-compile-error-under-debug-build.patch \
-                   file://0007-util_api-al_pki-resolve-uninitialized-variable-compi.patch \
-                   file://0008-util_api-al_pkcs12-fix-uninitialized-variable-error.patch \
-                   file://0009-cosa-assert-AnscCopyString-can-not-be-called-same.patch \
-"
 
 do_configure:prepend:aarch64() {
 	sed -e '/len/ s/^\/*/\/\//' -i ${S}/source/ccsp/components/common/DataModel/dml/components/DslhObjRecord/dslh_objro_access.c
@@ -158,6 +136,16 @@ fi' ${D}/usr/ccsp/ccspPAMCPCheck.sh
     fi
     install -D -m 0644 ${S}/systemd_units/wan-initialized.target ${D}${systemd_unitdir}/system/wan-initialized.target
     install -D -m 0644 ${S}/systemd_units/wan-initialized.path ${D}${systemd_unitdir}/system/wan-initialized.path
+
+    # Fix wan_started path for read-only rootfs operation (/var/wan_started -> /var/run/wan_started)
+    sed -i 's|PathChanged=/var/wan_started|PathChanged=/var/run/wan_started|' ${D}${systemd_unitdir}/system/wan-initialized.path
+    sed -i 's|Type=forking|Type=notify|' ${D}${systemd_unitdir}/system/CcspEthAgent.service
+    sed -i "s|ExecStart=/bin/sh -c '/usr/bin/CcspEthAgent -subsys \$Subsys'|ExecStart=/usr/bin/CcspEthAgent -subsys \${Subsys}|" ${D}${systemd_unitdir}/system/CcspEthAgent.service
+    # Remove ExecStartPre and ExecStartPost calls from PsmSsp.service
+    sed -i '/ExecStartPre=.*utopiaInitCheck.sh/d' ${D}${systemd_unitdir}/system/PsmSsp.service
+    sed -i '/ExecStartPre=.*log_psm.db.sh/d' ${D}${systemd_unitdir}/system/PsmSsp.service
+    sed -i '/ExecStartPre=.*migration_for_psm.sh/d' ${D}${systemd_unitdir}/system/PsmSsp.service
+    sed -i '/ExecStartPost=.*migration_to_psm.sh/d' ${D}${systemd_unitdir}/system/PsmSsp.service
 
     if ${@bb.utils.contains('DISTRO_FEATURES', 'partner_default_ext', 'true', 'false', d)}; then
         sed -i "/^After=.*/a Requires=ApplySystemDefaults.service " ${D}${systemd_unitdir}/system/CcspPandMSsp.service
