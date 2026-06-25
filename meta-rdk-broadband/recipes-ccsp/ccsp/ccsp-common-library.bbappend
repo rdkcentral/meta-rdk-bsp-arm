@@ -125,7 +125,6 @@ do_install:append:class-target () {
      sed -i "s/wan-initialized.target/multi-user.target/g" ${D}${systemd_unitdir}/system/CcspTelemetry.service
      install -D -m 0644 ${S}/systemd_units/CcspXdnsSsp.service ${D}${systemd_unitdir}/system/CcspXdnsSsp.service
 
-     sed -i "s/After=CcspCrSsp.service/After=CcspCrSsp.service RdkWanManager.service/" ${D}${systemd_unitdir}/system/CcspEthAgent.service
      install -d ${D}${base_libdir}/rdk
      install -m 755 ${WORKDIR}/ethwan_intf.sh ${D}${base_libdir}/rdk/
      install -m 755 ${WORKDIR}/brlan0_check.sh ${D}${base_libdir}/rdk/
@@ -160,6 +159,7 @@ fi' ${D}/usr/ccsp/ccspPAMCPCheck.sh
     install -D -m 0644 ${S}/systemd_units/wan-initialized.target ${D}${systemd_unitdir}/system/wan-initialized.target
     install -D -m 0644 ${S}/systemd_units/wan-initialized.path ${D}${systemd_unitdir}/system/wan-initialized.path
 
+    sed -i "s/After=CcspCrSsp.service/After=CcspCrSsp.service RdkWanManager.service/" ${D}${systemd_unitdir}/system/CcspEthAgent.service
     if ${@bb.utils.contains('DISTRO_FEATURES', 'partner_default_ext', 'true', 'false', d)}; then
         sed -i "/^After=.*/a Requires=ApplySystemDefaults.service " ${D}${systemd_unitdir}/system/CcspPandMSsp.service
         if [ $DISTRO_OneWiFi_ENABLED = 'true' ]; then
