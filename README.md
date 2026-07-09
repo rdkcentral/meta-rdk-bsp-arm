@@ -8,19 +8,26 @@ specifications. This layer only sources from community upstream sources (e.g ker
 
 ## How to use
 
-There are some RDK-B packages for which custom branches are needed, so you will need to use
-our `rdkb-bsp-arm.xml` manifest.
+The manifest files are now published in the [rdkb-manifest](https://github.com/rdkcentral/rdkb-manifest)
+repository on GitHub.
 
 ```
 $ mkdir rdkb-arm
 $ cd rdkb-arm
-$ repo init -u 'https://github.com/rdkcentral/meta-rdk-bsp-arm/' \
-    -m "manifests/rdkb-bsp-arm.xml" \
-    -b "main"
+$ repo init -u 'https://github.com/rdkcentral/rdkb-manifest/' \
+    -m "rdkb-arm.xml" \
+    -b "develop"
 $ repo sync
 $ source meta-rdk-bsp-arm/setup-environment
 $ bitbake rdk-generic-broadband-image
 ```
+
+**ATTENTION**: The `develop` branch in the repo command above
+will pull the rolling development version of RDK-B.
+
+For the current "release" version, please switch to the `main`
+branch in this repository and follow the instructions mentioned
+there.
 
 If you need to enable features such as unified-wifi-mesh/EasyMesh, you can do this
 by creating the `conf/distro/include/local-settings.inc` (under your local

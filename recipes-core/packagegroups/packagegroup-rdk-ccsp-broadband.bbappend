@@ -13,18 +13,17 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-adv-security"
 RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-webui-jst"
 RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-webui-php"
 
-RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "parodus"
-
 RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "\
     ${@bb.utils.contains('DISTRO_FEATURES', 'RDM', '', ' rdm-agent', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'webpa', '', ' parodus', d)} \
 "
 
 RDEPENDS_packagegroup-rdk-ccsp-broadband:append = "\
     rdk-logger \
     libseshat \
     notify-comp \
-    start-parodus \
-    parodus2ccsp \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'webpa', 'start-parodus', ' ', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'webpa', 'parodus2ccsp', ' ', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'cellular_hybrid_support', 'usbmuxd', ' ', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'cellular_hybrid_support', 'usb-modeswitch', ' ', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'cellular_hybrid_support', 'usb-modeswitch-data', ' ', d)} \

@@ -1254,10 +1254,10 @@
 
   <Record name="dmsb.wanmanager.if.2.BaseInterface" type="astr">Device.Cellular.Interface.1</Record>
 
-  <Record name="dmsb.wanmanager.if.2.Selection.Enable" type="astr">FALSE</Record>
+  <Record name="dmsb.wanmanager.if.2.Selection.Enable" type="astr">TRUE</Record>
   <Record name="dmsb.wanmanager.if.2.Selection.ActiveLink" type="astr">FALSE</Record>
   <Record name="dmsb.wanmanager.if.2.Selection.RequiresReboot" type="astr">FALSE</Record>
-  <Record name="dmsb.wanmanager.if.2.Selection.Group" type="astr">1</Record>
+  <Record name="dmsb.wanmanager.if.2.Selection.Group" type="astr">2</Record>
   <Record name="dmsb.wanmanager.if.2.Selection.Priority" type="astr">1</Record>
   <Record name="dmsb.wanmanager.if.2.Selection.Timeout" type="astr">20</Record>
 
@@ -1286,6 +1286,7 @@
   <Record name="dmsb.wanmanager.if.3.VirtualInterface.1.Alias" type="astr">SFPOE</Record>
   <Record name="dmsb.wanmanager.if.3.VirtualInterface.1.Name" type="astr">eth8</Record>
   <Record name="dmsb.wanmanager.if.3.Selection.Enable" type="astr">TRUE</Record>
+  <Record name="dmsb.wanmanager.if.3.Selection.Group" type="astr">1</Record>
   <Record name="dmsb.wanmanager.if.3.Selection.Priority" type="astr">2</Record>
   <Record name="dmsb.wanmanager.if.3.VirtualInterface.1.EnableMAPT" type="astr">FALSE</Record>
   <Record name="dmsb.wanmanager.if.3.VirtualInterface.1.EnableDSLite" type="astr">FALSE</Record>
