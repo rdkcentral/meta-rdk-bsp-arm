@@ -1406,10 +1406,4 @@
   <Record name="dmsb.dhcpmanager.dhcpv6.Client.1.SentOption.3.Alias" type="astr">pd</Record>
   <Record name="dmsb.dhcpmanager.dhcpv6.Client.1.SentOption.3.Tag" type="astr" >25</Record>
   <Record name="dmsb.dhcpmanager.dhcpv6.Client.1.SentOption.3.Value" type="astr">{ prefix ::/56 }</Record>
-  <Record platform="bpi" name="BPI.com.cisco.spvtg.ccsp.tr069pa.Device.ManagementServer.URL" type="astr">example_bpi</Record>
-  <Record platform="bpi" name="BPI.com.cisco.spvtg.ccsp.tr069pa.Device.ManagementServer.URL" type="astr">example_bpi</Record>
-  <Record platform="rpi" name="RPI.com.cisco.spvtg.ccsp.tr069pa.Device.ManagementServer.URL" type="astr">example_rpi</Record>
-  <Record platform="nxp" name="NXP.com.cisco.spvtg.ccsp.tr069pa.Device.ManagementServer.URL" type="astr">example_nxp</Record>
-  <Record platform="rpi" name="RPI.com.cisco.spvtg.ccsp.tr069pa.Device.ManagementServer.URL" type="astr">example_rpi</Record>
-  <Record platform="nxp" name="NXP.com.cisco.spvtg.ccsp.tr069pa.Device.ManagementServer.URL" type="astr">example_nxp</Record>
 </Provision>
