@@ -1,7 +1,11 @@
 require meta-rdk-broadband/recipes-ccsp/ccsp/ccsp_common_genericarm.inc
 
-SRCREV:utopia = "c1b0ffa9b4eab392737931b48e9e23368b81d9a9"
-PV:pn-utopia = "2.7.2pre"
+# See conf/include/srcrev-override.inc
+# Due to the mechanics of bitbake, we cannot override these
+# at the layer level ourselves, they must be overridden in the
+# .bbappend
+SRCREV:utopia = "${GENERIC_ARM_UTOPIA_SRCREV}"
+PV:pn-utopia = "${GENERIC_ARM_UTOPIA_PV}"
 
 DEPENDS:append = " kernel-autoconf utopia-headers libsyswrapper"
 

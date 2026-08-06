@@ -5,10 +5,13 @@ LICENSE = "Apache-2.0 & BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=baa21dec03307f641a150889224a157f"
 SRC_URI = "${CMF_GITHUB_ROOT}/utopia;protocol=https;nobranch=1"
 
-# Remove these and revert to settings below when utopia.bbappend SRCREV removed
-SRCREV = "c1b0ffa9b4eab392737931b48e9e23368b81d9a9"
-PV = "2.7.2pre"
-
+# See conf/include/srcrev-override.inc
+# Due to the mechanics of bitbake, we cannot override these
+# at the layer level ourselves, they must be overridden in the
+# .bbappend
+SRCREV = "${GENERIC_ARM_UTOPIA_SRCREV}"
+PV = "${GENERIC_ARM_UTOPIA_PV}"
+# If override is remove, restore the settings below
 # SRCREV = "${SRCREV:pn-utopia}"
 # PV = "${PV:pn-utopia}"
 # PR = "${PR:pn-utopia}"
