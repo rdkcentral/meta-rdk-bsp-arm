@@ -22,6 +22,11 @@ SRC_URI:append = " \
     file://0009-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch \
     file://0010-service-dhcpv6_client-log-to-syslog-instead-of-dev-c.patch \
     file://0011-scripts-fix-compile-errors-with-DNO_MTA_FEATURE_SUPP.patch \
+    file://0012-multinet-add-handling-for-genericarm-platform.patch \
+    file://0013-utopia_init-add-creation-of-brlan0.patch \
+    file://0014-init-wire-up-lan-start-stop-restart-to-lan_handler.patch \
+    file://0015-services-create-a-simpler-stub-registration-for-mult.patc \
+    file://vlan_util_genericarm.sh \
     file://system_defaults \
 "
 
@@ -78,6 +83,8 @@ do_install:append() {
     rm ${D}${sysconfdir}/utopia/service.d/service_bridge_puma7.sh
     rm ${D}${sysconfdir}/utopia/service.d/service_bridge_arm.sh
     rm ${D}${sysconfdir}/utopia/service.d/service_bridge_generic.sh
+
+    install -m 755 ${WORKDIR}/vlan_util_genericarm.sh ${D}${sysconfdir}/utopia/service.d/
 
     install -m 755 ${S}/source/scripts/init/service.d/service_ddns/*.sh ${D}${sysconfdir}/utopia/service.d/service_ddns
     install -m 755 ${S}/source/scripts/init/service.d/service_dhcp_server/* ${D}${sysconfdir}/utopia/service.d/service_dhcp_server
