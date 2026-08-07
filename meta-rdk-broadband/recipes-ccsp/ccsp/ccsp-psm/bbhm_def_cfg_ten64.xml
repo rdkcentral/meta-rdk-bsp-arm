@@ -1184,10 +1184,16 @@
   <Record name="dmsb.ethagent.useforeth" type="astr" contentType="bool">TRUE</Record>
   <Record name="dmsb.ethagent.if.1.Name" type="astr">eth0</Record>
   <Record name="dmsb.ethagent.if.1.IsLinuxAPI" type="astr" contentType="bool">TRUE</Record>
+  <Record name="dmsb.ethagent.if.1.AddToLanBridge" type="astr" contentType="bool">TRUE</Record>
+  <Record name="dmsb.ethagent.if.1.PortCapability" type="astr">LAN</Record>
   <Record name="dmsb.ethagent.if.2.Name" type="astr">eth6</Record>
   <Record name="dmsb.ethagent.if.2.IsLinuxAPI" type="astr" contentType="bool">TRUE</Record>
+  <Record name="dmsb.ethagent.if.2.AddToLanBridge" type="astr" contentType="bool">FALSE</Record>
+  <Record name="dmsb.ethagent.if.2.PortCapability" type="astr">WAN</Record>
   <Record name="dmsb.ethagent.if.3.Name" type="astr">eth8</Record>
   <Record name="dmsb.ethagent.if.3.IsLinuxAPI" type="astr" contentType="bool">TRUE</Record>
+  <Record name="dmsb.ethagent.if.3.PortCapability" type="astr">WAN</Record>
+  <Record name="dmsb.ethagent.if.3.AddToLanBridge" type="astr" contentType="bool">FALSE</Record>
    <!-- ccsp-vlanmanager EthLink records -->
   <Record name="dmsb.ethlink.ifcount" type="astr">1</Record>
 
