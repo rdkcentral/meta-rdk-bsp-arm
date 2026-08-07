@@ -172,6 +172,7 @@ DISTRO_FEATURES:append:broadband = " no_mta_support"
 # Disable RDM
 DISTRO_FEATURES:remove:broadband = " RDM"
 
+DISTRO_FEATURES:append:broadband = " rdkb_auto_port_switch"
 SESSIONMGR_WS_RPC_ENABLE = "1"
 
 #REFPLTB-2784 : easymesh controller arch only supports with wifiagent
