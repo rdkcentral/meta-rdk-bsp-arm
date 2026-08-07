@@ -26,6 +26,7 @@ SRC_URI:append:broadband = " \
     file://proc-event.cfg \
     ${@bb.utils.contains('DISTRO_FEATURES', 'cellular_hybrid_support', 'file://rdkb_usb.cfg', '', d)} \
 "
+SRC_URI:append:raspberrypi64-rdk-broadband = " file://wifi.cfg"
 
 # Patches required to allow backported mt76 driver
 SRC_URI:append:armefi64 = " file://04_mtk-backports-for-5-15.patch \

@@ -25,6 +25,7 @@ PREFERRED_PROVIDER_virtual/mfrfwlib ?= "fwupgrade-lib"
 
 # Use linux-backports to supply the MediaTek WiFi (mt76) driver
 PREFERRED_PROVIDER_virtual/wifi-vendor-mtk ?= "linux-backports"
+PREFERRED_PROVIDER_virtual/wifi-vendor-mtk:raspberrypi64-rdk-broadband = ""
 
 VIRTUAL-RUNTIME_mfrlib = "mfrlibs-rpi"
 VIRTUAL-RUNTIME_dtcpmgr = ""
@@ -138,6 +139,7 @@ DISTRO_FEATURES:append:broadband = " HOSTAPD_2_11"
 
 # Use MLO/WiFi7 code
 DISTRO_FEATURES:append:broadband = " CONFIG_IEEE80211BE"
+DISTRO_FEATURES:remove:raspberrypi64-rdk-broadband = " CONFIG_IEEE80211BE"
 # OneWifi feature
 DISTRO_FEATURES:append:broadband = " OneWifi"
 

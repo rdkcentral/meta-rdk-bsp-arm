@@ -18,7 +18,8 @@
 ##################################################################################
 [Unit]
 Description=OneWiFi
-#After=CcspPandMSsp.service
+After=CcspPandMSsp.service
+ConditionPathExists=/tmp/wifi_driver_initialized
 
 [Service]
 Type=forking
@@ -35,6 +36,3 @@ ExecStopPost=/bin/sh -c 'echo "`date`: Stopping/Restarting OneWifi" >> ${PROCESS
 TimeoutStartSec=120
 Restart=always
 SyslogIdentifier=OneWifi
-
-[Install]
-WantedBy=multi-user.target
