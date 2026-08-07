@@ -1,8 +1,8 @@
-From 21d23352cf592cc698b1c5617bf896c653a4b94b Mon Sep 17 00:00:00 2001
+From 762c07bda09922d13dfa4064af4b98aab99b15aa Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 5 Aug 2026 13:13:17 +1000
-Subject: [PATCH 04/12] firewall: add _PLATFORM_GENERICARM_ for generic Arm
- reference platform
+Subject: [PATCH] firewall: add _PLATFORM_GENERICARM_ for generic Arm reference
+ platform
 
 This platform is similar to other RDK-B OSS reference platforms,
 in using a normal Linux data path without vendor flow acceleration.
@@ -13,13 +13,14 @@ Signed-off-by: Mathew McBride <matt@traverse.com.au>
 Co-developed-by: mahanteshchitt <mahantesh_chittapur@comcast.com>
 (Revert to adding a seperate _PLATFORM_GENERICARM_ as proposed at
 https://github.com/rdkcentral/utopia/pull/312)
+
 ---
  source/firewall/firewall.c      | 67 ++++++++++++++++-----------------
  source/firewall/firewall_ipv6.c |  4 +-
  2 files changed, 35 insertions(+), 36 deletions(-)
 
 diff --git a/source/firewall/firewall.c b/source/firewall/firewall.c
-index 780da26..1ab54d2 100644
+index 780da26..ff83557 100644
 --- a/source/firewall/firewall.c
 +++ b/source/firewall/firewall.c
 @@ -3264,7 +3264,7 @@ static int prepare_globals_from_configuration(void)
@@ -176,7 +177,7 @@ index 780da26..1ab54d2 100644
 +#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_BANANAPI_R4_) && !defined(_PLATFORM_GENERICARM_)
     redirect_dns_to_extender(nat_fp,AF_INET);
 -#endif //_PLATFORM_RASPBERRYPI_ && _PLATFORM_BANANAPI_R4_
-+#endif //_PLATFORM_RASPBERRYPI_ && _PLATFORM_BANANAPI_R4_ && _PLATFORM_GENERICARM_
++#endif // none of (_PLATFORM_RASPBERRYPI_, _PLATFORM_BANANAPI_R4_ or _PLATFORM_GENERICARM_)
  #endif 
  
  #if defined(_WNXL11BWL_PRODUCT_REQ_) 
@@ -306,7 +307,7 @@ index 780da26..1ab54d2 100644
             fprintf(filter_fp, "-A FORWARD -i %s -o privbr -p tcp -m multiport --dport 22,23,80,443 -j DROP\n",XHS_IF_NAME);
             fprintf(filter_fp, "-A FORWARD -i %s -o privbr -p tcp -m multiport --dport 22,23,80,443 -j DROP\n",LNF_IF_NAME);
 diff --git a/source/firewall/firewall_ipv6.c b/source/firewall/firewall_ipv6.c
-index 83bc500..3bd3e03 100644
+index 83bc500..f20089c 100644
 --- a/source/firewall/firewall_ipv6.c
 +++ b/source/firewall/firewall_ipv6.c
 @@ -2279,9 +2279,9 @@ void do_ipv6_nat_table(FILE* fp)
@@ -317,10 +318,7 @@ index 83bc500..3bd3e03 100644
 +#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_BANANAPI_R4_) && !defined(_PLATFORM_GENERICARM_)
        redirect_dns_to_extender(fp,AF_INET6);
 -#endif //_PLATFORM_RASPBERRYPI_ && _PLATFORM_BANANAPI_R4_
-+#endif // !(_PLATFORM_RASPBERRYPI_ && _PLATFORM_BANANAPI_R4_ && _PLATFORM_GENERICARM_)
++#endif // none of (_PLATFORM_RASPBERRYPI_, _PLATFORM_BANANAPI_R4_, _PLATFORM_GENERICARM_)
  #endif 
  
  #if defined(_WNXL11BWL_PRODUCT_REQ_) 
--- 
-2.52.0
-

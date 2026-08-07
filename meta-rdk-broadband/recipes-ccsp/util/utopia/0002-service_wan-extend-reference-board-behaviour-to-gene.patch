@@ -1,8 +1,7 @@
-From 7a39cab0033d1c19b6b5f3a1d299bf27b256dc7b Mon Sep 17 00:00:00 2001
+From bf87b3b22cc56fa1bf0bb8c75923a0085f33442f Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 5 Aug 2026 14:38:57 +1000
-Subject: [PATCH 05/12] service_wan: extend reference board behaviour to
- generic Arm
+Subject: [PATCH] service_wan: extend reference board behaviour to generic Arm
 
 This is for the meta-rdk-bsp-arm project. Similar to other
 RDK-B OSS reference boards that do not use a vendor dataplane,
@@ -10,6 +9,7 @@ extend the behaviour defined for those reference platforms
 to this one.
 
 Signed-off-by: Mathew McBride <matt@traverse.com.au>
+
 ---
  source/service_wan/service_wan.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
@@ -45,6 +45,3 @@ index b9abc63..5c6efcf 100644
      		fprintf(stderr, "[%s] ready is set from misc handler. Doing gw_lan_refresh\n", PROG_NAME);
              #if defined (_XB6_PRODUCT_REQ_) && defined (_COSA_BCM_ARM_)
                  v_secure_system("firewall");
--- 
-2.52.0
-

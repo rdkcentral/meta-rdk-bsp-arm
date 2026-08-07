@@ -1,13 +1,13 @@
-From 96cdca6a0673759111ace3e29c256acd7f4f0870 Mon Sep 17 00:00:00 2001
+From f91b6c433572ea3c3682e826d2edf19d4b784593 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Mon, 26 Jan 2026 19:57:14 +1100
-Subject: [PATCH 12/12] scripts: fix compile errors with
- -DNO_MTA_FEATURE_SUPPORT
+Subject: [PATCH] scripts: fix compile errors with -DNO_MTA_FEATURE_SUPPORT
 
 apply_system_defaults_helper.c: In function 'apply_partnerId_default_values':
 apply_system_defaults_helper.c:2328:10: error: unused variable 'secdhcpoption'
 apply_system_defaults_helper.c:2327:10: error: unused variable 'pridhcpoption'
 apply_system_defaults_helper.c:2326:10: error: unused variable 'startupipmode'
+
 ---
  source/scripts/init/src/apply_system_defaults_helper.c | 6 ++++--
  1 file changed, 4 insertions(+), 2 deletions(-)
@@ -31,6 +31,3 @@ index 3d11ae3..84ff74b 100644
      int	    isNeedToApplyPartnersDefault = 1;
      int	    isNeedToApplyPartnersPSMDefault = 0;
      char    ntpServer1[64]     = {0};
--- 
-2.52.0
-

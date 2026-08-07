@@ -1,32 +1,29 @@
-From e94bed2678e6ded32931854093e8fc4865c2a248 Mon Sep 17 00:00:00 2001
+From 4eaf5fba468017aaee93a1457031f4bc1423f849 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
-Date: Mon, 1 Jul 2024 12:29:06 +1000
-Subject: [PATCH 01/12] scripts: lan_handler: treat generic Arm boards (Ten64,
- qemu-virt) similar to Raspberry Pi
+Date: Thu, 6 Aug 2026 11:29:20 +1000
+Subject: [PATCH] scripts: lan_handler: extend OSS reference treatment to
+ generic Arm
+
+genericarm refers to the meta-rdk-bsp-arm project.
+Treat this similarly to other RDK-B OSS reference devices.
+
+As support "turris" target was stopped a long time ago (2024[1]),
+we replace references to it to avoid extra code bloat.
+
+[1] See deprecation notice on https://github.com/rdkcmf/meta-turris
 
 ---
- source/scripts/init/service.d/lan_handler.sh                | 6 ++++--
- source/scripts/init/service.d/service_dhcp_server.sh        | 4 ++--
- .../service.d/service_dhcp_server/dhcp_server_functions.sh  | 2 +-
- source/scripts/init/service.d/service_ipv4.sh               | 2 +-
- 4 files changed, 8 insertions(+), 6 deletions(-)
+ source/scripts/init/service.d/lan_handler.sh         | 12 ++++++------
+ source/scripts/init/service.d/service_dhcp_server.sh |  4 ++--
+ .../service_dhcp_server/dhcp_server_functions.sh     |  2 +-
+ source/scripts/init/service.d/service_ipv4.sh        |  2 +-
+ 4 files changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/source/scripts/init/service.d/lan_handler.sh b/source/scripts/init/service.d/lan_handler.sh
-index 2db3e39..4b9006b 100755
+index 2db3e39..18d2da2 100755
 --- a/source/scripts/init/service.d/lan_handler.sh
 +++ b/source/scripts/init/service.d/lan_handler.sh
-@@ -54,7 +54,9 @@ SERVICE_NAME="lan_handler"
- 
- POSTD_START_FILE="/tmp/.postd_started"
- 
--RPI_SPECIFIC=$BOX_TYPE
-+# Traverse edit: Force the use of the Raspberry Pi handlers
-+# for now. It does what we need it to do (setup brlan0)
-+RPI_SPECIFIC="rpi"
- #args: router IP, subnet mask
- ap_addr() {
-     if [ "$2" ]; then
-@@ -364,7 +366,7 @@ case "$1" in
+@@ -364,7 +364,7 @@ case "$1" in
  		echo_t "THE INSTANT=$INST"
  		echo_t "THE INSTANT=$INST"
          #(use a simpler test than this -- but Hacky, since it assumes everything we want is not XB3!!)if [ "$BOX_TYPE" = "TCCBR" ] || [ "$BOX_TYPE" = "XB6" -a "$MANUFACTURE" = "Technicolor" ] || [ "$BOX_TYPE" = "XB7" -a "$MANUFACTURE" = "Technicolor" ] ; then
@@ -35,6 +32,47 @@ index 2db3e39..4b9006b 100755
                  	COUNTER=1
  			while [ $COUNTER -lt 10 ]; do
  				echo_t "RDKB_SYSTEM_BOOT_UP_LOG : INST returned null , retrying $COUNTER"
+@@ -436,7 +436,7 @@ case "$1" in
+ 
+         sysevent set primary_lan_l3net ${INST}
+ 	#BRLAN0 ISSUE : Manually invoking lan-start to fix brlan0 failure during intial booting. Root cause for event has to be identified
+-	   	if [ "$RPI_SPECIFIC" = "rpi" ] || [ "$BOX_TYPE" = "bpi" ]; then
++	if [ "$RPI_SPECIFIC" = "rpi" ] || [ "$BOX_TYPE" = "bpi" ] || [ "$BOX_TYPE" = "genericarm" ]; then
+         		        sleep 2
+                                 L3NET=`sysevent get primary_lan_l3net`
+                                 if [ -z "$L3NET" ]; then
+@@ -444,7 +444,7 @@ case "$1" in
+                                      sysevent set primary_lan_l3net $L3NET
+                                 fi
+                 fi
+-	fi
++	fi # end BRLAN0 ISSUE workaround
+ 	if [ -z "$INST" ] && [ "$BOX_TYPE" = "TCCBR" ]; then
+ 		echo_t "INST is empty on TCCBR; defaulting primary_lan_l3net to 4"
+ 		sysevent set primary_lan_l3net 4
+@@ -460,7 +460,7 @@ case "$1" in
+       
+         # Laninit complete happens as part of the service_dhcp_server.sh itself.Firewall restart happens as part of service_ip4 itself.In the above code we #are setting many sysevents related to LAN hence adding the lan_init complete logs here.Also as oer the logs , we moving to bring the eth interface after this.Hence lan in
+ 	# compelte can brought in here.
+-        if [ "$RPI_SPECIFIC" = "rpi" ] || [ "$BOX_TYPE" = "bpi" ]; then
++        if [ "$RPI_SPECIFIC" = "rpi" ] || [ "$BOX_TYPE" = "bpi" ] || [ "BOX_TYPE" = "genericarm" ]; then
+             if [ -e "/usr/bin/print_uptime" ]; then
+                 /usr/bin/print_uptime "Laninit_complete"
+             fi
+@@ -544,11 +544,11 @@ case "$1" in
+    ;;
+ 
+    lan-start)
+-        if [ "$RPI_SPECIFIC" = "rpi" ] || [ "$BOX_TYPE" = "bpi" ] || [ "$BOX_TYPE" = "HUB4" ] || [ "$BOX_TYPE" = "SR213" ] || [ "$BOX_TYPE" = "SCER11BEL" ] || [ "$BOX_TYPE" = "SCXF11BFL" ] || [ "$BOX_TYPE" = "XER2" ]; then
++        if [ "$RPI_SPECIFIC" = "rpi" ] || [ "$BOX_TYPE" = "bpi" ] || [ "$BOX_TYPE" = "genericarm" ] || [ "$BOX_TYPE" = "HUB4" ] || [ "$BOX_TYPE" = "SR213" ] || [ "$BOX_TYPE" = "SCER11BEL" ] || [ "$BOX_TYPE" = "SCXF11BFL" ] || [ "$BOX_TYPE" = "XER2" ]; then
+              L3Net=`sysevent get primary_lan_l3net`
+              if [ -z "$L3Net" ]; then
+                  echo_t "RDKB_SYSTEM_BOOT_UP_LOG : L3Net is null"
+-                     if [ "$RPI_SPECIFIC" = "rpi" ] || [ "$BOX_TYPE" = "bpi" ]; then
++                     if [ "$RPI_SPECIFIC" = "rpi" ] || [ "$BOX_TYPE" = "bpi" ] || [ "$BOX_TYPE" = "genericarm" ]; then
+                          L3Net=4
+                          sysevent set primary_lan_l3net $L3Net
+                      else
 diff --git a/source/scripts/init/service.d/service_dhcp_server.sh b/source/scripts/init/service.d/service_dhcp_server.sh
 index 0d82488..60c0dec 100755
 --- a/source/scripts/init/service.d/service_dhcp_server.sh
@@ -83,6 +121,3 @@ index 91bada3..68ee087 100755
                   LAN_STATUS=`sysevent get lan-status`
                   if [ "$LAN_STATUS" = "stopped" ]; then
                        echo_t "service_ipv4 : Starting lan-status"
--- 
-2.52.0
-

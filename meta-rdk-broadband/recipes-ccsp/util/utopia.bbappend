@@ -11,18 +11,17 @@ DEPENDS:append = " kernel-autoconf utopia-headers libsyswrapper"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 SRC_URI:append = " \
-    file://0001-scripts-lan_handler-treat-generic-Arm-boards-Ten64-q.patch \
-    file://0002-lan_handler-refresh-fix-lan-handler-for-rpi.patch.patch \
-    file://0003-bridge-use-service_bridge_rpi-for-generic-arm-platfo.patch \
-    file://0004-firewall-add-_PLATFORM_GENERICARM_-for-generic-Arm-r.patch \
-    file://0005-service_wan-extend-reference-board-behaviour.patch \
-    file://0006-scripts-utopia_init-do-nvram-restore_reboot-and-drop.patch \
-    file://0007-scripts-lan_handler-create-flag-files-for-lan-start-.patch \
-    file://0008-dhcp-place-dnsmasq.conf-in-RAM-var-volatile.patch \
-    file://0009-igd-place-IGD-temporary-files-under-var-volatile.patch \
-    file://0010-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch \
-    file://0011-service-dhcpv6_client-log-to-syslog-instead-of-dev-c.patch \
-    file://0012-scripts-fix-compile-errors-with-DNO_MTA_FEATURE_SUPP.patch \
+    file://0001-firewall-add-_PLATFORM_GENERICARM_-for-generic-Arm-r.patch \
+    file://0002-service_wan-extend-reference-board-behaviour-to-gene.patch \
+    file://0003-firewall-fix-typo-in-RDKB-21814-comment.patch \
+    file://0004-scripts-utopia_init-do-nvram-restore_reboot-and-drop.patch \
+    file://0005-scripts-lan_handler-extend-OSS-reference-treatment-t.patch \
+    file://0006-bridge-use-generic-service-bridge-for-generic-arm-pl.patch \
+    file://0007-dhcp-place-dnsmasq.conf-in-RAM-var-volatile.patch \
+    file://0008-igd-place-IGD-temporary-files-under-var-volatile.patch \
+    file://0009-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch \
+    file://0010-service-dhcpv6_client-log-to-syslog-instead-of-dev-c.patch \
+    file://0011-scripts-fix-compile-errors-with-DNO_MTA_FEATURE_SUPP.patch \
     file://system_defaults \
 "
 
@@ -74,7 +73,12 @@ do_install:append() {
     install -m 755 ${S}/source/scripts/init/system/utopia_init.sh ${D}${sysconfdir}/utopia/
     install -m 644 ${S}/source/scripts/init/defaults/system_defaults_arm ${D}${sysconfdir}/utopia/system_defaults
     install -m 755 ${S}/source/scripts/init/service.d/*.sh ${D}${sysconfdir}/utopia/service.d/
-    install -m 755 ${S}/source/scripts/init/service.d/service_bridge/*.sh ${D}${sysconfdir}/utopia/service.d/service_bridge
+    # remove service_bridge.sh related to other devices
+    rm ${D}${sysconfdir}/utopia/service.d/service_bridge_rpi.sh
+    rm ${D}${sysconfdir}/utopia/service.d/service_bridge_puma7.sh
+    rm ${D}${sysconfdir}/utopia/service.d/service_bridge_arm.sh
+    rm ${D}${sysconfdir}/utopia/service.d/service_bridge_generic.sh
+
     install -m 755 ${S}/source/scripts/init/service.d/service_ddns/*.sh ${D}${sysconfdir}/utopia/service.d/service_ddns
     install -m 755 ${S}/source/scripts/init/service.d/service_dhcp_server/* ${D}${sysconfdir}/utopia/service.d/service_dhcp_server
     install -m 755 ${S}/source/scripts/init/service.d/service_lan/*.sh ${D}${sysconfdir}/utopia/service.d/service_lan
@@ -93,7 +97,6 @@ do_install:append() {
     install -m 755 ${S}/source/scripts/init/service.d/service_cosa_arm.sh ${D}${sysconfdir}/utopia/service.d/service_cosa.sh
     install -m 755 ${S}/source/scripts/init/system/need_wifi_default.sh ${D}${sysconfdir}/utopia/
     touch ${D}${sysconfdir}/dhcp_static_hosts
-    install -m 755 ${S}/source/scripts/init/service.d/service_bridge_rpi.sh ${D}${sysconfdir}/utopia/service.d/service_bridge.sh
     install -m 755 ${S}/source/scripts/init/service.d/service_dynamic_dns.sh ${D}${sysconfdir}/utopia/service.d/service_dynamic_dns.sh     
 
     # Creating symbolic links to install files in specific directory as in legacy builds

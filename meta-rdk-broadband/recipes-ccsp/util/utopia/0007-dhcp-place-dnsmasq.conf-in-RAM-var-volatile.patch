@@ -1,9 +1,10 @@
-From 303bc6fafc8aaa5a6b36909b47f71aa70ddce9ba Mon Sep 17 00:00:00 2001
+From d95562c7a216caf2b8d1d42ae3d06af4ec60ea32 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 7 Aug 2024 15:17:54 +1000
-Subject: [PATCH 08/12] dhcp: place dnsmasq.conf in RAM (/var/volatile)
+Subject: [PATCH] dhcp: place dnsmasq.conf in RAM (/var/volatile)
 
 On a completely read-only filesystem, it is not possible to create a file under /var itself
+
 ---
  source/scripts/init/service.d/service_dhcp_server.sh | 2 +-
  source/service_dhcp/dhcp_server_functions.c          | 2 +-
@@ -49,6 +50,3 @@ index 77b2d35..5e6d1c1 100644
  #define PID_FILE    "/var/run/dnsmasq.pid"
  #define RPC_CLIENT	"/usr/bin/rpcclient"
  #define XHS_IF_NAME "brlan1"
--- 
-2.52.0
-

@@ -1,7 +1,7 @@
-From f23d4d1ea95d4d23bfbfff6cd33b91968e8d7915 Mon Sep 17 00:00:00 2001
+From 817c796a26cc7133653a18006df17c865bce9860 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 4 Sep 2024 15:36:18 +1000
-Subject: [PATCH 10/12] RDKBDEV-XXXX: remove usages of get_current_wan_ifname()
+Subject: [PATCH] RDKBDEV-XXXX: remove usages of get_current_wan_ifname()
 
 get_current_wan_ifname() calls into the platform HAL, which bypasses
 WAN Manager if it is active. Furthermore, get_current_wan_ifname() needs
@@ -9,12 +9,13 @@ to return a static pointer to the interface name (not on the stack),
 which isn't necessarily guaranteed on the current HAL implementations.
 
 Signed-off-by: Mathew McBride <matt@traverse.com.au>
+
 ---
  source/firewall/firewall.c | 22 +++++++++++-----------
  1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/source/firewall/firewall.c b/source/firewall/firewall.c
-index a21bf44..522624d 100644
+index f9795f6..694eb64 100644
 --- a/source/firewall/firewall.c
 +++ b/source/firewall/firewall.c
 @@ -1189,7 +1189,7 @@ int do_mapt_rules_v4(FILE *nat_fp, FILE *filter_fp, FILE *mangle_fp)
@@ -77,6 +78,3 @@ index a21bf44..522624d 100644
  
     // Video Analytics Firewall rule to allow port 58081 only from LAN interface
     do_OpenVideoAnalyticsPort (filter_fp);
--- 
-2.52.0
-

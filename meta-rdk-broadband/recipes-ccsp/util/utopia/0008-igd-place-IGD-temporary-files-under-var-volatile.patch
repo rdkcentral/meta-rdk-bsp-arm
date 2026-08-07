@@ -1,7 +1,7 @@
-From 7a603447921a67230f4b630900ba7861b9b182f6 Mon Sep 17 00:00:00 2001
+From 8599c09dd7ce44f673c0bd0c9e7ea97c62e65376 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 7 Aug 2024 15:21:05 +1000
-Subject: [PATCH 09/12] igd: place IGD temporary files under /var/volatile
+Subject: [PATCH] igd: place IGD temporary files under /var/volatile
 
 ---
  source/igd/src/igd_device_root.c             | 2 +-
@@ -34,6 +34,3 @@ index e55d205..d76c252 100755
  UPNP_TMP=/var/tmp/upnp.ttl
  PRIVATE_LAN_IF="brlan0"
  
--- 
-2.52.0
-
