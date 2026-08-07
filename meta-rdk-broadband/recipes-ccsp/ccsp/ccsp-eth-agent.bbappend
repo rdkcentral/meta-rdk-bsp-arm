@@ -27,3 +27,8 @@ SRC_URI:append = " \
     file://0003-Send-READY-notification-to-systemd-when-data-model-ready.patch \
     file://0004-main-do-not-background-fork-when-systemd-notification.patch \
 "
+
+# WIP to manage brlan0 members from TR-181 / PSM instead of syscfg
+SRC_URI:append = " \
+    file://0005-WIP-use-AddPortToLanBridge-to-manage-brlan0-members.patch \
+"
