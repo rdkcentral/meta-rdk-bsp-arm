@@ -40,3 +40,6 @@ RDEPENDS:packagegroup-rdk-ccsp-broadband:remove = "${@bb.utils.contains('DISTRO_
 
 # Set the gwprov app for RPi
 GWPROVAPP = "${@bb.utils.contains('DISTRO_FEATURES','rdkb_wan_manager','','ccsp-gwprovapp-ethwan',d)}"
+
+# kernel 6.18 incompatibility
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = " ccsp-hotspot-kmod"
