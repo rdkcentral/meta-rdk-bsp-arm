@@ -25,4 +25,41 @@ DEPENDS += "${@bb.utils.contains('ARCH', 'x86', 'elfutils-native', '', d)}"
 DEPENDS += "openssl-native util-linux-native"
 DEPENDS += "gmp-native libmpc-native"
 
+# replaces kernel_do_install from kirkstone's kernel.bbclass
+# reason: kirkstone kernel.bbclass does not specify "rm -f" for build and source dirs
+kernel_do_install:kirkstone() {
+	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MACHINE
+	if (grep -q -i -e '^CONFIG_MODULES=y$' .config); then
+		oe_runmake DEPMOD=echo MODLIB=${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION} INSTALL_FW_PATH=${D}${nonarch_base_libdir}/firmware modules_install
+		rm -f "${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/build"
+		rm -f "${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/source"
+		# Remove empty module directories to prevent QA issues
+		[ -d "${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/kernel" ] && find "${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/kernel" -type d -empty -delete
+	else
+		bbnote "no modules to install"
+	fi
+
+	#
+	# Install various kernel output (zImage, map file, config, module support files)
+	#
+	install -d ${D}/${KERNEL_IMAGEDEST}
+
+	#
+	# bundle_initramfs runs after do_install before do_deploy. do_deploy does what's needed therefore.
+	#
+	for imageType in ${KERNEL_IMAGETYPES} ; do
+		if [ "${INITRAMFS_IMAGE_BUNDLE}" != "1" ] ; then
+			install -m 0644 ${KERNEL_OUTPUT_DIR}/$imageType ${D}/${KERNEL_IMAGEDEST}/$imageType-${KERNEL_VERSION}
+		fi
+	done
+
+	install -m 0644 System.map ${D}/${KERNEL_IMAGEDEST}/System.map-${KERNEL_VERSION}
+	install -m 0644 .config ${D}/${KERNEL_IMAGEDEST}/config-${KERNEL_VERSION}
+	install -m 0644 vmlinux ${D}/${KERNEL_IMAGEDEST}/vmlinux-${KERNEL_VERSION}
+	! [ -e Module.symvers ] || install -m 0644 Module.symvers ${D}/${KERNEL_IMAGEDEST}/Module.symvers-${KERNEL_VERSION}
+}
+
+do_install:remove:kirkstone = "kernel_do_install"
+do_install:prepend:kirkstone = "kernel_do_install_kirkstone"
+
 PV = "${LINUX_VERSION}+git${SRCPV}"
