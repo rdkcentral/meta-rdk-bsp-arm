@@ -7,3 +7,5 @@ SRC_URI:append:armefi64 = " \
     file://qemu.cfg \
     file://rpi.cfg \
 "
+
+COMPATIBLE_MACHINE:armefi64 = "armefi64"
