@@ -10,7 +10,7 @@ RDEPENDS_packagegroup-rdk-oss-broadband:append = " \
 
 RDEPENDS_packagegroup-rdk-oss-broadband:remove = " lighttpd"
 
-# kernel 6.18 bringup
-# RDEPENDS_packagegroup-rdk-oss-broadband:append = " virtual/wifi-vendor-mtk"
-# RDEPENDS_packagegroup-rdk-oss-broadband:append = " virtual/firmware-mtk-wifi6"
+RDEPENDS_packagegroup-rdk-oss-broadband:append = "${@bb.utils.contains('DISTRO_FEATURES', 'kernel-6-18', '', 'virtual/wifi-vendor-mtk', d)}"
+#RDEPENDS_packagegroup-rdk-oss-broadband:append = " virtual/wifi-vendor-mtk"
+RDEPENDS_packagegroup-rdk-oss-broadband:append = " virtual/firmware-mtk-wifi6"
 RDEPENDS_packagegroup-rdk-oss-broadband:remove:aarch64 = "alljoyn"
