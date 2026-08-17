@@ -1,6 +1,8 @@
 # Derived from meta-cmf-raspberrypi/conf/distro/include/rdk-rpi.inc
 IMAGE_GEN_DEBUGFS = "0"
 
+PREFERRED_VERSION:linux-yocto:kirkstone = "${@bb.utils.contains('DISTRO_FEATURES', 'kernel-6-18', '6.18%', '5.15%', d)}"
+
 #preferred version for linux kirkstone build
 PREFERRED_VERSION:libnl:kirkstone ?= "3.5.0"
 PREFERRED_VERSION:jansson:kirkstone = "2.13.1"
