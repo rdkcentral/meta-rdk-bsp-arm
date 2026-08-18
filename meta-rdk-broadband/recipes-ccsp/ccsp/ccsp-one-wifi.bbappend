@@ -2,6 +2,8 @@ require ccsp_common_genericarm.inc
 
 DEPENDS:append = " rdk-wifi-hal"
 CFLAGS:append = " -DWIFI_HAL_VERSION_3 -Wno-unused-function"
+# Required for calculating MAC addresses in onewifi_pre_start
+RDEPENDS:${PN}:append = " maccalc"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/ccsp-one-wifi:"
 
