@@ -1,0 +1,101 @@
+From cc04180571d50b5179f02b84de7f6c7987e916ad Mon Sep 17 00:00:00 2001
+From: Shayne Chen <shayne.chen@mediatek.com>
+Date: Thu, 12 Feb 2026 17:03:09 +0800
+Subject: [PATCH] wifi: mt76: mt7996: add variant for MT7992 chipsets
+
+Introduce VAR_TYPE_24 for the MT7992 chipsets, a dual-band variant
+supporting 3T3R/2SS on the 2 GHz band and 5T5R/4SS on the 5GHz band.
+
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20260212090310.3335392-2-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+(cherry picked from commit 676d5d009bc68596a88104137a0bf785b8c2562a)
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c | 5 ++++-
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c   | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 3 +++
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 7 +++++++
+ 4 files changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+index 00c72be8498f..ac05f7d75d63 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+@@ -33,6 +33,8 @@ static char *mt7996_eeprom_name(struct mt7996_dev *dev)
+ 			if (dev->var.fem == MT7996_FEM_INT)
+ 				return MT7992_EEPROM_DEFAULT_23_INT;
+ 			return MT7992_EEPROM_DEFAULT_23;
++		case MT7992_VAR_TYPE_24:
++			return MT7992_EEPROM_DEFAULT_24;
+ 		case MT7992_VAR_TYPE_44:
+ 		default:
+ 			if (dev->var.fem == MT7996_FEM_INT)
+@@ -392,7 +394,8 @@ bool mt7996_eeprom_has_background_radar(struct mt7996_dev *dev)
+ 			return false;
+ 		break;
+ 	case MT7992_DEVICE_ID:
+-		if (dev->var.type == MT7992_VAR_TYPE_23)
++		if (dev->var.type == MT7992_VAR_TYPE_23 ||
++		    dev->var.type == MT7992_VAR_TYPE_24)
+ 			return false;
+ 		break;
+ 	case MT7990_DEVICE_ID: {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index 48d4fdb2b0f8..1327cc60ef91 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -1139,7 +1139,7 @@ static int mt7996_variant_type_init(struct mt7996_dev *dev)
+ 		else if (u32_get_bits(val, MT_PAD_GPIO_ADIE_COMB_7992))
+ 			var_type = MT7992_VAR_TYPE_44;
+ 		else
+-			return -EINVAL;
++			var_type = MT7992_VAR_TYPE_24;
+ 		break;
+ 	case MT7990_DEVICE_ID:
+ 		var_type = MT7990_VAR_TYPE_23;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 4398e92016cb..8798c32eccc9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -18,6 +18,9 @@
+ 		case MT7992_VAR_TYPE_23:			\
+ 			_fw = MT7992_##name##_23;		\
+ 			break;					\
++		case MT7992_VAR_TYPE_24:			\
++			_fw = MT7992_##name##_24;		\
++			break;					\
+ 		default:					\
+ 			_fw = MT7992_##name;			\
+ 		}						\
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 91ebc57a7444..7b892ef852cf 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -60,6 +60,11 @@
+ #define MT7992_FIRMWARE_DSP_23		"mediatek/mt7996/mt7992_dsp_23.bin"
+ #define MT7992_ROM_PATCH_23		"mediatek/mt7996/mt7992_rom_patch_23.bin"
+ 
++#define MT7992_FIRMWARE_WA_24		"mediatek/mt7996/mt7992_wa_24.bin"
++#define MT7992_FIRMWARE_WM_24		"mediatek/mt7996/mt7992_wm_24.bin"
++#define MT7992_FIRMWARE_DSP_24		"mediatek/mt7996/mt7992_dsp_24.bin"
++#define MT7992_ROM_PATCH_24		"mediatek/mt7996/mt7992_rom_patch_24.bin"
++
+ #define MT7990_FIRMWARE_WA		""
+ #define MT7990_FIRMWARE_WM		"mediatek/mt7996/mt7990_wm.bin"
+ #define MT7990_FIRMWARE_DSP		""
+@@ -75,6 +80,7 @@
+ #define MT7992_EEPROM_DEFAULT_MIX	"mediatek/mt7996/mt7992_eeprom_2i5e.bin"
+ #define MT7992_EEPROM_DEFAULT_23	"mediatek/mt7996/mt7992_eeprom_23.bin"
+ #define MT7992_EEPROM_DEFAULT_23_INT	"mediatek/mt7996/mt7992_eeprom_23_2i5i.bin"
++#define MT7992_EEPROM_DEFAULT_24	"mediatek/mt7996/mt7992_eeprom_24_2i5i.bin"
+ 
+ #define MT7990_EEPROM_DEFAULT		"mediatek/mt7996/mt7990_eeprom.bin"
+ #define MT7990_EEPROM_DEFAULT_INT	"mediatek/mt7996/mt7990_eeprom_2i5i.bin"
+@@ -154,6 +160,7 @@ enum mt7996_var_type {
+ enum mt7992_var_type {
+ 	MT7992_VAR_TYPE_44,
+ 	MT7992_VAR_TYPE_23,
++	MT7992_VAR_TYPE_24,
+ };
+ 
+ enum mt7990_var_type {

@@ -1,4 +1,4 @@
-From 1fbf598e2a43868437ed205d3f69366e694eefc5 Mon Sep 17 00:00:00 2001
+From f9bff8d9f4d7cd92fc28ffc7cca059cc60246048 Mon Sep 17 00:00:00 2001
 From: Jiajia Liu <liujiajia@kylinos.cn>
 Date: Tue, 2 Jun 2026 13:43:49 +0800
 Subject: [PATCH] wifi: mt76: transform aspm_conf for pci_disable_link_state
