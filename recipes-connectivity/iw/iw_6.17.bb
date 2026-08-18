@@ -11,6 +11,7 @@ DEPENDS = "libnl"
 
 SRC_URI = "http://www.kernel.org/pub/software/network/iw/${BP}.tar.gz \
            file://separate-objdir.patch \
+           file://310-vif_radio_mask.patch \
 "
 
 SRC_URI[sha256sum] = "aebdcfa3691aa5065a9b0d7def66c761c8b01a59dd81bc315d0305e05c3b04de"
