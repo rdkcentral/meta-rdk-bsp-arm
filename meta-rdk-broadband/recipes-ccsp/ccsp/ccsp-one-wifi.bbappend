@@ -33,6 +33,8 @@ CFLAGS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', ' -DEASY_M
 EXTRA_OECONF:remove = " ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', ' ONEWIFI_CAC_APP_SUPPORT=true ', '', d)}"
 CFLAGS:remove = " ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', ' -DONEWIFI_CAC_APP_SUPPORT -DONEWIFI_DB_SUPPORT  ', '', d)}"
 
+CFLAGS:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWiFi_Single_PHY', ' -DFEATURE_SINGLE_PHY', '', d)}"
+
 # TODO: Lots of issues in OneWiFi with different int types being compared
 CFLAGS:append:aarch64 = " -Wno-error "
 
