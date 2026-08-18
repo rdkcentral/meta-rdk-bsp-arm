@@ -12,6 +12,7 @@ SRC_URI:append = " \
     file://onewifi_pre_start.sh \
     file://0001-db-fix-compile-error-when-ONEWIFI_DB_SUPPORT-not-set.patch \
     file://0002-wifi_db-fix-incorrect-type-for-index-variable.patch \
+    file://InterfaceMap_mt7990.json \
 "
 
 # revert RDKB-62931,XB10-2872-OneWifi sync 08/07/26
@@ -44,11 +45,13 @@ do_compile:prepend() {
 do_install:append() {
     install -d ${D}/usr/ccsp/wifi/
     install -m 644 ${WORKDIR}/wifi_defaults.txt ${D}/usr/ccsp/wifi/
+    install -m 644 ${WORKDIR}/InterfaceMap_mt7990.json ${D}/usr/ccsp/wifi/
 }
 
 FILES:${PN}:append = " \
     /usr/bin/wifi_events_consumer \
     /usr/ccsp/wifi/wifi_defaults.txt \
+    /usr/ccsp/wifi/InterfaceMap_mt7990.json \
     ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', '', '/usr/ccsp/wifi/onewifi_pre_start.sh', d)} \
 "
 
