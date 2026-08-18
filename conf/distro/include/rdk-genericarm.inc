@@ -15,6 +15,9 @@ PREFERRED_VERSION:icu-native:kirkstone ?= "58.2"
 PREFERRED_VERSION_meson-native_kirkstone = "0.61.3"
 PREFERRED_VERSION_meson_kirkstone = "0.61.3"
 
+# Newer iw required for MLO/wiphy support
+PREFERRED_VERSION:iw:kirkstone = "${@bb.utils.contains('DISTRO_FEATURES', 'kernel-6-18', '6.17', '4.7', d)}"
+
 ### preferred providers
 PREFERRED_PROVIDER_libevent = "libevent"
 
