@@ -19,33 +19,31 @@ SRC_URI:append = " \
     file://onewifi.service \
 "
 
-# we need to patch to code for rpi
-SRC_URI:remove = "file://0001-DBusLoop-SSL_state-TLS_ST_OK.patch"
-
-SRC_URI:append = " file://0001-DBusLoop-SSL_state-TLS_ST_OK.patch;apply=no"
-
 # Some systemd unit files invoke through '/bin/sh -c (...)' which causes
 # the true process name not to appear in syslog (e.g journalctl).
 # These patches update the unit files accordingly
 
-SRC_URI:append = " file://0001-service-set-systemd-SyslogIdentifier.patch;apply=no"
+SRC_URI:append = " file://0001-service-set-systemd-SyslogIdentifier.patch"
 
 # Fix the path of the 'wan_started' monitor so it reads the correct path
 # (it was moved into the /var/run to work under our read-only rootfs)
-SRC_URI:append = " file://0002-systemd_units-correct-wan_started-path-for-read-only.patch;apply=no"
-do_genericarm_patches () {
-    cd ${S}
-    if [ ! -e patch_applied ]; then
-        bbnote "Patching 0001-DBusLoop-SSL_state-TLS_ST_OK.patch"
-        patch -p1 < ${WORKDIR}/0001-DBusLoop-SSL_state-TLS_ST_OK.patch
-        bbnote "Patching 0001-service-set-systemd-SyslogIdentifier.patch"
-        patch -p1 < ${WORKDIR}/0001-service-set-systemd-SyslogIdentifier.patch
-        bbnote "Patching 0002-systemd_units-correct-wan_started-path-for-read-only.patch;apply=no"
-        patch -p1 < ${WORKDIR}/0002-systemd_units-correct-wan_started-path-for-read-only.patch
-        touch patch_applied
-    fi
-}
-addtask genericarm_patches after do_unpack before do_configure
+SRC_URI:append = " file://0002-systemd_units-correct-wan_started-path-for-read-only.patch"
+
+# Remove call to migration_to_psm.sh, utopiaInitCheck.sh and log_psm_db.sh
+SRC_URI:append = " file://0003-meta-rdk-bsp-arm-only-remove-pre-and-post-start-call.patch"
+
+# Modify CcspEthAgent systemd unit to use systemd notifications,
+# and RdkWanManager wait for CcspEthAgent's notify event
+SRC_URI:append = " file://0004-systemd-ccsp-eth-agent-sd-notify.patch"
+SRC_URI:append = " file://0005-systemd-rdk-wan-manager-eth-agent.patch"
+
+# Fix compile errors when debug symbol generation / compiler flags
+# are enabled in the BitBake EnvironmentFile
+SRC_URI:append = " file://0006-util_api-fix-compile-error-under-debug-build.patch \
+                   file://0007-util_api-al_pki-resolve-uninitialized-variable-compi.patch \
+                   file://0008-util_api-al_pkcs12-fix-uninitialized-variable-error.patch \
+                   file://0009-cosa-assert-AnscCopyString-can-not-be-called-same.patch \
+"
 
 do_configure:prepend:aarch64() {
 	sed -e '/len/ s/^\/*/\/\//' -i ${S}/source/ccsp/components/common/DataModel/dml/components/DslhObjRecord/dslh_objro_access.c
@@ -82,8 +80,17 @@ do_install:append:class-target () {
     install -D -m 0644 ${S}/systemd_units/snmpSubAgent.service ${D}${systemd_unitdir}/system/snmpSubAgent.service
     install -D -m 0644 ${S}/systemd_units/CcspEthAgent.service ${D}${systemd_unitdir}/system/CcspEthAgent.service
     install -D -m 0644 ${S}/systemd_units/notifyComp.service ${D}${systemd_unitdir}/system/notifyComp.service
+    if ${@bb.utils.contains('DISTRO_FEATURES', 't2', 'true', 'false', d)}; then
     install -D -m 0644 ${S}/systemd_units/CcspTelemetry.service ${D}${systemd_unitdir}/system/CcspTelemetry.service
+    fi
 
+    #webpa service
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'webpa', 'true', 'false', d)}; then
+    install -D -m 0644 ${S}/systemd_units/webpa.service ${D}${systemd_unitdir}/system/webpa.service
+    sed -i "/WorkingDirectory=/a ExecStartPre\=\/bin/sh -c '\/lib/rdk/webpa_pre_setup.sh'\\;" ${D}${systemd_unitdir}/system/webpa.service
+    sed -i "s/wan-initialized.target/multi-user.target/g" ${D}${systemd_unitdir}/system/webpa.service
+    fi
+    
     #rfc service file
     install -D -m 0644 ${S}/systemd_units/rfc.service ${D}${systemd_unitdir}/system/rfc.service
 
@@ -108,10 +115,6 @@ do_install:append:class-target () {
     sed -i 's/300/12/g' ${D}${systemd_unitdir}/system/rfc.service
     sed -i "s/wan-initialized.target/multi-user.target/g" ${D}${systemd_unitdir}/system/rfc.service
 
-    #Remove pre execution script validation from Psm service
-    sed -i "/utopiaInitCheck.sh/d" ${D}${systemd_unitdir}/system/PsmSsp.service
-    sed -i "/log_psm.db.sh/d" ${D}${systemd_unitdir}/system/PsmSsp.service
-
     sed -i "/device.properties/a ExecStartPre=/bin/sh -c '(/usr/ccsp/utopiaInitCheck.sh)'"  ${D}${systemd_unitdir}/system/CcspPandMSsp.service
     #sed -i "/Description=CcspCrSsp service/a After=disable_systemd_restart_param.service" ${D}${systemd_unitdir}/system/CcspCrSsp.service
 
@@ -119,11 +122,13 @@ do_install:append:class-target () {
     sed -i "/tcp\:192.168.254.253\:705/a  ExecStart=\/usr\/bin\/snmp_subagent \&" ${D}${systemd_unitdir}/system/snmpSubAgent.service
 
     #Telemetry support
+     if ${@bb.utils.contains('DISTRO_FEATURES', 't2', 'true', 'false', d)}; then
      sed -i "/Type=oneshot/a EnvironmentFile=\/etc/\device.properties" ${D}${systemd_unitdir}/system/CcspTelemetry.service
      sed -i "/EnvironmentFile=\/etc\/device.properties/a EnvironmentFile=\/etc\/dcm.properties" ${D}${systemd_unitdir}/system/CcspTelemetry.service
      sed -i "/EnvironmentFile=\/etc\/dcm.properties/a ExecStartPre=\/bin\/sh -c '\/bin\/touch \/rdklogs\/logs\/dcmscript.log'" ${D}${systemd_unitdir}/system/CcspTelemetry.service
      sed -i "s/ExecStart=\/bin\/sh -c '\/lib\/rdk\/dcm.service \&'/ExecStart=\/bin\/sh -c '\/lib\/rdk\/StartDCM.sh \>\> \/rdklogs\/logs\/telemetry.log \&'/g" ${D}${systemd_unitdir}/system/CcspTelemetry.service
      sed -i "s/wan-initialized.target/multi-user.target/g" ${D}${systemd_unitdir}/system/CcspTelemetry.service
+     fi
      install -D -m 0644 ${S}/systemd_units/CcspXdnsSsp.service ${D}${systemd_unitdir}/system/CcspXdnsSsp.service
 
      install -d ${D}${base_libdir}/rdk
@@ -133,10 +138,7 @@ do_install:append:class-target () {
      DISTRO_WAN_ENABLED="${@bb.utils.contains('DISTRO_FEATURES','rdkb_wan_manager','true','false',d)}"
      if [ $DISTRO_WAN_ENABLED = 'true' ]; then
      install -D -m 0644 ${S}/systemd_units/RdkWanManager.service ${D}${systemd_unitdir}/system/RdkWanManager.service
-     sed -i "s/After=CcspCrSsp.service/After=CcspCrSsp.service utopia.service /g" ${D}${systemd_unitdir}/system/RdkWanManager.service
-     sed -i "s/CcspPandMSsp.service/CcspCrSsp.service CcspPandMSsp.service/g" ${D}${systemd_unitdir}/system/CcspEthAgent.service
      install -D -m 0644 ${WORKDIR}/utopia.service ${D}${systemd_unitdir}/system/utopia.service
-     install -D -m 0644 ${S}/systemd_units/RdkTelcoVoiceManager.service ${D}${systemd_unitdir}/system/RdkTelcoVoiceManager.service
      install -D -m 0644 ${S}/systemd_units/RdkVlanManager.service ${D}${systemd_unitdir}/system/RdkVlanManager.service
      fi
      DISTRO_FW_ENABLED="${@bb.utils.contains('DISTRO_FEATURES','fwupgrade_manager','true','false',d)}"
@@ -159,6 +161,10 @@ fi' ${D}/usr/ccsp/ccspPAMCPCheck.sh
 
     if ${@bb.utils.contains('DISTRO_FEATURES', 'webconfig_bin', 'true', 'false', d)}; then
         install -D -m 0644 ${S}/systemd_units/webconfig.service ${D}${systemd_unitdir}/system/webconfig.service
+
+        if ! ${@bb.utils.contains('DISTRO_FEATURES', 'webpa', 'true', 'false', d)}; then
+            sed -i "/^After=webpa.service/d" "${D}${systemd_unitdir}/system/webconfig.service"
+        fi
     fi
     install -D -m 0644 ${S}/systemd_units/wan-initialized.target ${D}${systemd_unitdir}/system/wan-initialized.target
     install -D -m 0644 ${S}/systemd_units/wan-initialized.path ${D}${systemd_unitdir}/system/wan-initialized.path
@@ -193,6 +199,7 @@ SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'fwupgr
 SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', 'onewifi.service ', 'ccspwifiagent.service', d)}"
 SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'webconfig_bin', 'webconfig.service', '', d)}"
 SYSTEMD_SERVICE:${PN}:append = " brlan0_check.service"
+SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'webpa', 'webpa.service', '', d)}"
 
 FILES:${PN}:append = " \
     /usr/ccsp/ccspSysConfigEarly.sh \
@@ -216,10 +223,13 @@ FILES:${PN}:append = " \
     ${systemd_unitdir}/system/ProcessResetDetect.path \
     ${systemd_unitdir}/system/ProcessResetDetect.service \
     ${systemd_unitdir}/system/rfc.service \
-    ${systemd_unitdir}/system/CcspTelemetry.service \
     ${systemd_unitdir}/system/CcspXdnsSsp.service \
     ${systemd_unitdir}/system/wan-initialized.target \
     ${systemd_unitdir}/system/wan-initialized.path \
 "
-FILES:${PN}:append = "${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', ' ${systemd_unitdir}/system/RdkWanManager.service ${systemd_unitdir}/system/utopia.service ${systemd_unitdir}/system/RdkVlanManager.service ${systemd_unitdir}/system/RdkTelcoVoiceManager.service ', '', d)}"
+FILES:${PN}:append = "${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', ' ${systemd_unitdir}/system/RdkWanManager.service ${systemd_unitdir}/system/utopia.service ${systemd_unitdir}/system/RdkVlanManager.service  ', '', d)}"
 FILES:${PN}:append = "${@bb.utils.contains('DISTRO_FEATURES', 'fwupgrade_manager', ' ${systemd_unitdir}/system/RdkFwUpgradeManager.service ', '', d)}"
+
+# WebPA and Telemetry 2.0
+FILES:${PN}:append = "${@bb.utils.contains('DISTRO_FEATURES', 'webpa', ' ${systemd_unitdir}/system/webpa.service', '', d)}"
+FILES:${PN}:append = "${@bb.utils.contains('DISTRO_FEATURES', 't2', ' ${systemd_unitdir}/system/CcspTelemetry.service', '', d)}"

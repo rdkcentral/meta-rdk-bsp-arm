@@ -4,12 +4,18 @@ CFLAGS:remove = "-D_PLATFORM_RASPBERRYPI_"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/ccsp-eth-agent:"
 
-SRC_URI:remove = "${CMF_GITHUB_ROOT}/ethernet-agent;protocol=https;nobranch=1"
-SRC_URI = "git://github.com/rdkcentral/ethernet-agent.git;protocol=https;branch=develop"
-SRCREV_pn-ccsp-eth-agent = "e350f19aa5c0802c35ec520d9e1484b0033fc250"
-
 SRC_URI:append = "\
     file://0001-genericarm-increase-maximum-number-of-Ethernet-interfaces.patch \
     file://0002-cosa_ethernet_internal-force-CcspHalEthSw_RegisterLink.patch \
     "
 
+# For systemd notifications
+
+CFLAGS:append = " -DUSE_SYSTEMD_NOTIFICATIONS"
+DEPENDS:append = " systemd"
+LDFLAGS:append = " -lsystemd"
+
+SRC_URI:append = " \
+    file://0003-Send-READY-notification-to-systemd-when-data-model-ready.patch \
+    file://0004-main-do-not-background-fork-when-systemd-notification.patch \
+"

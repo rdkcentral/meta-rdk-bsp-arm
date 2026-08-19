@@ -14,6 +14,8 @@ CFLAGS:append = " -fno-exceptions -ffunction-sections -fdata-sections -fomit-fra
            -DCONFIG_VENDOR_CUSTOMER_COMCAST -UPARODUS_ENABLE -U_COSA_SIM_ \
            ${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', ' -DFEATURE_RDKB_WAN_MANAGER ', '', d)} \
            ${@bb.utils.contains('DISTRO_FEATURES', 'meshwifi', ' -DENABLE_FEATURE_MESHWIFI ', '', d)} \
+	   ${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_configurable_wan_interface', '-DFEATURE_RDKB_CONFIGURABLE_WAN_INTERFACE', '', d)} \
+	   ${@bb.utils.contains('DISTRO_FEATURES', 'dhcp_manager', '-DFEATURE_RDKB_DHCP_MANAGER', '', d)} \
            -D_64BIT_ARCH_SUPPORT_ \
            -DFEATURE_SUPPORT_RDKLOG \
            "

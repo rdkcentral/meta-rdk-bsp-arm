@@ -1,11 +1,19 @@
-inherit cargo-update-recipe-crates
+inherit cargo-update-recipe-crates pkgconfig
+SRC_URI = "git://github.com/rdkcentral/ieee1905-rs.git;branch=main;protocol=https"
+SRCREV = "e5b046be767b492dcfe4d1864954864aee1864d8"
 
-FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
-SRC_URI:append = "file://0001-fixed-high-cpu-usage-when-listened-interface-is-down.patch \
-    file://0002-decouple-tokio-console-filtering-from-main-logger.patch \
-    file://0003-fixes-flags-for-logs-output.patch"
+PV = "0.5.0"
+
+PREMIRRORS:prepend:kirkstone = " \
+	https://crates\.io/api/v1/crates/([^/]+)/([^/]+)/download https://static.crates.io/crates/\1/\1-\2.crate \n\
+"
+
+DEPENDS:append = " clang-native rbus"
+
+LDFLAGS:append = " -lrbus"
 
 include ieee1905-em-crates.inc
+
 # Override the meta-cmf-broadband recipe to avoid installing
 # systemd files (handled by unified-wifi-mesh-personality-...)
 # cargo_do_install originates from bitbake's cargo.bbclass

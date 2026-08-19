@@ -22,6 +22,14 @@ $ source meta-rdk-bsp-arm/setup-environment
 $ bitbake rdk-generic-broadband-image
 ```
 
+If you need to enable features such as unified-wifi-mesh/EasyMesh, you can do this
+by creating the `conf/distro/include/local-settings.inc` (under your local
+copy of `meta-rdk-bsp-arm`), like so:
+
+```
+echo 'DISTRO_FEATURES:append:broadband = " EasyMesh"' >> conf/distro/include/local-settings.inc
+```
+
 At the current time, the `main` branch mainfest will build RDK-B 2025Q1 (based on Yocto `kirkstone`),
 and will be updated following the next major RDK-B release.
 
@@ -159,6 +167,15 @@ raspberrypi64-rdk-broadband
   There is no `erouter0` interface.
   Some components that do not function without `erouter0`, like WebUI,
   are not currently included.
+
+* USP (`usp-pa`) is the only management agent built into the image by default.
+
+  WebPA (parodus) and Telemetry 2.0 are opt-in and configured in `conf/distro/include/local-settings.inc`:
+
+  ```
+  DISTRO_FEATURES:append = " webpa"
+  DISTRO_FEATURES:append = " t2"
+  ```
 
 * The WAN interface will be mapped to `eth6`. LAN side will always be on `eth0`.
 

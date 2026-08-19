@@ -19,15 +19,4 @@ SYSTEMD_TOOLS:remove:libc-musl = "systemd-bootchart"
 
 IMAGE_INSTALL:append = " ${SYSTEMD_TOOLS}"
 
-ROOTFS_POSTPROCESS_COMMAND += "add_systemd_services; "
-
-add_systemd_services() {
-                if [ -d ${IMAGE_ROOTFS}${sysconfdir}/systemd/system/multi-user.target.wants/ ]; then
-                        rm -f ${IMAGE_ROOTFS}${sysconfdir}/systemd/system/multi-user.target.wants/connman.service;
-                fi
-                if [ ! -f ${IMAGE_ROOTFS}${sysconfdir}/systemd/system/multi-user.target.wants/lighttpd.service ]; then
-                        ln -sf ${IMAGE_ROOTFS}${systemd_unitdir}/system/lighttpd.service ${IMAGE_ROOTFS}${sysconfdir}/systemd/system/multi-user.target.wants/lighttpd.service
-                fi
-}
-
 

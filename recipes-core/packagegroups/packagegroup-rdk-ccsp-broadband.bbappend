@@ -15,15 +15,29 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "ccsp-webui-php"
 
 RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "parodus"
 
+RDEPENDS_packagegroup-rdk-ccsp-broadband:remove = "\
+    ${@bb.utils.contains('DISTRO_FEATURES', 'RDM', '', ' rdm-agent', d)} \
+"
+
 RDEPENDS_packagegroup-rdk-ccsp-broadband:append = "\
     rdk-logger \
     libseshat \
     notify-comp \
+    start-parodus \
+    parodus2ccsp \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'cellular_hybrid_support', 'usbmuxd', ' ', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'cellular_hybrid_support', 'usb-modeswitch', ' ', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'cellular_hybrid_support', 'usb-modeswitch-data', ' ', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'cellular_hybrid_support', 'modemmanager', ' ', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'CPUPROCANALYZER_BROADBAND', 'cpuprocanalyzer', ' ', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_cellular_manager_mm', 'rdk-cellularmanager-mm', ' ', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'rdk_ledmanager', 'rdk-ledmanager', ' ', d)} \
     \
 "
+
+# WebPA and Telemetry 2.0
+RDEPENDS:packagegroup-rdk-ccsp-broadband:remove = "${@bb.utils.contains('DISTRO_FEATURES', 'webpa', '', ' parodus parodus2ccsp start-parodus', d)}"
+RDEPENDS:packagegroup-rdk-ccsp-broadband:remove = "${@bb.utils.contains('DISTRO_FEATURES', 't2', '', ' telemetry', d)}"
 
 # Set the gwprov app for RPi
 GWPROVAPP = "${@bb.utils.contains('DISTRO_FEATURES','rdkb_wan_manager','','ccsp-gwprovapp-ethwan',d)}"

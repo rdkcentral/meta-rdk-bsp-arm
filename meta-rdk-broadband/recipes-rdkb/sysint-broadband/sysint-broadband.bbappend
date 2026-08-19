@@ -10,6 +10,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 SRC_URI:append = "file://btrfs-subvolume.service \
                   file://nvram-subvol-init.sh \
                   file://resize-disk.sh \
+                  file://arm_custom_device.properties \
                   "
 
 SRCREV_sysintdevicegenericarm = "${AUTOREV}"
@@ -17,21 +18,16 @@ SRCREV_FORMAT = "sysintgeneric_sysintdevicegenericarm"
 
 RDEPENDS:${PN}:append = " gptfdisk util-linux btrfs-tools multipath-tools"
 do_install:append() {
+    install -m 644 ${WORKDIR}/arm_custom_device.properties ${D}${sysconfdir}/device.properties
     install -d ${D}${systemd_unitdir}/system
     install -m 0755 ${S}/device/lib/rdk/* ${D}${base_libdir}/rdk
     install -m 0755 ${S}/rfc.service ${D}${base_libdir}/rdk
     install -m 0755 ${S}/utils.sh ${D}${base_libdir}/rdk
     install -m 0755 ${S}/getpartnerid.sh ${D}${base_libdir}/rdk
     install -m 0755 ${S}/device/systemd_units/* ${D}${systemd_unitdir}/system/
-    echo "BOX_TYPE=genericarm" >> ${D}${sysconfdir}/device.properties
-    echo "MODEL_NAME=RPI" >> ${D}${sysconfdir}/device.properties
 
     ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', 'echo "OneWiFiEnabled=true" >> ${D}${sysconfdir}/device.properties', '', d)}
-    echo "MODEL_NUM=RPI_MOD" >> ${D}${sysconfdir}/device.properties
 
-    #For rfc Support
-    sed -i '/DEVICE_TYPE/c\DEVICE_TYPE=broadband' ${D}${sysconfdir}/device.properties
-    sed -i '/LOG_PATH/c\LOG_PATH=/rdklogs/logs/' ${D}${sysconfdir}/device.properties
     #Erouter0 info
     sed -i "/f11/c\       mac=\`ifconfig \$WANINTERFACE | grep HWaddr | cut -d \" \" -f7\`" ${D}${base_libdir}/rdk/utils.sh
     sed -i '/Device.X_CISCO_COM_CableModem.MACAddress/{n;s/.*/    elif [ "$BOX_TYPE" = "XF3" ]; then/}' ${D}${base_libdir}/rdk/utils.sh
@@ -57,6 +53,8 @@ do_install:append() {
     install -d ${D}/nvram2
     touch ${D}/nvram2/.placeholder
     ln -s -r ${D}/rdklogs/logs2 ${D}/nvram2/logs
+
+    sed -i "/if \[ \! -f \/usr\/bin\/GetConfigFile \]\;then/,+4d" ${D}/rdklogger/logfiles.sh
 
     #self heal support
     install -d ${D}/usr/ccsp/tad

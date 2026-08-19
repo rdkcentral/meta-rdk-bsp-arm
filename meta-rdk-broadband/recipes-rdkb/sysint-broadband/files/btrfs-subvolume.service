@@ -2,9 +2,9 @@
 Description=btrfs subvolume management
 
 [Service]
-Type=oneshot
+Type=notify
 ExecStart=/bin/sh /lib/rdk/btrfs/nvram-subvol-init.sh
 SyslogIdentifier=btrfs-subvolume
 
 [Install]
-WantedBy=local-fs.target
+RequiredBy=local-fs.target

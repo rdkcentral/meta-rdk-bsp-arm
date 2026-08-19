@@ -1,18 +1,25 @@
 require meta-rdk-broadband/recipes-ccsp/ccsp/ccsp_common_genericarm.inc
 
+SRCREV:utopia = "9d6535c9476c3ef52c6cb04fccd9abefa0de592c"
+SRCPV:utopia = "2.4.0"
+
 DEPENDS:append = " kernel-autoconf utopia-headers libsyswrapper"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 SRC_URI:append = " \
     file://0001-scripts-lan_handler-treat-generic-Arm-boards-Ten64-q.patch \
     file://0002-lan_handler-refresh-fix-lan-handler-for-rpi.patch.patch \
-    file://0003-utopia-duplicate-or-replace-_PLATFORM_RASPBERRYPI_-a.patch \
-    file://0004-scripts-utopia_init-do-nvram-restore_reboot-and-drop.patch \
-    file://0005-scripts-lan_handler-create-flag-files-for-lan-start-.patch \
-    file://0006-dhcp-place-dnsmasq.conf-in-RAM-var-volatile.patch \
-    file://0007-igd-place-IGD-temporary-files-under-var-volatile.patch \
-    file://0008-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch \
-    file://0009-service-dhcpv6_client-log-to-syslog-instead-of-console.patch \
+    file://0003-bridge-use-service_bridge_rpi-for-generic-arm-platfo.patch \
+    file://0004-firewall-use-_GENERIC_LINUX_DATA_PATH_-for-reference.patch \
+    file://0005-service_wan-use-_GENERIC_LINUX_DATA_PATH_-to-introdu.patch \
+    file://0006-scripts-utopia_init-do-nvram-restore_reboot-and-drop.patch \
+    file://0007-scripts-lan_handler-create-flag-files-for-lan-start-.patch \
+    file://0008-dhcp-place-dnsmasq.conf-in-RAM-var-volatile.patch \
+    file://0009-igd-place-IGD-temporary-files-under-var-volatile.patch \
+    file://0010-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch \
+    file://0011-service-dhcpv6_client-log-to-syslog-instead-of-dev-c.patch \
+    file://0012-firewall-disable-mac-filter.patch \
+    file://0013-scripts-fix-compile-errors-with-DNO_MTA_FEATURE_SUPP.patch \
     file://system_defaults \
 "
 
@@ -20,10 +27,16 @@ LDFLAGS:append = " \
     -lsecure_wrapper \
 "
 
-CFLAGS:append = " -Wno-error=unused-function "
+CFLAGS:append = " -Wno-error=unused-function \
+    -D_GENERIC_LINUX_DATA_PATH_ \
+"
+
 CFLAGS:remove = " ${@bb.utils.contains('DISTRO_FEATURES', 'bci', '-DWAN_FAILOVER_SUPPORTED', '', d)}"
 
+EXTRA_OECONF:remove = "--with-machine=${MACHINE}"
+
 do_install:append() {
+
     # Don't install header files which are provided by utopia-headers
     rm -f ${D}${includedir}/utctx/autoconf.h
     rm -f ${D}${includedir}/utctx/utctx.h
@@ -64,6 +77,7 @@ do_install:append() {
     install -m 755 ${S}/source/scripts/init/service.d/service_wan/*.sh ${D}${sysconfdir}/utopia/service.d/service_wan
     install -m 755 ${S}/source/scripts/init/service.d/service_firewall/firewall_log_handle.sh ${D}${sysconfdir}/utopia/service.d/
     install -m 644 ${S}/source/igd/src/inc/*.xml ${D}${sysconfdir}/IGD
+    install -m 644 ${S}/source/scripts/init/syslog_conf/syslog.conf_default ${D}${sysconfdir}/
     install -D -m 644 ${S}/source/scripts/init/syslog_conf/syslog.conf_default ${D}/fss/gw/${sysconfdir}/syslog.conf.${BPN}
     install -m 755 ${S}/source/scripts/init/syslog_conf/log_start.sh ${D}${sbindir}/
     install -m 755 ${S}/source/scripts/init/syslog_conf/log_handle.sh ${D}${sbindir}/

@@ -125,4 +125,7 @@ BBMASK .= "|meta-rdk-broadband/recipes-ccsp/ccsp/ccsp-webui-php.bb"
 
 BBMASK .= "|meta-cmf-broadband/recipes-core/util-linux/util-linux_%.bbappend"
 
+# 2026-04-07 meta-cmf-broadband change breaks DHCP Manager install
+BBMASK .= "|meta-cmf-broadband/recipes-ccsp/ccsp/ccsp-dhcp-mgr.bbappend"
+
 BBMASK:append:kirkstone = "|meta-rdk-opensync/recipes/python3-jinja2/python3-jinja2_2.11.1.bb"

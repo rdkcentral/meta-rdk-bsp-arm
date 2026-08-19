@@ -1,6 +1,8 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 SRC_URI:append = " file://remove_broadcast_test.patch"
 
+CPPFLAGS:append = " -DAL_SAP"
+
 # These will be handled by unified-wifi-mesh-personality packages
 do_install:append() {
     rm -rf ${D}${systemd_unitdir}/system/

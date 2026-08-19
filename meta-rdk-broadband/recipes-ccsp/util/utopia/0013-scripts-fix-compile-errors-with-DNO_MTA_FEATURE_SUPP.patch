@@ -1,0 +1,33 @@
+From 8a735672768ffc8f3d9704689bb763a7c7415d49 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Mon, 26 Jan 2026 19:57:14 +1100
+Subject: [PATCH] scripts: fix compile errors with -DNO_MTA_FEATURE_SUPPORT
+
+apply_system_defaults_helper.c: In function 'apply_partnerId_default_values':
+apply_system_defaults_helper.c:2328:10: error: unused variable 'secdhcpoption'
+apply_system_defaults_helper.c:2327:10: error: unused variable 'pridhcpoption'
+apply_system_defaults_helper.c:2326:10: error: unused variable 'startupipmode'
+
+---
+ source/scripts/init/src/apply_system_defaults_helper.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/source/scripts/init/src/apply_system_defaults_helper.c b/source/scripts/init/src/apply_system_defaults_helper.c
+index 058634e..c9ca991 100644
+--- a/source/scripts/init/src/apply_system_defaults_helper.c
++++ b/source/scripts/init/src/apply_system_defaults_helper.c
+@@ -2427,10 +2427,12 @@ int apply_partnerId_default_values (char *data, char *PartnerID)
+ 	*maxAddress = NULL,
+         *allow_ethernet_wan = NULL,
+         *initialForwardedMark = NULL,
+-        *initialOutputMark = NULL,
+-        *startupipmode = NULL,
++        *initialOutputMark = NULL;
++#if !defined(NO_MTA_FEATURE_SUPPORT)
++   char  *startupipmode = NULL,
+         *pridhcpoption = NULL,
+         *secdhcpoption = NULL;
++#endif
+     int	    isNeedToApplyPartnersDefault = 1;
+     int	    isNeedToApplyPartnersPSMDefault = 0;
+     char    ntpServer1[64]     = {0};

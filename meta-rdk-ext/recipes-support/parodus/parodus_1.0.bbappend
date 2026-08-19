@@ -30,6 +30,8 @@ do_install:append:broadband () {
     install -d ${D}${base_libdir_native}/rdk
     install -m 0644 ${S}/devices/broadband/parodus/systemd/parodus.service ${D}${systemd_unitdir}/system
     install -m 0755 ${S}/devices/broadband/parodus/scripts/parodus_start.sh ${D}${base_libdir_native}/rdk
+    sed -i 's/parodusCmd.cmd &/parodusCmd.cmd/' ${D}${systemd_unitdir}/system/parodus.service
+    sed -i '/ExecStart=/a ExecStartPost\=\sysevent set webserver started'  ${D}${systemd_unitdir}/system/parodus.service
 }
 
 SYSTEMD_SERVICE:${PN}:append:broadband = " parodus.service"

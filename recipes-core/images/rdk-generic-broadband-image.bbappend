@@ -22,6 +22,9 @@ IMAGE_INSTALL:append =" ${@bb.utils.contains('DISTRO_FEATURES', 'Asterisk', ' ha
 # For Rust environment verification
 IMAGE_INSTALL:append = " rust-hello-world"
 
+#RNDIS SUPPORT
+IMAGE_INSTALL:append = " network-hotplug"
+
 IMAGE_INSTALL:append = " efi-image-manager"
 
 # Placeholder for resolv.conf
@@ -30,6 +33,11 @@ IMAGE_INSTALL:append = " resolvconf-placeholder"
 # EasyMesh and IEEE1905
 IMAGE_INSTALL:append = "${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh',' unified-wifi-mesh unified-wifi-mesh-cli socat','',d)}"
 IMAGE_INSTALL:append = "${@bb.utils.contains('DISTRO_FEATURES', 'with_alsap',' ieee1905-em ','',d)}"
+
+# Webpa
+IMAGE_INSTALL:append = "${@bb.utils.contains('DISTRO_FEATURES', 'webpa', ' parodus parodus2ccsp', '', d)}"
+
+IMAGE_INSTALL:append = " incus-agent"
 
 require image-exclude-files.inc
 
@@ -42,6 +50,8 @@ ROOTFS_POSTPROCESS_COMMAND:append = "remove_unused_file; "
 
 ROOTFS_POSTPROCESS_COMMAND:append = "add_busybox_fixes; "
 
+ROOTFS_POSTPROCESS_COMMAND:append = "add_root_symlink; "
+
 add_busybox_fixes() {
                 if [  -d ${IMAGE_ROOTFS}/bin ]; then
 			cd  ${IMAGE_ROOTFS}/bin
@@ -52,4 +62,10 @@ add_busybox_fixes() {
                 fi
 }
 
+# The Incus agent expects to have a /root
+# folder when executing commands via
+# `incus exec`
+add_root_symlink() {
+		ln -sfr ${IMAGE_ROOTFS}/home/root ${IMAGE_ROOTFS}/root
+}
 # ----------------------------------------------------------------------------

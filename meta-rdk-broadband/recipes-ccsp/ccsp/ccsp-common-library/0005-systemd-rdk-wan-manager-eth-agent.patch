@@ -1,0 +1,28 @@
+From 344ebb3a2f5ab37b3b0352007fc73d255ffd277b Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Thu, 26 Feb 2026 13:45:23 +1100
+Subject: [PATCH] (meta-rdk-bsp-arm only) systemd_units: Make RdkWanManager
+ wait for CcspEthAgent
+
+---
+ systemd_units/RdkWanManager.service | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/systemd_units/RdkWanManager.service b/systemd_units/RdkWanManager.service
+index 0915391..fa1c529 100644
+--- a/systemd_units/RdkWanManager.service
++++ b/systemd_units/RdkWanManager.service
+@@ -18,8 +18,9 @@
+ ##########################################################################
+ [Unit]
+ Description=Rdk Wan Manager service
++Requires=CcspEthAgent.service
+ 
+-After=CcspCrSsp.service PsmSsp.service
++After=CcspEthAgent.service
+ 
+ [Service]
+ Type=forking
+-- 
+2.51.2
+

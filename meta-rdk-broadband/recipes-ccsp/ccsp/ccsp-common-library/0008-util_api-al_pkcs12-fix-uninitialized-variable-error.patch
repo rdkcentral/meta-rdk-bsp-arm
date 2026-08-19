@@ -1,0 +1,34 @@
+From 071dec24a498c36f3ff98a5a4c35dd45228486cd Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Wed, 22 Apr 2026 00:40:17 +0000
+Subject: [PATCH] util_api: al_pkcs12: fix uninitialized variable error
+
+When BitBake has debug build features enabled, the following error
+may appear:
+pkcs12_utility_api.c:708:29: error: 'n' may be used uninitialized
+in this function [-Werror=maybe-uninitialized]
+
+'n' is derived from the KeyId switch statement which lacks a
+default case, because the 'default' is constained above to n=1;
+
+However, the compiler cannot follow this.
+
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+---
+ .../util_api/asn.1/components/al_pkcs12/pkcs12_utility_api.c   | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/source/util_api/asn.1/components/al_pkcs12/pkcs12_utility_api.c b/source/util_api/asn.1/components/al_pkcs12/pkcs12_utility_api.c
+index bb5a6d6..43b1e59 100644
+--- a/source/util_api/asn.1/components/al_pkcs12/pkcs12_utility_api.c
++++ b/source/util_api/asn.1/components/al_pkcs12/pkcs12_utility_api.c
+@@ -660,7 +660,8 @@ PKCS12UtilityGetDerivedKey
+     PUCHAR                          pDiver      = NULL;
+     PUCHAR                          pBMPPassword= NULL; 
+     ULONG                           u;
+-    ULONG                           i, j, n, cycle;
++    ULONG                           i, j, cycle;
++    ULONG                           n           = 0;
+     ULONG                           passLength;
+     ULONG                           lenOfBMPPass;
+     ULONG                           lenOfPass;

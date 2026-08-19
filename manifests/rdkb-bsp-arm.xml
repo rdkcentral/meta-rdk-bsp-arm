@@ -4,12 +4,9 @@
     <remote name="github" fetch="https://github.com" review=""/>
     <remote name="yocto" fetch="http://git.yoctoproject.org/git" review=""/>
     <remote name="openembedded" fetch="https://git.openembedded.org" review=""/>
-    <default remote="cmf" revision="rdkb-2025q4-kirkstone" sync-j="2"/>
+    <default remote="cmf" revision="rdkb-2026q1-kirkstone" sync-j="2"/>
     <include name="manifests/oe-layers.xml"/>
-    <project name="rdkcentral/meta-rdk-bsp-arm" remote="github" path="meta-rdk-bsp-arm" revision="main"/>
-    <project name="components/opensource/gdbus-client"/>
-    <project name="rdk/components/generic/libSyscallWrapper"/>
-    <project name="rdk/components/generic/libunpriv"/>
+    <project name="rdkcentral/meta-rdk-bsp-arm" remote="github" path="meta-rdk-bsp-arm" revision="develop"/>
     <project name="rdk/components/generic/rdk-oe/meta-cmf" path="meta-cmf"/>
     <project name="rdk/components/generic/rdk-oe/meta-cmf-broadband" path="meta-cmf-broadband"/>
     <project name="rdk/components/generic/rdk-oe/meta-cmf-mesh" path="meta-cmf-mesh"/>
@@ -21,10 +18,6 @@
     <project name="rdk/components/generic/sys_mon_tools/sys_resource"/>
     <project name="rdk/components/generic/syslog_helper"/>
     <project name="rdkb/components/generic/CcspLogAgent"/>
-    <project name="rdkb/components/generic/sso"/>
-    <project name="rdkb/components/opensource/ccsp/FirmwareSanity"/>
-    <project name="rdkb/components/opensource/ccsp/PlatformManager"/>
-    <project name="rdkb/devices/rdkbemu/rdkbemu_xb3" path="rdkb/components/opensource/ccsp/xb3"/>
-    <project name="rdkcentral/meta-rdk-wan" remote="github" path="meta-rdk-wan" revision="rdkb-2025q4-kirkstone"/>
-    <project name="rdkcentral/rdkb-halif-platform" remote="github" path="rdkb/components/opensource/ccsp/rdkb-halif-platform" revision="rdkb-2025q4-kirkstone"/>
+    <project name="rdkcentral/meta-rdk-wan" remote="github" path="meta-rdk-wan" revision="rdkb-2026q1-kirkstone"/>
+    <project name="rdkcentral/rdkb-halif-platform" remote="github" path="rdkb/components/opensource/ccsp/rdkb-halif-platform" revision="rdkb-2026q1-kirkstone"/>
 </manifest>
