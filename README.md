@@ -175,6 +175,15 @@ raspberrypi64-rdk-broadband
   Some components that do not function without `erouter0`, like WebUI,
   are not currently included.
 
+* USP (`usp-pa`) is the only management agent built into the image by default.
+
+  WebPA (parodus) and Telemetry 2.0 are opt-in and configured in `conf/distro/include/local-settings.inc`:
+
+  ```
+  DISTRO_FEATURES:append = " webpa"
+  DISTRO_FEATURES:append = " t2"
+  ```
+
 * The WAN interface will be mapped to `eth6`. LAN side will always be on `eth0`.
 
   If a second WAN interface (like SFP) exists, it will be mapped to `eth8`.

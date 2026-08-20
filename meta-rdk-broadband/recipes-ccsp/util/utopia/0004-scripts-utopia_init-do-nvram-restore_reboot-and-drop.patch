@@ -1,12 +1,10 @@
-From 72fa8e4d81fc0a36a48e0d824e6ef6e745bf5c61 Mon Sep 17 00:00:00 2001
+From c6dc7ea22f3d0151a1512311d668b1e6668ff0b7 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
-Date: Mon, 1 Jul 2024 14:35:10 +1000
+Date: Fri, 7 Aug 2026 09:47:46 +1000
 Subject: [PATCH] scripts: utopia_init: do nvram restore_reboot and dropbear on
  genericarm
 
 For the rpi these were implemented as a sed hack in the utopia.bbappend.
-
-Change-Id: Ib7d16fd7595d3b11c1a3f7af64dc571c75b82f99
 
 ---
  source/scripts/init/system/utopia_init.sh | 4 ++--

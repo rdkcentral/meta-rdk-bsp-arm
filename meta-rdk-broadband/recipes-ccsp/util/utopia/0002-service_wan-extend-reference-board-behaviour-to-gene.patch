@@ -1,0 +1,47 @@
+From bf87b3b22cc56fa1bf0bb8c75923a0085f33442f Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Wed, 5 Aug 2026 14:38:57 +1000
+Subject: [PATCH] service_wan: extend reference board behaviour to generic Arm
+
+This is for the meta-rdk-bsp-arm project. Similar to other
+RDK-B OSS reference boards that do not use a vendor dataplane,
+extend the behaviour defined for those reference platforms
+to this one.
+
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+
+---
+ source/service_wan/service_wan.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/source/service_wan/service_wan.c b/source/service_wan/service_wan.c
+index b9abc63..5c6efcf 100644
+--- a/source/service_wan/service_wan.c
++++ b/source/service_wan/service_wan.c
+@@ -1508,7 +1508,7 @@ STATIC int wan_iface_up(struct serv_wan *sw)
+ STATIC int wan_iface_down(struct serv_wan *sw)
+ {
+     int err = 0;
+-#if !defined(_PLATFORM_RASPBERRYPI_)  && !defined(_PLATFORM_BANANAPI_R4_)
++#if !defined(_PLATFORM_RASPBERRYPI_)  && !defined(_PLATFORM_BANANAPI_R4_) && !defined(_PLATFORM_GENERICARM_)
+     err = v_secure_system("ip -4 link set %s down", sw->ifname);
+ #endif
+ #if PUMA6_OR_NEWER_SOC_TYPE
+@@ -1726,7 +1726,7 @@ STATIC int wan_addr_set(struct serv_wan *sw)
+             }
+     	    /* Should not be executed before wan_service-status is set to started for _PLATFORM_IPQ_ */
+ 
+-#if !defined(_PLATFORM_IPQ_) && !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_TURRIS_)
++#if !defined(_PLATFORM_IPQ_) && !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_TURRIS_) && !defined(_PLATFORM_GENERICARM_)
+ #if defined (_XB6_PRODUCT_REQ_) && defined (_COSA_BCM_ARM_)
+             v_secure_system("firewall");
+ #else
+@@ -1742,7 +1742,7 @@ STATIC int wan_addr_set(struct serv_wan *sw)
+     	if(strcmp(mischandler_ready,"true") == 0)
+     	{
+     		//only for first time
+-    #if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_TURRIS_)  && !defined(_PLATFORM_BANANAPI_R4_)
++#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_TURRIS_)  && !defined(_PLATFORM_BANANAPI_R4_) && !defined(_PLATFORM_GENERICARM_)
+     		fprintf(stderr, "[%s] ready is set from misc handler. Doing gw_lan_refresh\n", PROG_NAME);
+             #if defined (_XB6_PRODUCT_REQ_) && defined (_COSA_BCM_ARM_)
+                 v_secure_system("firewall");

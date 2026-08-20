@@ -1,4 +1,4 @@
-From 8a735672768ffc8f3d9704689bb763a7c7415d49 Mon Sep 17 00:00:00 2001
+From f91b6c433572ea3c3682e826d2edf19d4b784593 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Mon, 26 Jan 2026 19:57:14 +1100
 Subject: [PATCH] scripts: fix compile errors with -DNO_MTA_FEATURE_SUPPORT
@@ -13,10 +13,10 @@ apply_system_defaults_helper.c:2326:10: error: unused variable 'startupipmode'
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/source/scripts/init/src/apply_system_defaults_helper.c b/source/scripts/init/src/apply_system_defaults_helper.c
-index 058634e..c9ca991 100644
+index 3d11ae3..84ff74b 100644
 --- a/source/scripts/init/src/apply_system_defaults_helper.c
 +++ b/source/scripts/init/src/apply_system_defaults_helper.c
-@@ -2427,10 +2427,12 @@ int apply_partnerId_default_values (char *data, char *PartnerID)
+@@ -2434,10 +2434,12 @@ int apply_partnerId_default_values (char *data, char *PartnerID)
  	*maxAddress = NULL,
          *allow_ethernet_wan = NULL,
          *initialForwardedMark = NULL,

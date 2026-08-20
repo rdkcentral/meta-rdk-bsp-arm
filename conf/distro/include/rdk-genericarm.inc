@@ -29,7 +29,6 @@ PREFERRED_PROVIDER_virtual/wifi-vendor-mtk ?= "linux-backports"
 VIRTUAL-RUNTIME_mfrlib = "mfrlibs-rpi"
 VIRTUAL-RUNTIME_dtcpmgr = ""
 
-DISTRO_FEATURES:append = " parodus"
 DISTRO_FEATURES:append = " ledmgr"
 DISTRO_FEATURES:append = " build_rne"
 DISTRO_FEATURES:append = " rdk-oss-ssa"
@@ -172,6 +171,7 @@ DISTRO_FEATURES:append:broadband = " no_mta_support"
 # Disable RDM
 DISTRO_FEATURES:remove:broadband = " RDM"
 
+DISTRO_FEATURES:append:broadband = " rdkb_auto_port_switch"
 SESSIONMGR_WS_RPC_ENABLE = "1"
 
 #REFPLTB-2784 : easymesh controller arch only supports with wifiagent

@@ -1,0 +1,27 @@
+From 41963d6422a7d2189e0ea32915fa18a9dd0a5808 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Mon, 10 Aug 2026 11:41:35 +1000
+Subject: [PATCH] utopia_init: send systemd notification and keep running on
+ genericarm
+
+---
+ source/scripts/init/system/utopia_init.sh | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/source/scripts/init/system/utopia_init.sh b/source/scripts/init/system/utopia_init.sh
+index b58a458..9772f23 100755
+--- a/source/scripts/init/system/utopia_init.sh
++++ b/source/scripts/init/system/utopia_init.sh
+@@ -895,3 +895,12 @@ fi
+ if [ "$BOX_TYPE" = "SCER11BEL" ] || [ "$MODEL_NUM" = "SCXF11BFL" ]; then
+        /etc/reset_reason_log.sh &
+ fi
++
++touch -f /tmp/utopia_inited
++
++if [ "${BOX_TYPE}" = "genericarm" ]; then
++        systemd-notify --ready
++        # Under Type=notify, we need to keep the utopia
++        # "namespace" open, so wait until we are told to stop
++        tail -f /dev/null
++fi

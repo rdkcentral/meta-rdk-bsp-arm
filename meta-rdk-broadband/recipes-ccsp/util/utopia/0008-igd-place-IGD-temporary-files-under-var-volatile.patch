@@ -1,9 +1,7 @@
-From f9f20dc2124a15bf2fbb6d1c6250a831d91d35f2 Mon Sep 17 00:00:00 2001
+From 8599c09dd7ce44f673c0bd0c9e7ea97c62e65376 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Wed, 7 Aug 2024 15:21:05 +1000
 Subject: [PATCH] igd: place IGD temporary files under /var/volatile
-
-Change-Id: I1b8f7e37b7739a04f63a80670d2539d07ab1f809
 
 ---
  source/igd/src/igd_device_root.c             | 2 +-
@@ -24,7 +22,7 @@ index 62eac23..698b2c1 100644
  #define DEFAULT_ADVR_EXPIRE 1800
  #define VERSION_MAJOR 		1
 diff --git a/source/scripts/init/service.d/service_igd.sh b/source/scripts/init/service.d/service_igd.sh
-index 5f8018b..c51e5d4 100755
+index e55d205..d76c252 100755
 --- a/source/scripts/init/service.d/service_igd.sh
 +++ b/source/scripts/init/service.d/service_igd.sh
 @@ -46,7 +46,7 @@ SELF_NAME="`basename $0`"

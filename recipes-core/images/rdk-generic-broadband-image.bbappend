@@ -35,7 +35,7 @@ IMAGE_INSTALL:append = "${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh',' uni
 IMAGE_INSTALL:append = "${@bb.utils.contains('DISTRO_FEATURES', 'with_alsap',' ieee1905-em ','',d)}"
 
 # Webpa
-IMAGE_INSTALL:append = " parodus parodus2ccsp"
+IMAGE_INSTALL:append = "${@bb.utils.contains('DISTRO_FEATURES', 'webpa', ' parodus parodus2ccsp', '', d)}"
 
 IMAGE_INSTALL:append = " incus-agent"
 

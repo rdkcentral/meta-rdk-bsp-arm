@@ -988,6 +988,16 @@ INT CcspHalExtSw_getEthWanEnable(BOOLEAN *enable)
     return RETURN_OK;
 }
 
+/* Stub functions for auto port switch (between LAN and WAN roles) feature */
+int CcspHalExtSw_ethPortConfigure(char *ifname, BOOLEAN WanMode) {
+    CcspHalEthSwTrace(("%s called with ifname=%s WanMode=%d\n", __func__, ifname, WanMode));
+    return RETURN_OK;
+}
+
+BOOLEAN CcspHalExtSw_getCurrentWanHWConf() {
+    CcspHalEthSwTrace(("%s called\n", __func__));
+    return TRUE;
+}
 /* CcspHalExtSw_getEthWanPort:  */
 /**
 * @description Return the ethwan port

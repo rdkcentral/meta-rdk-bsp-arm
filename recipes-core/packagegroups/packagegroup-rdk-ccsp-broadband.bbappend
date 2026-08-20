@@ -34,5 +34,9 @@ RDEPENDS_packagegroup-rdk-ccsp-broadband:append = "\
     \
 "
 
+# WebPA and Telemetry 2.0
+RDEPENDS:packagegroup-rdk-ccsp-broadband:remove = "${@bb.utils.contains('DISTRO_FEATURES', 'webpa', '', ' parodus parodus2ccsp start-parodus', d)}"
+RDEPENDS:packagegroup-rdk-ccsp-broadband:remove = "${@bb.utils.contains('DISTRO_FEATURES', 't2', '', ' telemetry', d)}"
+
 # Set the gwprov app for RPi
 GWPROVAPP = "${@bb.utils.contains('DISTRO_FEATURES','rdkb_wan_manager','','ccsp-gwprovapp-ethwan',d)}"

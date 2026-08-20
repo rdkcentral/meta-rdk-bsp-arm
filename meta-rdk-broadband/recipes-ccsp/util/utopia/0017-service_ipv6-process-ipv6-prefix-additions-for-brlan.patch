@@ -1,0 +1,24 @@
+From c5deb6263ef0605a22008a4ce61a95afc5b0f493 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Mon, 10 Aug 2026 16:11:46 +1000
+Subject: [PATCH] service_ipv6: process ipv6 prefix additions for brlan0
+
+---
+ source/scripts/init/service.d/service_ipv6.sh | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/source/scripts/init/service.d/service_ipv6.sh b/source/scripts/init/service.d/service_ipv6.sh
+index db1fc51..c8597f6 100755
+--- a/source/scripts/init/service.d/service_ipv6.sh
++++ b/source/scripts/init/service.d/service_ipv6.sh
+@@ -109,6 +109,10 @@ case "$1" in
+            service_ipv6 restart
+          fi
+      fi
++     # genericarm workaround
++     lan_ipaddr_v6=$(sysevent get lan_ipaddr_v6)
++     lan_prefix_v6=$(sysevent get lan_prefix_v6)
++     ip addr add "${lan_ipaddr_v6}/${lan_prefix_v6}" dev brlan0
+      ;;
+ 	
+    bridge-status)

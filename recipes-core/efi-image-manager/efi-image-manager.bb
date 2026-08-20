@@ -10,5 +10,10 @@ SRCREV = "49f45ab53bb0ab5b5808cabba0ed631f6471971c"
 DEPENDS  = "btrfs-tools clang-native"
 
 S = "${WORKDIR}/git"
+
+PREMIRRORS:prepend:kirkstone = " \
+	https://crates\.io/api/v1/crates/([^/]+)/([^/]+)/download https://static.crates.io/crates/\1/\1-\2.crate \n\
+"
+
 require efi-image-manager-crates.inc
 
