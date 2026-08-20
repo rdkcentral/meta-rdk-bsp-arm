@@ -1,4 +1,4 @@
-From fbe5043100d869dbda75e8ed1ff0db007ae39502 Mon Sep 17 00:00:00 2001
+From ab3306479bbda932c440382e53e8a861185090a1 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Fri, 8 Nov 2024 14:59:17 +1100
 Subject: [PATCH] service: dhcpv6_client: log to syslog instead of /dev/console
@@ -10,7 +10,6 @@ Usage: dhcpv6_client [ dhcpv6_client-start | dhcpv6_client-stop | dhcpv6_client-
 The underlying issue is with SelfHeal, but in any case, it is better
 for these logs to go to syslog (/var/log/user)
 
-Change-Id: I15f1745a63a3e69bb4448d96269096f90e2ee1a2
 Signed-off-by: Mathew McBride <matt@traverse.com.au>
 
 ---

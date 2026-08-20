@@ -22,7 +22,8 @@ Description=Utopia service
 After=mount-nonvol.service
 
 [Service]
-Type=forking
+Type=notify
+NotifyAccess=all
 WorkingDirectory=/etc/utopia
 EnvironmentFile=/etc/device.properties
 ExecStartPre=/bin/sh /lib/rdk/ethwan_intf.sh

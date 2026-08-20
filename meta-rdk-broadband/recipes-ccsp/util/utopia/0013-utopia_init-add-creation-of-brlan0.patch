@@ -1,0 +1,31 @@
+From b6823a1ba18c5bcd2afe61400f5a8951cfa86032 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Fri, 7 Aug 2026 17:47:48 +1000
+Subject: [PATCH] utopia_init: add creation of brlan0
+
+Previously we used the Raspberry Pi workaround of creating brlan0 inside lan_handler.sh
+
+This is a much simpler workaround
+---
+ source/scripts/init/system/utopia_init.sh | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/source/scripts/init/system/utopia_init.sh b/source/scripts/init/system/utopia_init.sh
+index 0505144..f5fbce7 100755
+--- a/source/scripts/init/system/utopia_init.sh
++++ b/source/scripts/init/system/utopia_init.sh
+@@ -598,6 +598,14 @@ echo_t "[utopia][init] Processing registration"
+ execute_dir $INIT_DIR&
+ #init_inter_subsystem&
+ 
++# Generic ARM workaround (no owner of brlan0)
++brctl addbr "${lan_ifname}"
++ip link set "${lan_ifname}" up
++lan_ipaddr=$(syscfg get lan_ipaddr)
++lan_netmask=$(syscfg get lan_netmask)
++ip addr add "${lan_ipaddr}/${lan_netmask}" dev ${lan_ifname}
++sysevent set ipv4_4-ifname brlan0
++
+ #--------Set up private IPC vlan----------------
+ vconfig add l2sd0 500
+ if [ "$BOX_TYPE" = "XB3" ];then
