@@ -1,0 +1,9 @@
+[Unit]
+Description=Watch for WiFi driver initialization
+
+[Path]
+PathExists=/tmp/wifi_driver_initialized
+Unit=onewifi.service
+
+[Install]
+WantedBy=multi-user.target

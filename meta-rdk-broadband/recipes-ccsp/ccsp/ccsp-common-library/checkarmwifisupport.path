@@ -1,0 +1,9 @@
+[Unit]
+Description=Watch for ARM WiFi support prerequisites
+
+[Path]
+PathExists=/tmp/pam_initialized
+Unit=checkarmwifisupport.service
+
+[Install]
+WantedBy=multi-user.target

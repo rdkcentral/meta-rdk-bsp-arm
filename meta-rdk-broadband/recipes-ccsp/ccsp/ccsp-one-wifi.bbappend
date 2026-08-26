@@ -8,6 +8,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/ccsp-one-wifi:"
 SRC_URI:append = " \
     file://wifi_defaults.txt \
     file://onewifi_pre_start.sh \
+    file://checkwifi.sh \
     file://0001-db-fix-compile-error-when-ONEWIFI_DB_SUPPORT-not-set.patch \
     file://0002-wifi_db-fix-incorrect-type-for-index-variable.patch \
 "
@@ -42,10 +43,12 @@ do_compile:prepend() {
 do_install:append() {
     install -d ${D}/usr/ccsp/wifi/
     install -m 644 ${WORKDIR}/wifi_defaults.txt ${D}/usr/ccsp/wifi/
+    install -m 755 ${WORKDIR}/checkwifi.sh ${D}/usr/ccsp/wifi/
 }
 
 FILES:${PN}:append = " \
     /usr/bin/wifi_events_consumer \
+    /usr/ccsp/wifi/checkwifi.sh \
     /usr/ccsp/wifi/wifi_defaults.txt \
     ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', '', '/usr/ccsp/wifi/onewifi_pre_start.sh', d)} \
 "

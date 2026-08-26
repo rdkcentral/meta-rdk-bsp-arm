@@ -13,6 +13,9 @@ CXXFLAGS:append = " \
 SRC_URI:append = " \
     file://ccsp_vendor.h \
     file://ethwan_intf.sh \
+    file://armwifiinitialized.path \
+    file://checkarmwifisupport.path \
+    file://checkarmwifisupport.service \
     file://onewifi.service \
 "
 
@@ -148,6 +151,9 @@ fi' ${D}/usr/ccsp/ccspPAMCPCheck.sh
 
      DISTRO_OneWiFi_ENABLED="${@bb.utils.contains('DISTRO_FEATURES','OneWifi','true','false',d)}"
      if [ $DISTRO_OneWiFi_ENABLED = 'true' ]; then
+         install -D -m 0644 ${WORKDIR}/armwifiinitialized.path ${D}${systemd_unitdir}/system/armwifiinitialized.path
+         install -D -m 0644 ${WORKDIR}/checkarmwifisupport.path ${D}${systemd_unitdir}/system/checkarmwifisupport.path
+         install -D -m 0644 ${WORKDIR}/checkarmwifisupport.service ${D}${systemd_unitdir}/system/checkarmwifisupport.service
          install -D -m 0644 ${WORKDIR}/onewifi.service ${D}${systemd_unitdir}/system/onewifi.service
      fi
 
@@ -188,7 +194,8 @@ SYSTEMD_SERVICE:${PN}:append = " CcspXdnsSsp.service"
 SYSTEMD_SERVICE:${PN}:append = " wan-initialized.path"
 SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', 'RdkWanManager.service RdkVlanManager.service ', '', d)}"
 SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'fwupgrade_manager', 'RdkFwUpgradeManager.service ', '', d)}"
-SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', 'onewifi.service ', 'ccspwifiagent.service', d)}"
+SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', 'armwifiinitialized.path checkarmwifisupport.path ', '', d)}"
+SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', 'onewifi.service', 'ccspwifiagent.service', d)}"
 SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'webconfig_bin', 'webconfig.service', '', d)}"
 SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'webpa', 'webpa.service', '', d)}"
 
@@ -216,6 +223,7 @@ FILES:${PN}:append = " \
     ${systemd_unitdir}/system/wan-initialized.target \
     ${systemd_unitdir}/system/wan-initialized.path \
 "
+FILES:${PN}:append = "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' ${systemd_unitdir}/system/armwifiinitialized.path ${systemd_unitdir}/system/checkarmwifisupport.path ${systemd_unitdir}/system/checkarmwifisupport.service ', '', d)}"
 FILES:${PN}:append = "${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager', ' ${systemd_unitdir}/system/RdkWanManager.service ${systemd_unitdir}/system/RdkVlanManager.service  ', '', d)}"
 FILES:${PN}:append = "${@bb.utils.contains('DISTRO_FEATURES', 'fwupgrade_manager', ' ${systemd_unitdir}/system/RdkFwUpgradeManager.service ', '', d)}"
 

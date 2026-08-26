@@ -29,6 +29,7 @@ IMAGE_INSTALL:append = " efi-image-manager"
 
 # Placeholder for resolv.conf
 IMAGE_INSTALL:append = " resolvconf-placeholder"
+IMAGE_INSTALL:append:raspberrypi64-rdk-broadband = " linux-firmware-bcm43455 firmware-mt76"
 
 # EasyMesh and IEEE1905
 IMAGE_INSTALL:append = "${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh',' unified-wifi-mesh unified-wifi-mesh-cli socat','',d)}"

@@ -1,0 +1,7 @@
+[Unit]
+Description=Check ARM WiFi support
+
+[Service]
+Type=oneshot
+ExecStart=/usr/ccsp/wifi/checkwifi.sh
+RemainAfterExit=yes
