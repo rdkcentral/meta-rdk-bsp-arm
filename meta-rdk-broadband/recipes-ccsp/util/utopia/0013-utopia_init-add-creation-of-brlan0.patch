@@ -1,4 +1,4 @@
-From b6823a1ba18c5bcd2afe61400f5a8951cfa86032 Mon Sep 17 00:00:00 2001
+From dcc73abdcf342112388393660217a9fb35a73f94 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Fri, 7 Aug 2026 17:47:48 +1000
 Subject: [PATCH] utopia_init: add creation of brlan0
@@ -6,15 +6,16 @@ Subject: [PATCH] utopia_init: add creation of brlan0
 Previously we used the Raspberry Pi workaround of creating brlan0 inside lan_handler.sh
 
 This is a much simpler workaround
+
 ---
- source/scripts/init/system/utopia_init.sh | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ source/scripts/init/system/utopia_init.sh | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/source/scripts/init/system/utopia_init.sh b/source/scripts/init/system/utopia_init.sh
-index 0505144..f5fbce7 100755
+index 0505144..405487d 100755
 --- a/source/scripts/init/system/utopia_init.sh
 +++ b/source/scripts/init/system/utopia_init.sh
-@@ -598,6 +598,14 @@ echo_t "[utopia][init] Processing registration"
+@@ -598,6 +598,20 @@ echo_t "[utopia][init] Processing registration"
  execute_dir $INIT_DIR&
  #init_inter_subsystem&
  
@@ -23,8 +24,14 @@ index 0505144..f5fbce7 100755
 +ip link set "${lan_ifname}" up
 +lan_ipaddr=$(syscfg get lan_ipaddr)
 +lan_netmask=$(syscfg get lan_netmask)
-+ip addr add "${lan_ipaddr}/${lan_netmask}" dev ${lan_ifname}
-+sysevent set ipv4_4-ifname brlan0
++ip addr add "${lan_ipaddr}/${lan_netmask}" dev "${lan_ifname}"
++sysevent set ipv4_4-ifname "${lan_ifname}"
++brlan0_members=$(psmcli get "dmsb.l2net.1.Members.Eth")
++for intf in $brlan0_members; do
++   if [ -d "/sys/class/net/${intf}" ] && [ ! -d "/sys/class/net/${lan_ifname}/lower_${intf}" ]; then
++      brctl addif "${lan_ifname}" "${intf}"
++   fi
++done
 +
  #--------Set up private IPC vlan----------------
  vconfig add l2sd0 500

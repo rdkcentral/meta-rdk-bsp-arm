@@ -59,7 +59,6 @@
 #define  CcspHalEthSwTrace(msg)                     printf("%s - ", __FUNCTION__); printf msg;
 #define MAX_BUF_SIZE 1024
 #define MACADDRESS_SIZE 6
-#define ETH_WAN_INTERFACE  "eth8"
 #define LM_ARP_ENTRY_FORMAT  "%63s %63s %63s %63s %17s %63s"
 
 #if defined(FEATURE_RDKB_WAN_MANAGER)
@@ -68,7 +67,6 @@ static int hal_init_done = 0;
 appCallBack ethWanCallbacks;
 #define  ETH_INITIALIZE  "/tmp/ethagent_initialized"
 #define  LINK_VALUE_SIZE  50
-#define  ETH_WAN_IFNAME   "eth8"
 #define WAN_MANAGER_INITIALIZED_PATH "/tmp/wanmanager_initialized"
 
 #endif
@@ -192,26 +190,71 @@ void GWP_RegisterEthWan_Callback(appCallBack *obj)
 
     return;
 }
+#endif
 
 INT
-    GWP_GetEthWanInterfaceName
+GWP_GetEthWanInterfaceName
 (
  unsigned char * Interface,
  ULONG           maxSize
  )
 {
+    FILE *fp = NULL;
+    char temp_ifname[20] = {0};
+    size_t psmValueLen;
+    int strncpyResult;
+
     CcspHalEthSwTrace(("%s called\n", __func__));
-    //Maxsize param should be minimum 4charecters(eth0) including NULL charecter	
-    if( ( Interface == NULL ) || ( maxSize < ( strlen( ETH_WAN_IFNAME ) + 1 ) ) )
+
+    if (!Interface)
     {
-        printf("ERROR: Invalid argument. \n");
+        printf("ERROR: Invalid argument (NULL Interface).\n");
         return RETURN_ERR;
     }
 
-    snprintf(Interface, maxSize, "%s", ETH_WAN_IFNAME);
+    fp = popen("psmcli get dmsb.wanmanager.if.1.Name", "r");
+    if (!fp)
+    {
+        CcspHalEthSwTrace(("%s: Failed to run psmcli\n", __FUNCTION__));
+        return RETURN_ERR;
+    }
+
+    if (!fgets(temp_ifname, sizeof(temp_ifname), fp))
+    {
+        CcspHalEthSwTrace(("%s: No output from psmcli (WAN interface not found)\n",
+                            __FUNCTION__));
+        pclose(fp);
+        return RETURN_ERR;
+    }
+
+    pclose(fp);
+    temp_ifname[strcspn(temp_ifname, "\n")] = 0;
+    psmValueLen = strlen(temp_ifname);
+
+    if (psmValueLen == 0)
+    {
+        CcspHalEthSwTrace(("%s: ERROR: WAN interface empty after psmcli\n",
+                            __FUNCTION__));
+        return RETURN_ERR;
+    }
+
+    strncpyResult = snprintf(Interface, maxSize, "%s", temp_ifname);
+    /* Caution: snprintf returns < 0 for copy errors, but
+     * >= maxSize if the dest buffer is too small.
+     */
+    if (strncpyResult < 0) {
+        CcspHalEthSwTrace(("WARNING: Got error when copying into destination buffer (%d)\n",
+                            strncpyResult));
+    }
+
+    if ((ULONG)strncpyResult >= maxSize) {
+        CcspHalEthSwTrace(("WARNING: Buffer too small for interface (%s)\n",
+                            temp_ifname));
+        return RETURN_ERR;
+    }
+
     return RETURN_OK;
 }
-#endif
 
 /* CcspHalEthSwInit :  */
 /**
@@ -1082,7 +1125,7 @@ INT CcspHalExtSw_setEthWanPort(UINT Port)
     return RETURN_OK;
 }
 
-bool rpiNet_isInterfaceLinkUp(const char *ifname)
+bool HalEthSwGeneric_isInterfaceLinkUp(const char *ifname)
 {
     int  skfd;
     struct ifreq intf;
@@ -1111,7 +1154,13 @@ bool rpiNet_isInterfaceLinkUp(const char *ifname)
 INT GWP_GetEthWanLinkStatus()
 {
     INT status = 0;
-    CcspHalEthSwTrace(("%s called\n", __func__));
-    status = rpiNet_isInterfaceLinkUp(ETH_WAN_INTERFACE) ? TRUE : FALSE;
+    char wan_ifname[IFNAMSIZ];
+
+    if (GWP_GetEthWanInterfaceName((unsigned char *)&wan_ifname, IFNAMSIZ) != RETURN_OK) {
+        fprintf(stderr, "%s: Failed to get WAN Interface name\n", __func__);
+        return FALSE;
+    }
+
+    status = HalEthSwGeneric_isInterfaceLinkUp((char *)&wan_ifname) ? TRUE : FALSE;
     return status;
 }

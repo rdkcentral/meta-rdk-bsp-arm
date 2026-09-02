@@ -184,14 +184,19 @@ raspberrypi64-rdk-broadband
   DISTRO_FEATURES:append = " t2"
   ```
 
-* The WAN interface will be mapped to `eth6`. LAN side will always be on `eth0`.
+* The `armefi64-rdk-broadband` machine image is a _universal_ image which can be booted
+  on any supported board (provided the board already has a working UEFI firmware).
 
-  If a second WAN interface (like SFP) exists, it will be mapped to `eth8`.
+  On first boot it will attempt to find a matching PSM defaults file for the hardware
+  (matched by the device-tree `compatible` string, or DMI Board information for ACPI hosts)
+  if not, a "default" configuration will be applied which adds `eth0` to the LAN bridge
+  and uses `eth1` as the WAN interface.
 
-  This is to keep the interface names consistent between all hardware devices
-  until it is possible to do this configuration at runtime.
+  Please see this [pull request](https://github.com/rdkcentral/meta-rdk-bsp-arm/pull/174#issue-5242719768)
+  for details about the `ccsp-psm-machine-configs` mechanism.
 
-  The mapping of Ethernet interfaces is performed in `/lib/rdk/ethwan_intf.sh`.
+  If you build an image for a specific platform such as `raspberrypi64-rdk-broadband`, it will
+  only contain the defaults file for that specific platform.
 
 ### SSIDs, Passwords and other configuration settings
 

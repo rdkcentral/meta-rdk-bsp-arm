@@ -19,14 +19,14 @@
 [Unit]
 Description=Utopia service
 
-After=mount-nonvol.service
+After=btrfs-subvolume.service
+Requires=btrfs-subvolume.service
 
 [Service]
 Type=notify
 NotifyAccess=all
 WorkingDirectory=/etc/utopia
 EnvironmentFile=/etc/device.properties
-ExecStartPre=/bin/sh /lib/rdk/ethwan_intf.sh
 ExecStart=/bin/sh /etc/utopia/utopia_init.sh
 ExecStop=/bin/sh -c 'echo "Stopping/Restarting utopia_init.sh" >> ${PROCESS_RESTART_LOG}'
 SyslogIdentifier=Utopia

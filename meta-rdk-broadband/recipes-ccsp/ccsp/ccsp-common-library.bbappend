@@ -12,13 +12,9 @@ CXXFLAGS:append = " \
 
 SRC_URI:append = " \
     file://ccsp_vendor.h \
-    file://ethwan_intf.sh \
     file://onewifi.service \
+    file://psmssp.service \
 "
-
-# 2026-07-20: Incorporate SyslogIdentifier upstreamed change
-# Remove for ccsp-common-library version 2.7.0
-SRCREV_pn-ccsp-common-library = "249f8671ae1008c495b0756ac1a20486ab94e1aa"
 
 # Fix the path of the 'wan_started' monitor so it reads the correct path
 # (it was moved into the /var/run to work under our read-only rootfs)
@@ -39,6 +35,8 @@ SRC_URI:append = " file://0006-util_api-fix-compile-error-under-debug-build.patc
                    file://0008-util_api-al_pkcs12-fix-uninitialized-variable-error.patch \
                    file://0009-cosa-assert-AnscCopyString-can-not-be-called-same.patch \
 "
+# Call pre-init script for CcspEthAgent (see ccsp-eth-agent.bbappend)
+SRC_URI:append = " file://0010-systemd-CcspEthAgent-bring-up-all-eth.patch"
 
 do_configure:prepend:aarch64() {
 	sed -e '/len/ s/^\/*/\/\//' -i ${S}/source/ccsp/components/common/DataModel/dml/components/DslhObjRecord/dslh_objro_access.c
@@ -67,7 +65,8 @@ do_install:append:class-target () {
     install -d ${D}${systemd_unitdir}/system
     install -D -m 0644 ${S}/systemd_units/CcspCrSsp.service ${D}${systemd_unitdir}/system/CcspCrSsp.service
     install -D -m 0644 ${S}/systemd_units/CcspPandMSsp.service ${D}${systemd_unitdir}/system/CcspPandMSsp.service
-    install -D -m 0644 ${S}/systemd_units/PsmSsp.service ${D}${systemd_unitdir}/system/PsmSsp.service
+    #install -D -m 0644 ${S}/systemd_units/PsmSsp.service ${D}${systemd_unitdir}/system/PsmSsp.service
+    install -D -m 0644 ${WORKDIR}/psmssp.service ${D}${systemd_unitdir}/system/PsmSsp.service
     install -D -m 0644 ${S}/systemd_units/rdkbLogMonitor.service ${D}${systemd_unitdir}/system/rdkbLogMonitor.service
     install -D -m 0644 ${S}/systemd_units/CcspTandDSsp.service ${D}${systemd_unitdir}/system/CcspTandDSsp.service
     install -D -m 0644 ${S}/systemd_units/CcspLMLite.service ${D}${systemd_unitdir}/system/CcspLMLite.service
@@ -127,7 +126,6 @@ do_install:append:class-target () {
      install -D -m 0644 ${S}/systemd_units/CcspXdnsSsp.service ${D}${systemd_unitdir}/system/CcspXdnsSsp.service
 
      install -d ${D}${base_libdir}/rdk
-     install -m 755 ${WORKDIR}/ethwan_intf.sh ${D}${base_libdir}/rdk/
 #WanManager - RdkWanManager.service
      DISTRO_WAN_ENABLED="${@bb.utils.contains('DISTRO_FEATURES','rdkb_wan_manager','true','false',d)}"
      if [ $DISTRO_WAN_ENABLED = 'true' ]; then
@@ -198,7 +196,6 @@ FILES:${PN}:append = " \
     /usr/ccsp/utopiaInitCheck.sh \
     /usr/ccsp/ccspPAMCPCheck.sh \
     /usr/ccsp/ProcessResetCheck.sh \
-    ${base_libdir}/rdk/ethwan_intf.sh \
     ${systemd_unitdir}/system/CcspCrSsp.service \
     ${systemd_unitdir}/system/CcspPandMSsp.service \
     ${systemd_unitdir}/system/PsmSsp.service \
