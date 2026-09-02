@@ -26,12 +26,19 @@ jobs:
           echo 'printf "%s" "$GIT_TOKEN"' >> /tmp/git-askpass.sh
           chmod +x /tmp/git-askpass.sh
 
+      # Checkout note: the code checked out here is not executed by the runner,
+      # it is merely pulled and pushed to the mirror environment.
+      # We need to use the pull_request_target type to use configured
+      # secrets in the repo.
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
+          # Required to fetch the fork commit inside pull_request_target
+          allow-unsafe-pr-checkout: true
+          persist-credentials: false
 
       - name: Run GitLab pipeline
         timeout-minutes: 300
@@ -84,7 +91,7 @@ jobs:
           PR_SUBMITTER="${PR_SUBMITTER//\]/_}"
           export MIRROR_REFERENCE="refs/heads/${GITHUB_REPOSITORY_OWNER}/${GITHUB_BASE_REF}/${PR_SUBMITTER}/pull/${{ github.event.number }}"
           echo "Mirror repository reference will be ${MIRROR_REFERENCE}"
-          git push --force gitlabcom "HEAD:${MIRROR_REFERENCE}"
+          git push --no-verify --force gitlabcom "HEAD:${MIRROR_REFERENCE}"
           MIRROR_REPOSITORY_REFERENCE="${MIRROR_REFERENCE#refs/heads/}"
 
           if ! (curl --fail --request POST \
