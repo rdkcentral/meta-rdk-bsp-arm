@@ -80,6 +80,10 @@ do_install:append:class-target () {
 
     #webpa service
     if ${@bb.utils.contains('DISTRO_FEATURES', 'webpa', 'true', 'false', d)}; then
+    install -D -m 0644 ${S}/systemd_units/parodus.service ${D}${systemd_unitdir}/system/parodus.service
+    sed -i 's/parodusCmd.cmd &/parodusCmd.cmd/' ${D}${systemd_unitdir}/system/parodus.service
+    sed -i '/ExecStart=/a ExecStartPost\=\sysevent set webserver started'  ${D}${systemd_unitdir}/system/parodus.service
+    sed -i "s/wan-initialized.target/multi-user.target/g" ${D}${systemd_unitdir}/system/parodus.service
     install -D -m 0644 ${S}/systemd_units/webpa.service ${D}${systemd_unitdir}/system/webpa.service
     sed -i "/WorkingDirectory=/a ExecStartPre\=\/bin/sh -c '\/lib/rdk/webpa_pre_setup.sh'\\;" ${D}${systemd_unitdir}/system/webpa.service
     sed -i "s/wan-initialized.target/multi-user.target/g" ${D}${systemd_unitdir}/system/webpa.service
@@ -188,7 +192,7 @@ SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_w
 SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'fwupgrade_manager', 'RdkFwUpgradeManager.service ', '', d)}"
 SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', 'onewifi.service ', 'ccspwifiagent.service', d)}"
 SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'webconfig_bin', 'webconfig.service', '', d)}"
-SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'webpa', 'webpa.service', '', d)}"
+SYSTEMD_SERVICE:${PN}:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'webpa', 'webpa.service parodus.service ', '', d)}"
 
 FILES:${PN}:append = " \
     /usr/ccsp/ccspSysConfigEarly.sh \
@@ -217,5 +221,5 @@ FILES:${PN}:append = "${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_wan_manager'
 FILES:${PN}:append = "${@bb.utils.contains('DISTRO_FEATURES', 'fwupgrade_manager', ' ${systemd_unitdir}/system/RdkFwUpgradeManager.service ', '', d)}"
 
 # WebPA and Telemetry 2.0
-FILES:${PN}:append = "${@bb.utils.contains('DISTRO_FEATURES', 'webpa', ' ${systemd_unitdir}/system/webpa.service', '', d)}"
+FILES:${PN}:append = "${@bb.utils.contains('DISTRO_FEATURES', 'webpa', ' ${systemd_unitdir}/system/webpa.service ${systemd_unitdir}/system/parodus.service ', '', d)}"
 FILES:${PN}:append = "${@bb.utils.contains('DISTRO_FEATURES', 't2', ' ${systemd_unitdir}/system/CcspTelemetry.service', '', d)}"
