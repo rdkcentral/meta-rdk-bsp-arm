@@ -1,6 +1,8 @@
 # Derived from meta-cmf-raspberrypi/conf/distro/include/rdk-rpi.inc
 IMAGE_GEN_DEBUGFS = "0"
 
+PREFERRED_VERSION:linux-yocto:kirkstone = "${@bb.utils.contains('DISTRO_FEATURES', 'kernel-6-18', '6.18%', '5.15%', d)}"
+
 #preferred version for linux kirkstone build
 PREFERRED_VERSION:libnl:kirkstone ?= "3.5.0"
 PREFERRED_VERSION:jansson:kirkstone = "2.13.1"
@@ -13,6 +15,9 @@ PREFERRED_VERSION:icu-native:kirkstone ?= "58.2"
 PREFERRED_VERSION_meson-native_kirkstone = "0.61.3"
 PREFERRED_VERSION_meson_kirkstone = "0.61.3"
 
+# Newer iw required for MLO/wiphy support
+PREFERRED_VERSION:iw:kirkstone = "${@bb.utils.contains('DISTRO_FEATURES', 'kernel-6-18', '6.17', '4.7', d)}"
+
 ### preferred providers
 PREFERRED_PROVIDER_libevent = "libevent"
 
@@ -24,7 +29,9 @@ PREFERRED_PROVIDER_virtual/mfrlib ?= "mfrlibs-rpi"
 PREFERRED_PROVIDER_virtual/mfrfwlib ?= "fwupgrade-lib"
 
 # Use linux-backports to supply the MediaTek WiFi (mt76) driver
-PREFERRED_PROVIDER_virtual/wifi-vendor-mtk ?= "linux-backports"
+#PREFERRED_PROVIDER:virtual/wifi-vendor-mtk ?= "linux-backports"
+
+#PREFERRED_PROVIDER_virtual/wifi-vendor-mtk ?= "${@bb.utils.contains('DISTRO_FEATURES', 'kernel-6-18', 'linux-yocto', 'linux-backports', d)}"
 
 VIRTUAL-RUNTIME_mfrlib = "mfrlibs-rpi"
 VIRTUAL-RUNTIME_dtcpmgr = ""

@@ -1,0 +1,411 @@
+From 7ab7239e3256dd0db16ea1a086462e9a35b975a0 Mon Sep 17 00:00:00 2001
+From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+Date: Thu, 12 Feb 2026 17:03:08 +0800
+Subject: [PATCH] wifi: mt76: add external EEPROM support for mt799x chipsets
+
+For the MT7992 and MT7990 chipsets, efuse mode is not supported because
+there is insufficient space in the efuse to store the calibration data.
+Therefore, an additional on-chip EEPROM is added to address this
+limitation.
+
+Co-developed-by: Elwin Huang <s09289728096@gmail.com>
+Signed-off-by: Elwin Huang <s09289728096@gmail.com>
+Co-developed-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+Link: https://patch.msgid.link/20260212090310.3335392-1-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+(cherry picked from commit f456e1f56c4cdda1f908f1b97b57f6d45f578f2c)
+---
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
+ .../wireless/mediatek/mt76/mt7996/eeprom.c    | 59 +++++++------
+ .../net/wireless/mediatek/mt76/mt7996/init.c  |  3 +-
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 83 ++++++++++++-------
+ .../net/wireless/mediatek/mt76/mt7996/mcu.h   | 43 +++++++++-
+ .../wireless/mediatek/mt76/mt7996/mt7996.h    | 20 ++++-
+ 6 files changed, 148 insertions(+), 61 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index 8d59cf43f0e2..012bae394d40 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -1308,6 +1308,7 @@ enum {
+ 	MCU_UNI_CMD_PER_STA_INFO = 0x6d,
+ 	MCU_UNI_CMD_ALL_STA_INFO = 0x6e,
+ 	MCU_UNI_CMD_ASSERT_DUMP = 0x6f,
++	MCU_UNI_CMD_EXT_EEPROM_CTRL = 0x74,
+ 	MCU_UNI_CMD_RADIO_STATUS = 0x80,
+ 	MCU_UNI_CMD_SDO = 0x88,
+ };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+index 8f60772913b4..00c72be8498f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+@@ -153,7 +153,7 @@ mt7996_eeprom_check_or_use_default(struct mt7996_dev *dev, bool use_default)
+ 
+ 	dev_warn(dev->mt76.dev, "eeprom load fail, use default bin\n");
+ 	memcpy(eeprom, fw->data, MT7996_EEPROM_SIZE);
+-	dev->flash_mode = true;
++	dev->eeprom_mode = EEPROM_MODE_DEFAULT_BIN;
+ 
+ out:
+ 	release_firmware(fw);
+@@ -163,26 +163,31 @@ mt7996_eeprom_check_or_use_default(struct mt7996_dev *dev, bool use_default)
+ 
+ static int mt7996_eeprom_load(struct mt7996_dev *dev)
+ {
++	u32 eeprom_blk_size, block_num;
+ 	bool use_default = false;
+-	int ret;
++	int ret, i;
+ 
+ 	ret = mt76_eeprom_init(&dev->mt76, MT7996_EEPROM_SIZE);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	if (ret && !mt7996_check_eeprom(dev)) {
+-		dev->flash_mode = true;
++		dev->eeprom_mode = EEPROM_MODE_FLASH;
+ 		goto out;
+ 	}
+ 
+-	if (!dev->flash_mode) {
+-		u32 eeprom_blk_size = MT7996_EEPROM_BLOCK_SIZE;
+-		u32 block_num = DIV_ROUND_UP(MT7996_EEPROM_SIZE, eeprom_blk_size);
++	memset(dev->mt76.eeprom.data, 0, MT7996_EEPROM_SIZE);
++	if (mt7996_has_ext_eeprom(dev)) {
++		/* external eeprom mode */
++		dev->eeprom_mode = EEPROM_MODE_EXT;
++		eeprom_blk_size = MT7996_EXT_EEPROM_BLOCK_SIZE;
++	} else {
+ 		u8 free_block_num;
+-		int i;
+ 
+-		memset(dev->mt76.eeprom.data, 0, MT7996_EEPROM_SIZE);
+-		ret = mt7996_mcu_get_eeprom_free_block(dev, &free_block_num);
++		/* efuse mode */
++		dev->eeprom_mode = EEPROM_MODE_EFUSE;
++		eeprom_blk_size = MT7996_EEPROM_BLOCK_SIZE;
++		ret = mt7996_mcu_get_efuse_free_block(dev, &free_block_num);
+ 		if (ret < 0)
+ 			return ret;
+ 
+@@ -191,27 +196,29 @@ static int mt7996_eeprom_load(struct mt7996_dev *dev)
+ 			use_default = true;
+ 			goto out;
+ 		}
++	}
++
++	/* check if eeprom data from fw is valid */
++	if (mt7996_mcu_get_eeprom(dev, 0, NULL, eeprom_blk_size,
++				  dev->eeprom_mode) ||
++	    mt7996_check_eeprom(dev)) {
++		use_default = true;
++		goto out;
++	}
++
++	/* read eeprom data from fw */
++	block_num = DIV_ROUND_UP(MT7996_EEPROM_SIZE, eeprom_blk_size);
++	for (i = 1; i < block_num; i++) {
++		u32 len = eeprom_blk_size;
+ 
+-		/* check if eeprom data from fw is valid */
+-		if (mt7996_mcu_get_eeprom(dev, 0, NULL, 0) ||
+-		    mt7996_check_eeprom(dev)) {
++		if (i == block_num - 1)
++			len = MT7996_EEPROM_SIZE % eeprom_blk_size;
++		ret = mt7996_mcu_get_eeprom(dev, i * eeprom_blk_size,
++					    NULL, len, dev->eeprom_mode);
++		if (ret && ret != -EINVAL) {
+ 			use_default = true;
+ 			goto out;
+ 		}
+-
+-		/* read eeprom data from fw */
+-		for (i = 1; i < block_num; i++) {
+-			u32 len = eeprom_blk_size;
+-
+-			if (i == block_num - 1)
+-				len = MT7996_EEPROM_SIZE % eeprom_blk_size;
+-			ret = mt7996_mcu_get_eeprom(dev, i * eeprom_blk_size,
+-						    NULL, len);
+-			if (ret && ret != -EINVAL) {
+-				use_default = true;
+-				goto out;
+-			}
+-		}
+ 	}
+ 
+ out:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index 3936feb73436..48d4fdb2b0f8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -1173,7 +1173,8 @@ static int mt7996_variant_fem_init(struct mt7996_dev *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = mt7996_mcu_get_eeprom(dev, MT7976C_EFUSE_OFFSET, buf, sizeof(buf));
++	ret = mt7996_mcu_get_eeprom(dev, MT7976C_EFUSE_OFFSET, buf, sizeof(buf),
++				    EEPROM_MODE_EFUSE);
+ 	if (ret && ret != -EINVAL)
+ 		return ret;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index e36f5ba4a285..4398e92016cb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -3780,7 +3780,7 @@ static int mt7996_mcu_set_eeprom_flash(struct mt7996_dev *dev)
+ #define MAX_PAGE_IDX_MASK	GENMASK(7, 5)
+ #define PAGE_IDX_MASK		GENMASK(4, 2)
+ #define PER_PAGE_SIZE		0x400
+-	struct mt7996_mcu_eeprom req = {
++	struct mt7996_mcu_eeprom_update req = {
+ 		.tag = cpu_to_le16(UNI_EFUSE_BUFFER_MODE),
+ 		.buffer_mode = EE_MODE_BUFFER
+ 	};
+@@ -3822,57 +3822,80 @@ static int mt7996_mcu_set_eeprom_flash(struct mt7996_dev *dev)
+ 
+ int mt7996_mcu_set_eeprom(struct mt7996_dev *dev)
+ {
+-	struct mt7996_mcu_eeprom req = {
++	struct mt7996_mcu_eeprom_update req = {
+ 		.tag = cpu_to_le16(UNI_EFUSE_BUFFER_MODE),
+ 		.len = cpu_to_le16(sizeof(req) - 4),
+ 		.buffer_mode = EE_MODE_EFUSE,
+ 		.format = EE_FORMAT_WHOLE
+ 	};
+ 
+-	if (dev->flash_mode)
++	if (dev->eeprom_mode != EEPROM_MODE_EFUSE)
+ 		return mt7996_mcu_set_eeprom_flash(dev);
+ 
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_WM_UNI_CMD(EFUSE_CTRL),
+ 				 &req, sizeof(req), true);
+ }
+ 
+-int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_len)
++int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_len,
++			  enum mt7996_eeprom_mode mode)
+ {
+-	struct {
+-		u8 _rsv[4];
+-
+-		__le16 tag;
+-		__le16 len;
+-		__le32 addr;
+-		__le32 valid;
+-		u8 data[16];
+-	} __packed req = {
+-		.tag = cpu_to_le16(UNI_EFUSE_ACCESS),
+-		.len = cpu_to_le16(sizeof(req) - 4),
+-		.addr = cpu_to_le32(round_down(offset,
+-				    MT7996_EEPROM_BLOCK_SIZE)),
++	struct mt7996_mcu_eeprom_access req = {
++		.info.len = cpu_to_le16(sizeof(req) - 4),
+ 	};
++	struct mt7996_mcu_eeprom_access_event *event;
+ 	struct sk_buff *skb;
+-	bool valid;
+-	int ret;
++	int ret, cmd;
++	u32 addr;
++
++	switch (mode) {
++	case EEPROM_MODE_EFUSE:
++		addr = round_down(offset, MT7996_EEPROM_BLOCK_SIZE);
++		cmd = MCU_WM_UNI_CMD_QUERY(EFUSE_CTRL);
++		req.info.tag = cpu_to_le16(UNI_EFUSE_ACCESS);
++		break;
++	case EEPROM_MODE_EXT:
++		addr = round_down(offset, MT7996_EXT_EEPROM_BLOCK_SIZE);
++		cmd = MCU_WM_UNI_CMD_QUERY(EXT_EEPROM_CTRL);
++		req.info.tag = cpu_to_le16(UNI_EXT_EEPROM_ACCESS);
++		req.eeprom.ext_eeprom.data_len = cpu_to_le32(buf_len);
++		break;
++	default:
++		return -EINVAL;
++	}
+ 
+-	ret = mt76_mcu_send_and_get_msg(&dev->mt76,
+-					MCU_WM_UNI_CMD_QUERY(EFUSE_CTRL),
+-					&req, sizeof(req), true, &skb);
++	req.info.addr = cpu_to_le32(addr);
++	ret = mt76_mcu_send_and_get_msg(&dev->mt76, cmd, &req, sizeof(req),
++					true, &skb);
+ 	if (ret)
+ 		return ret;
+ 
+-	valid = le32_to_cpu(*(__le32 *)(skb->data + 16));
+-	if (valid) {
+-		u32 addr = le32_to_cpu(*(__le32 *)(skb->data + 12));
++	event = (struct mt7996_mcu_eeprom_access_event *)skb->data;
++	if (event->valid) {
++		u32 ret_len = le32_to_cpu(event->eeprom.ext_eeprom.data_len);
++
++		addr = le32_to_cpu(event->addr);
+ 
+ 		if (!buf)
+ 			buf = (u8 *)dev->mt76.eeprom.data + addr;
+-		if (!buf_len || buf_len > MT7996_EEPROM_BLOCK_SIZE)
+-			buf_len = MT7996_EEPROM_BLOCK_SIZE;
+ 
+-		skb_pull(skb, 48);
+-		memcpy(buf, skb->data, buf_len);
++		switch (mode) {
++		case EEPROM_MODE_EFUSE:
++			if (!buf_len || buf_len > MT7996_EEPROM_BLOCK_SIZE)
++				buf_len = MT7996_EEPROM_BLOCK_SIZE;
++
++			memcpy(buf, event->eeprom.efuse, buf_len);
++			break;
++		case EEPROM_MODE_EXT:
++			if (!buf_len || buf_len > MT7996_EXT_EEPROM_BLOCK_SIZE)
++				buf_len = MT7996_EXT_EEPROM_BLOCK_SIZE;
++
++			memcpy(buf, event->eeprom.ext_eeprom.data,
++			       ret_len < buf_len ? ret_len : buf_len);
++			break;
++		default:
++			ret = -EINVAL;
++			break;
++		}
+ 	} else {
+ 		ret = -EINVAL;
+ 	}
+@@ -3882,7 +3905,7 @@ int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_l
+ 	return ret;
+ }
+ 
+-int mt7996_mcu_get_eeprom_free_block(struct mt7996_dev *dev, u8 *block_num)
++int mt7996_mcu_get_efuse_free_block(struct mt7996_dev *dev, u8 *block_num)
+ {
+ 	struct {
+ 		u8 _rsv[4];
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+index f87a8d316f17..f7fe4e5abdbb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+@@ -147,7 +147,7 @@ struct mt7996_mcu_background_chain_ctrl {
+ 	u8 rsv[2];
+ } __packed;
+ 
+-struct mt7996_mcu_eeprom {
++struct mt7996_mcu_eeprom_update {
+ 	u8 _rsv[4];
+ 
+ 	__le16 tag;
+@@ -157,6 +157,43 @@ struct mt7996_mcu_eeprom {
+ 	__le16 buf_len;
+ } __packed;
+ 
++union eeprom_data {
++	struct {
++		__le32 data_len;
++		DECLARE_FLEX_ARRAY(u8, data);
++	} ext_eeprom;
++	DECLARE_FLEX_ARRAY(u8, efuse);
++} __packed;
++
++struct mt7996_mcu_eeprom_info {
++	u8 _rsv[4];
++
++	__le16 tag;
++	__le16 len;
++	__le32 addr;
++	__le32 valid;
++} __packed;
++
++struct mt7996_mcu_eeprom_access {
++	struct mt7996_mcu_eeprom_info info;
++	union eeprom_data eeprom;
++} __packed;
++
++struct mt7996_mcu_eeprom_access_event {
++	u8 _rsv[4];
++
++	__le16 tag;
++	__le16 len;
++	__le32 version;
++	__le32 addr;
++	__le32 valid;
++	__le32 size;
++	__le32 magic_no;
++	__le32 type;
++	__le32 rsv[4];
++	union eeprom_data eeprom;
++} __packed;
++
+ struct mt7996_mcu_phy_rx_info {
+ 	u8 category;
+ 	u8 rate;
+@@ -857,6 +894,10 @@ enum {
+ 	UNI_EFUSE_BUFFER_RD,
+ };
+ 
++enum {
++	UNI_EXT_EEPROM_ACCESS = 1,
++};
++
+ enum {
+ 	UNI_VOW_DRR_CTRL,
+ 	UNI_VOW_RX_AT_AIRTIME_EN = 0x0b,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index ed7d1d333ef7..91ebc57a7444 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -81,6 +81,7 @@
+ 
+ #define MT7996_EEPROM_SIZE		7680
+ #define MT7996_EEPROM_BLOCK_SIZE	16
++#define MT7996_EXT_EEPROM_BLOCK_SIZE	1024
+ #define MT7996_TOKEN_SIZE		16384
+ #define MT7996_HW_TOKEN_SIZE		8192
+ 
+@@ -165,6 +166,13 @@ enum mt7996_fem_type {
+ 	MT7996_FEM_MIX,
+ };
+ 
++enum mt7996_eeprom_mode {
++	EEPROM_MODE_DEFAULT_BIN,
++	EEPROM_MODE_EFUSE,
++	EEPROM_MODE_FLASH,
++	EEPROM_MODE_EXT,
++};
++
+ enum mt7996_txq_id {
+ 	MT7996_TXQ_FWDL = 16,
+ 	MT7996_TXQ_MCU_WM,
+@@ -437,7 +445,7 @@ struct mt7996_dev {
+ 
+ 	u32 hw_pattern;
+ 
+-	bool flash_mode:1;
++	u8 eeprom_mode;
+ 	bool has_eht:1;
+ 
+ 	struct {
+@@ -708,8 +716,9 @@ int mt7996_mcu_set_fixed_rate_ctrl(struct mt7996_dev *dev,
+ int mt7996_mcu_set_fixed_field(struct mt7996_dev *dev, struct mt7996_sta *msta,
+ 			       void *data, u8 link_id, u32 field);
+ int mt7996_mcu_set_eeprom(struct mt7996_dev *dev);
+-int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_len);
+-int mt7996_mcu_get_eeprom_free_block(struct mt7996_dev *dev, u8 *block_num);
++int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_len,
++			  enum mt7996_eeprom_mode mode);
++int mt7996_mcu_get_efuse_free_block(struct mt7996_dev *dev, u8 *block_num);
+ int mt7996_mcu_get_chip_config(struct mt7996_dev *dev, u32 *cap);
+ int mt7996_mcu_set_ser(struct mt7996_dev *dev, u8 action, u8 set, u8 band);
+ int mt7996_mcu_set_txbf(struct mt7996_dev *dev, u8 action);
+@@ -804,6 +813,11 @@ static inline bool mt7996_has_wa(struct mt7996_dev *dev)
+ 	return !is_mt7990(&dev->mt76);
+ }
+ 
++static inline bool mt7996_has_ext_eeprom(struct mt7996_dev *dev)
++{
++	return !is_mt7996(&dev->mt76);
++}
++
+ void mt7996_mac_init(struct mt7996_dev *dev);
+ u32 mt7996_mac_wtbl_lmac_addr(struct mt7996_dev *dev, u16 wcid, u8 dw);
+ bool mt7996_mac_wtbl_update(struct mt7996_dev *dev, int idx, u32 mask);

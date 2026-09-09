@@ -18,5 +18,8 @@ CFLAGS:append = " \
 CFLAGS:append = " -D_PLATFORM_GENERICARM_ \
 	-D_PLATFORM_RASPBERRYPI_  -DRASPBERRY_PI_PORT \
 "
+
+CFLAGS:append = "${@bb.utils.contains('DISTRO_FEATURES', 'OneWiFi_Single_PHY', '-DFEATURE_SINGLE_PHY', '', d)}"
+
 EXTRA_OECONF:append = " ONE_WIFIBUILD=true RASPBERRY_PI_PORT=true"
 

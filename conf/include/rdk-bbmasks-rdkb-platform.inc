@@ -128,4 +128,7 @@ BBMASK .= "|meta-cmf-broadband/recipes-core/util-linux/util-linux_%.bbappend"
 # 2026-04-07 meta-cmf-broadband change breaks DHCP Manager install
 BBMASK .= "|meta-cmf-broadband/recipes-ccsp/ccsp/ccsp-dhcp-mgr.bbappend"
 
+# 2026-08-12 not compatible with kernel 6.18
+BBMASK .= "|meta-rdk-broadband/recipes-ccsp/ccsp/ccsp-hotspot-kmod.bb"
+
 BBMASK:append:kirkstone = "|meta-rdk-opensync/recipes/python3-jinja2/python3-jinja2_2.11.1.bb"
