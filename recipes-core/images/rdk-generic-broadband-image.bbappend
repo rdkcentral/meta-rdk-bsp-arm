@@ -39,6 +39,7 @@ IMAGE_INSTALL:append = "${@bb.utils.contains('DISTRO_FEATURES', 'webpa', ' parod
 
 IMAGE_INSTALL:append = " incus-agent"
 
+IMAGE_INSTALL:append:raspberrypi64-rdk-broadband = " linux-firmware-bcm43455 firmware-mt76"
 require image-exclude-files.inc
 
 remove_unused_file() {

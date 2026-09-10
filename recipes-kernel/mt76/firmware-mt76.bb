@@ -35,6 +35,11 @@ do_install () {
     install -m 755 ${S}/firmware/mt7916_rom_patch.bin  ${D}${base_libdir}/firmware/mediatek
     install -m 755 ${S}/firmware/mt7916_wa.bin  ${D}${base_libdir}/firmware/mediatek
     install -m 755 ${S}/firmware/mt7916_wm.bin  ${D}${base_libdir}/firmware/mediatek
+    install -m 0644 ${S}/firmware/mt7662.bin  ${D}${base_libdir}/firmware/mediatek
+    install -m 0644 ${S}/firmware/mt7662_rom_patch.bin  ${D}${base_libdir}/firmware/mediatek
+
+    ln -sf mediatek/mt7662.bin ${D}${base_libdir}/firmware/mt7662.bin
+    ln -sf mediatek/mt7662_rom_patch.bin ${D}${base_libdir}/firmware/mt7662_rom_patch.bin
 
 }
 
@@ -48,3 +53,7 @@ FILES:${PN} += "${base_libdir}/firmware/mediatek/mt7916_eeprom.bin"
 FILES:${PN} += "${base_libdir}/firmware/mediatek/mt7916_rom_patch.bin"
 FILES:${PN} += "${base_libdir}/firmware/mediatek/mt7916_wa.bin"
 FILES:${PN} += "${base_libdir}/firmware/mediatek/mt7916_wm.bin"
+FILES:${PN} += "${base_libdir}/firmware/mediatek/mt7662.bin"
+FILES:${PN} += "${base_libdir}/firmware/mediatek/mt7662_rom_patch.bin"
+FILES:${PN} += "${base_libdir}/firmware/mt7662.bin"
+FILES:${PN} += "${base_libdir}/firmware/mt7662_rom_patch.bin"
