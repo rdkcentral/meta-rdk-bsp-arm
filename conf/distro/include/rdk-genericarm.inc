@@ -177,3 +177,13 @@ SESSIONMGR_WS_RPC_ENABLE = "1"
 #REFPLTB-2784 : easymesh controller arch only supports with wifiagent
 MACHINEOVERRIDES:append = "${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ':onewifi', '' ,d)}"
 DISTRO_FEATURES:remove:onewifi = " easymesh-controller"
+
+# Prevent OpenGL related dependencies such as virglrenderer
+# being pulled in unnecessarily (such as for qemu-native)
+# https://github.com/rdkcentral/meta-rdk-bsp-arm/pull/190
+DISTRO_FEATURES:remove:broadband = " opengl"
+
+# In addition to the above, avoid building virglrenderer
+# (QEMU virgl support) for native/nativesdk qemu
+PACKAGECONFIG:remove:pn-qemu-system-native = "virglrenderer"
+PACKAGECONFIG:remove:pn-nativesdk-qemu = "virglrenderer"
