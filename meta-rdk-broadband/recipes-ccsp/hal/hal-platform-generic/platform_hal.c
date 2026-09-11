@@ -570,7 +570,7 @@ INT platform_hal_GetRouterRegion(CHAR* pValue)
 /* Utility apis to return common parameters from firewall_lib.c */
 char *get_current_wan_ifname()
 {
-    char *interface_names[]={"erouter0", "wwan0", NULL};//list of available wan interfaces
+    char *interface_names[]={"eth6", "wwan0", NULL};//list of available wan interfaces
     char interface_name[128]="";
     unsigned int i;
 

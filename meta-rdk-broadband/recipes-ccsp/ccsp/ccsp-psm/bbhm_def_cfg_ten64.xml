@@ -990,7 +990,7 @@
   <Record name="dmsb.cisco.gre.1.enable" type="astr">0</Record>
   <Record name="dmsb.cisco.gre.1.alias" type="astr">cpe-cgreif-1</Record>
   <Record name="dmsb.cisco.gre.1.name" type="astr">gretap0</Record>
-  <Record name="dmsb.cisco.gre.1.lowerlayers" type="astr">erouter0</Record>
+  <Record name="dmsb.cisco.gre.1.lowerlayers" type="astr">eth6</Record>
   <Record name="dmsb.cisco.gre.1.mode" type="astr">2</Record>
   <Record name="dmsb.cisco.gre.1.endpoint" type="astr">0.0.0.0</Record>
   <Record name="dmsb.cisco.gre.1.keymode" type="astr"></Record>
@@ -1211,7 +1211,7 @@
 
   <Record name="dmsb.vlanmanager.1.Enable" type="astr">FALSE</Record>
   <Record name="dmsb.vlanmanager.1.alias" type="astr">WANOE</Record>
-  <Record name="dmsb.vlanmanager.1.name" type="astr">erouter0</Record>
+  <Record name="dmsb.vlanmanager.1.name" type="astr">eth6</Record>
   <Record name="dmsb.vlanmanager.1.lowerlayers" type="astr">Device.X_RDK_Ethernet.Link.1</Record>
   <Record name="dmsb.vlanmanager.1.baseinterface" type="astr">eth0</Record>
   <Record name="dmsb.vlanmanager.1.vlanid" type="astr">-1</Record>

@@ -28,7 +28,7 @@ $$Version=11
 #-------------------------------------------------------------------
 
 # wan_ifname is the name (as known to the OS) of the wan interface
-@wan_ifname=erouter0
+@wan_ifname=eth6
 
 # model_name          - display friendly model name of this device
 @model_name=USGv2 0x00000004
@@ -95,7 +95,7 @@ $last_erouter_mode=3
 
 # wan_physical_ifname - the name (as known to the OS) of the physical interface
 #    that is used for the wan. This setting is not meant for users to manipulate.
-$$wan_physical_ifname=erouter0
+$$wan_physical_ifname=eth6
 
 # wan_bridge_ifname - the name (as known to the OS) of the wan interface that is
 #    to be enslaved in the lan bridge when in bridge mode.
@@ -658,7 +658,7 @@ $cosa_usgv2_rip00::TimoutTime=180
 
 $cosa_usgv2_rip00::If1Enable=1
 $cosa_usgv2_rip00::If1KeyChainName=keychain1
-$cosa_usgv2_rip00::If1Name=erouter0
+$cosa_usgv2_rip00::If1Name=eth6
 $cosa_usgv2_rip00::If1Alias=Ethernet
 $cosa_usgv2_rip00::If1AuthenticateType=3
 $cosa_usgv2_rip00::If1ReceiveEnable=1
