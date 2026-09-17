@@ -1,0 +1,13 @@
+[Unit]
+Description=Check WIFI support on ARM Device
+After=CcspPandMSsp.service
+Before=onewifi.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+TimeoutStartSec=130
+ExecStart=/usr/ccsp/wifi/checkwifi.sh
+
+[Install]
+WantedBy=multi-user.target
