@@ -128,4 +128,8 @@ BBMASK .= "|meta-cmf-broadband/recipes-core/util-linux/util-linux_%.bbappend"
 # 2026-04-07 meta-cmf-broadband change breaks DHCP Manager install
 BBMASK .= "|meta-cmf-broadband/recipes-ccsp/ccsp/ccsp-dhcp-mgr.bbappend"
 
+# 2026-08-31 stop virglrenderer from being pulled in by qemu-native
+# (out of date recipe causes fetch stalls, feature not required)
+BBMASK:append:kirkstone = "|openembedded-core/meta/recipes-graphics/virglrenderer/virglrenderer_0.9.1.bb"
+
 BBMASK:append:kirkstone = "|meta-rdk-opensync/recipes/python3-jinja2/python3-jinja2_2.11.1.bb"

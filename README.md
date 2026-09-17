@@ -8,15 +8,24 @@ specifications. This layer only sources from community upstream sources (e.g ker
 
 ## How to use
 
-There are some RDK-B packages for which custom branches are needed, so you will need to use
-our `rdkb-bsp-arm.xml` manifest.
+The repo command below will pull the RDK-B layers, as well as `meta-rdk-bsp-arm` for the
+`main` branch, which is based on a recent RDK-B quarterly release.
+
+At the current time, the `main` branch manifest will build RDK-B 2026.Q1 (based on Yocto `kirkstone`),
+and will be updated following the next major RDK-B release.
+
+If you wish to build the rolling development branch (`develop`), please switch to the
+`develop` branch in this repository and follow the instructions there.
+
+If you need a specific RDK-B release version, look in the [Releases](https://github.com/rdkcentral/meta-rdk-bsp-arm/releases)
+page on GitHub.
 
 ```
 $ mkdir rdkb-arm
 $ cd rdkb-arm
-$ repo init -u 'https://github.com/rdkcentral/meta-rdk-bsp-arm/' \
-    -m "manifests/rdkb-bsp-arm.xml" \
-    -b "main"
+$ repo init -u 'https://github.com/rdkcentral/rdkb-manifest/' \
+			-m "rdkb-arm.xml" \
+			-b "feature-rdkb-genericarm-main"
 $ repo sync
 $ source meta-rdk-bsp-arm/setup-environment
 $ bitbake rdk-generic-broadband-image
@@ -29,11 +38,6 @@ copy of `meta-rdk-bsp-arm`), like so:
 ```
 echo 'DISTRO_FEATURES:append:broadband = " EasyMesh"' >> conf/distro/include/local-settings.inc
 ```
-
-At the current time, the `main` branch mainfest will build RDK-B 2025Q1 (based on Yocto `kirkstone`),
-and will be updated following the next major RDK-B release.
-
-The `develop` branch is intended to follow `rdk-next` as closely as possible.
 
 Some Linux distributions with AppArmor support (such as Ubuntu 24.04)
 may experience difficulties when building meta-rdk-bsp-arm,
