@@ -1,0 +1,81 @@
+From d1039d88fcda94df72ef37c3353cfc35f72945aa Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Wed, 22 Jul 2026 09:30:59 +1000
+Subject: [PATCH] wanmgr_interface_sm: send current wan ifname to sysevent
+ before sending external actions
+
+We are trying to make services like usp-pa start only after the WAN interface is active and ready for traffic.
+
+These programs read the current WAN interface parameter from sysevent, which was not previously available
+at the time external handlers like /var/run/wan_started or /etc/utopia/post.d were called
+
+---
+ source/WanManager/wanmgr_interface_sm.c | 34 +++++++++++++++----------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
+
+diff --git a/source/WanManager/wanmgr_interface_sm.c b/source/WanManager/wanmgr_interface_sm.c
+index 0452ea5..d3b228a 100644
+--- a/source/WanManager/wanmgr_interface_sm.c
++++ b/source/WanManager/wanmgr_interface_sm.c
+@@ -1298,8 +1298,16 @@ static int wan_setUpIPv4(WanMgr_IfaceSM_Controller_t * pWanIfaceCtrl)
+         int  uptime = 0;
+         char buffer[64] = {0};
+ 
+-        /*TODO: touch /var/wan_started for wan-initialized.path in systemd and register /etc/utopia/post.d/. 
+-         *This is a comcast specific configuration, should be removed from Wan state machine */
++        /* Set the current WAN Interface name */
++        if(pInterface->IfaceType != REMOTE_IFACE && (WAN_IFACE_CONN_TYPE_COLD_STANDBY != pInterface->IfaceConnectionType))
++        {
++            /* Some consumers of wan-initialized.path or wan_started need the current WAN interface name */
++            sysevent_set(sysevent_fd, sysevent_token, SYSEVENT_CURRENT_WAN_IFNAME, p_VirtIf->IP.Ipv4Data.ifname, 0);
++            if (p_VirtIf->IP.Ipv4Data.ifname[0] != '\0')
++                syscfg_set_commit(NULL, SYSCFG_WAN_INTERFACE_NAME, p_VirtIf->IP.Ipv4Data.ifname);
++        }
++
++        /* TODO(?): This is a comcast specific configuration, should be removed from Wan state machine */
+         v_secure_system("touch " WAN_STARTED_FILE_PATH);
+         /* Register services from /etc/utopia/post.d/ if not registered.*/
+         if (access(POSTD_START_FILE, F_OK) != 0)
+@@ -1312,10 +1320,6 @@ static int wan_setUpIPv4(WanMgr_IfaceSM_Controller_t * pWanIfaceCtrl)
+         sysevent_set(sysevent_fd, sysevent_token, SYSEVENT_WAN_STATUS, WAN_STATUS_STARTED, 0);
+         CcspTraceInfo(("%s %d - wan-status event set to started \n", __FUNCTION__, __LINE__));
+ 
+-        if(p_VirtIf->IP.Ipv4Data.ifname[0] != '\0' && pInterface->IfaceType != REMOTE_IFACE && (WAN_IFACE_CONN_TYPE_COLD_STANDBY != pInterface->IfaceConnectionType))
+-        {
+-            syscfg_set_commit(NULL, SYSCFG_WAN_INTERFACE_NAME, p_VirtIf->IP.Ipv4Data.ifname);
+-        }
+         wanmgr_services_restart();
+         //Get WAN uptime
+         WanManager_GetDateAndUptime( buffer, &uptime );
+@@ -1463,8 +1467,16 @@ static int wan_setUpIPv6(WanMgr_IfaceSM_Controller_t * pWanIfaceCtrl)
+     //TODO: Firewall IPv6 FORWARD rules are not working if SYSEVENT_WAN_SERVICE_STATUS is set for REMOTE_IFACE. Modify firewall similar for backup interface similar to primary.
+     if (strcmp(buf, WAN_STATUS_STARTED)&& pInterface->IfaceType != REMOTE_IFACE)
+     {
+-        /*TODO: touch /var/wan_started for wan-initialized.path in systemd and register /etc/utopia/post.d/. 
+-         *This is a comcast specific configuration, should be removed from Wan state machine */
++        /* Set the current WAN Interface name */
++        if(pInterface->IfaceType != REMOTE_IFACE && (WAN_IFACE_CONN_TYPE_COLD_STANDBY != pInterface->IfaceConnectionType) )
++        {
++            /* Some consumers of wan-initialized.path or wan-started need the current WAN interface name */
++            sysevent_set(sysevent_fd, sysevent_token, SYSEVENT_CURRENT_WAN_IFNAME, p_VirtIf->IP.Ipv6Data.ifname, 0);
++            if (p_VirtIf->IP.Ipv6Data.ifname[0] != '\0' )
++                syscfg_set_commit(NULL, SYSCFG_WAN_INTERFACE_NAME, p_VirtIf->IP.Ipv6Data.ifname);
++        }
++
++        /* TODO(?): This is a comcast specific configuration, should be removed from Wan state machine */
+         v_secure_system("touch " WAN_STARTED_FILE_PATH);
+         /* Register services from /etc/utopia/post.d/ if not registered.*/
+         if (access(POSTD_START_FILE, F_OK) != 0)
+@@ -1491,12 +1503,6 @@ static int wan_setUpIPv6(WanMgr_IfaceSM_Controller_t * pWanIfaceCtrl)
+ 
+         CcspTraceInfo(("%s %d - wan-status event set to started \n", __FUNCTION__, __LINE__));
+ 
+-        /* Set the current WAN Interface name */
+-        sysevent_set(sysevent_fd, sysevent_token, SYSEVENT_CURRENT_WAN_IFNAME, p_VirtIf->IP.Ipv6Data.ifname, 0);
+-        if(p_VirtIf->IP.Ipv6Data.ifname[0] != '\0' && pInterface->IfaceType != REMOTE_IFACE && (WAN_IFACE_CONN_TYPE_COLD_STANDBY != pInterface->IfaceConnectionType) )
+-        {
+-            syscfg_set_commit(NULL, SYSCFG_WAN_INTERFACE_NAME, p_VirtIf->IP.Ipv6Data.ifname);
+-        }
+         wanmgr_services_restart();
+ 
+ #if (!defined (_XB6_PRODUCT_REQ_) && !defined (_CBR2_PRODUCT_REQ_) && !defined(_PLATFORM_RASPBERRYPI_)) || defined (_RDKB_GLOBAL_PRODUCT_REQ_) //parodus uses cmac for xb platforms
