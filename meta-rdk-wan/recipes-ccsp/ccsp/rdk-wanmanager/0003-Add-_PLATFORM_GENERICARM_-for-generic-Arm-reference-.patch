@@ -1,0 +1,240 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
+Date: Wed, 23 Sep 2026 14:55:17 +2000
+Subject: [PATCH] Add _PLATFORM_GENERICARM_ for generic Arm reference platform
+
+---
+ .../TR-181/middle_layer_src/wanmgr_dml_iface_apis.c  | 12 ++++++------
+ .../middle_layer_src/wanmgr_dml_iface_v2_apis.c      | 12 ++++++------
+ source/WanManager/wanmgr_data.c                      |  4 ++--
+ source/WanManager/wanmgr_dhcp_legacy_apis.c          |  2 +-
+ source/WanManager/wanmgr_dhcpv6_apis.c               |  4 ++--
+ source/WanManager/wanmgr_interface_sm.c              |  4 ++--
+ source/WanManager/wanmgr_net_utils.c                 |  2 +-
+ source/WanManager/wanmgr_policy_auto_impl.c          |  2 +-
+ 8 files changed, 21 insertions(+), 21 deletions(-)
+
+diff --git a/source/TR-181/middle_layer_src/wanmgr_dml_iface_apis.c b/source/TR-181/middle_layer_src/wanmgr_dml_iface_apis.c
+index cc859d7..ca95ea5 100644
+--- a/source/TR-181/middle_layer_src/wanmgr_dml_iface_apis.c
++++ b/source/TR-181/middle_layer_src/wanmgr_dml_iface_apis.c
+@@ -40,7 +40,7 @@
+ #include "wanmgr_dhcpv4_apis.h"
+ #include "wanmgr_dhcpv6_apis.h"
+ #include "wanmgr_data.h"
+-#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_)
++#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+ #include "wanmgr_utils.h"
+ #endif
+ 
+@@ -337,7 +337,7 @@ BOOL WanIf_SetParamStringValue(ANSC_HANDLE hInsContext, char* ParamName, char* p
+             if (strcmp(ParamName, "CustomConfigPath") == 0)
+             {
+                 AnscCopyString(pWanDmlIface->CustomConfigPath, pString);
+-#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_)
++#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+                 WanMgr_SetRestartWanInfo(WAN_CUSTOM_CONFIG_PATH_PARAM_NAME, pWanDmlIface->uiIfaceIdx, pString);
+ #endif
+                 ret = TRUE;
+@@ -451,7 +451,7 @@ BOOL WanIf_SetParamBoolValue(ANSC_HANDLE hInsContext, char* ParamName, BOOL bVal
+             if (strcmp(ParamName, "ConfigureWanEnable") == 0)
+             {
+                 pWanDmlIface->WanConfigEnabled  = bValue;
+-#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_)
++#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+                 WanMgr_SetRestartWanInfo(WAN_CONFIGURE_WAN_ENABLE_PARAM_NAME, pWanDmlIface->uiIfaceIdx, pWanDmlIface->WanConfigEnabled?"true":"false");
+ #endif
+                 ret = TRUE;
+@@ -460,7 +460,7 @@ BOOL WanIf_SetParamBoolValue(ANSC_HANDLE hInsContext, char* ParamName, BOOL bVal
+             if (strcmp(ParamName, "EnableCustomConfig") == 0)
+             {
+                 pWanDmlIface->CustomConfigEnable  = bValue;
+-#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_)
++#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+                 WanMgr_SetRestartWanInfo(WAN_ENABLE_CUSTOM_CONFIG_PARAM_NAME, pWanDmlIface->uiIfaceIdx, pWanDmlIface->CustomConfigEnable?"true":"false");
+ #endif
+                 ret = TRUE;
+@@ -468,7 +468,7 @@ BOOL WanIf_SetParamBoolValue(ANSC_HANDLE hInsContext, char* ParamName, BOOL bVal
+             if (strcmp(ParamName, "EnableOperStatusMonitor") == 0)
+             {
+                 pWanDmlIface->MonitorOperStatus = bValue;
+-#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_)
++#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+                 WanMgr_SetRestartWanInfo(WAN_ENABLE_OPER_STATUS_MONITOR_PARAM_NAME, pWanDmlIface->uiIfaceIdx, pWanDmlIface->MonitorOperStatus?"true":"false");
+ #endif
+                 ret = TRUE;
+@@ -1187,7 +1187,7 @@ BOOL WanIfCfg_SetParamStringValue(ANSC_HANDLE hInsContext, char* ParamName, char
+             if (strcmp(ParamName, "Name") == 0)
+             {
+                 AnscCopyString(pWanDmlIface->VirtIfList->Name, pString);
+-#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_)
++#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+                 WanMgr_SetRestartWanInfo(WAN_NAME_PARAM_NAME, pWanDmlIface->uiIfaceIdx, pString);
+ #endif
+                 ret = TRUE;
+diff --git a/source/TR-181/middle_layer_src/wanmgr_dml_iface_v2_apis.c b/source/TR-181/middle_layer_src/wanmgr_dml_iface_v2_apis.c
+index 2a91b6f..c45552a 100644
+--- a/source/TR-181/middle_layer_src/wanmgr_dml_iface_v2_apis.c
++++ b/source/TR-181/middle_layer_src/wanmgr_dml_iface_v2_apis.c
+@@ -40,7 +40,7 @@
+ #include "wanmgr_dhcpv4_apis.h"
+ #include "wanmgr_dhcpv6_apis.h"
+ #include "wanmgr_data.h"
+-#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_)
++#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+ #include "wanmgr_utils.h"
+ #endif
+ #include "wanmgr_telemetry.h"
+@@ -418,7 +418,7 @@ BOOL WanIf_SetParamStringValue(ANSC_HANDLE hInsContext, char* ParamName, char* p
+             if (strcmp(ParamName, "CustomConfigPath") == 0)
+             {
+                 AnscCopyString(pWanDmlIface->CustomConfigPath, pString);
+-#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_)
++#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+                 WanMgr_SetRestartWanInfo(WAN_CUSTOM_CONFIG_PATH_PARAM_NAME, pWanDmlIface->uiIfaceIdx, pString);
+ #endif
+                 ret = TRUE;
+@@ -574,7 +574,7 @@ BOOL WanIf_SetParamBoolValue(ANSC_HANDLE hInsContext, char* ParamName, BOOL bVal
+             if (strcmp(ParamName, "ConfigureWanEnable") == 0)
+             {
+                 pWanDmlIface->WanConfigEnabled  = bValue;
+-#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_)
++#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+                 WanMgr_SetRestartWanInfo(WAN_CONFIGURE_WAN_ENABLE_PARAM_NAME, pWanDmlIface->uiIfaceIdx, pWanDmlIface->WanConfigEnabled?"true":"false");
+ #endif
+                 ret = TRUE;
+@@ -583,7 +583,7 @@ BOOL WanIf_SetParamBoolValue(ANSC_HANDLE hInsContext, char* ParamName, BOOL bVal
+             if (strcmp(ParamName, "EnableCustomConfig") == 0)
+             {
+                 pWanDmlIface->CustomConfigEnable  = bValue;
+-#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_)
++#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+                 WanMgr_SetRestartWanInfo(WAN_ENABLE_CUSTOM_CONFIG_PARAM_NAME, pWanDmlIface->uiIfaceIdx, pWanDmlIface->CustomConfigEnable?"true":"false");
+ #endif
+                 ret = TRUE;
+@@ -591,7 +591,7 @@ BOOL WanIf_SetParamBoolValue(ANSC_HANDLE hInsContext, char* ParamName, BOOL bVal
+             if (strcmp(ParamName, "EnableOperStatusMonitor") == 0)
+             {
+                 pWanDmlIface->MonitorOperStatus = bValue;
+-#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_)
++#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+                 WanMgr_SetRestartWanInfo(WAN_ENABLE_OPER_STATUS_MONITOR_PARAM_NAME, pWanDmlIface->uiIfaceIdx, pWanDmlIface->MonitorOperStatus?"true":"false");
+ #endif
+                 ret = TRUE;
+@@ -1767,7 +1767,7 @@ BOOL WanVirtualIf_SetParamStringValue(ANSC_HANDLE hInsContext, char* ParamName,
+         if (strcmp(ParamName, "Name") == 0)
+         {
+             AnscCopyString(p_VirtIf->Name, pString);
+-#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_)
++#if defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+             WanMgr_SetRestartWanInfo(WAN_NAME_PARAM_NAME, p_VirtIf->VirIfIdx, pString);
+ #endif
+             ret = TRUE;
+diff --git a/source/WanManager/wanmgr_data.c b/source/WanManager/wanmgr_data.c
+index 572dcf0..bfe2a22 100644
+--- a/source/WanManager/wanmgr_data.c
++++ b/source/WanManager/wanmgr_data.c
+@@ -21,7 +21,7 @@
+ #include "wanmgr_data.h"
+ #include "wanmgr_rdkbus_apis.h"
+ 
+-#if defined(WAN_MANAGER_UNIFICATION_ENABLED) && (defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_))
++#if defined(WAN_MANAGER_UNIFICATION_ENABLED) && (defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_))
+ extern ANSC_STATUS WanMgr_CheckAndResetV2PSMEntries(UINT IfaceCount);
+ #endif
+ 
+@@ -241,7 +241,7 @@ ANSC_STATUS WanMgr_WanIfaceConfInit(WanMgr_IfaceCtrl_Data_t* pWanIfaceCtrl)
+         }
+ 
+         pWanIfaceCtrl->ulTotalNumbWanInterfaces = uiTotalIfaces;
+-#if defined(WAN_MANAGER_UNIFICATION_ENABLED) && (defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_))
++#if defined(WAN_MANAGER_UNIFICATION_ENABLED) && (defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_))
+         WanMgr_CheckAndResetV2PSMEntries(uiTotalIfaces);
+ #endif
+ 
+diff --git a/source/WanManager/wanmgr_dhcp_legacy_apis.c b/source/WanManager/wanmgr_dhcp_legacy_apis.c
+index c8c4cf6..4a66b84 100644
+--- a/source/WanManager/wanmgr_dhcp_legacy_apis.c
++++ b/source/WanManager/wanmgr_dhcp_legacy_apis.c
+@@ -1561,7 +1561,7 @@ void wanmgr_setSharedCGNAddress(char *IpAddress)
+ }
+ #endif//_DT_WAN_Manager_Enable_
+ 
+-#if defined(WAN_MANAGER_UNIFICATION_ENABLED) && (defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_))
++#if defined(WAN_MANAGER_UNIFICATION_ENABLED) && (defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_))
+ #define DEFAULT_PSM_FILE          "/usr/ccsp/config/bbhm_def_cfg.xml"
+ /* TODO : This is a function to recover v2 PSM entries if it is written with wrong values in older builds. 
+  * This should be removed after successful migration to unification builds 
+diff --git a/source/WanManager/wanmgr_dhcpv6_apis.c b/source/WanManager/wanmgr_dhcpv6_apis.c
+index 4c605d7..e45ec39 100644
+--- a/source/WanManager/wanmgr_dhcpv6_apis.c
++++ b/source/WanManager/wanmgr_dhcpv6_apis.c
+@@ -1873,7 +1873,7 @@ ANSC_STATUS wanmgr_handle_dhcpv6_event_data(DML_VIRTUAL_IFACE * pVirtIf)
+         {
+             if(pVirtIf->Status == WAN_IFACE_STATUS_UP &&  pNewIpcMsg->prefixPltime > 0 && pNewIpcMsg->prefixVltime > 0 ) //Update life time only if the interface is active.
+             {
+-#if !(defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_)) || defined(_RDKB_GLOBAL_PRODUCT_REQ_) //Do not add prefix on LAN bridge for the Comcast platforms.
++#if !(defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)) || defined(_RDKB_GLOBAL_PRODUCT_REQ_) //Do not add prefix on LAN bridge for the Comcast platforms.
+ #if defined(_RDKB_GLOBAL_PRODUCT_REQ_)
+             WanMgr_Config_Data_t    *pWanConfigData = WanMgr_GetConfigData_locked();
+             unsigned char           ConfigureWANIPv6OnLANBridgeSupport = FALSE;
+@@ -2019,7 +2019,7 @@ int setUpLanPrefixIPv6(DML_VIRTUAL_IFACE* pVirtIf)
+         }
+         else 
+         {
+-#if !(defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_))  //Do not add prefix on LAN bridge for the Comcast platforms.
++#if !(defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_))  //Do not add prefix on LAN bridge for the Comcast platforms.
+             CcspTraceInfo(("%s Going to set [%s] address on brlan0 interface \n", __FUNCTION__, globalIP));
+             memset(cmdLine, 0, sizeof(cmdLine));
+             snprintf(cmdLine, sizeof(cmdLine), "ip -6 addr add %s/64 dev %s valid_lft %d preferred_lft %d",
+diff --git a/source/WanManager/wanmgr_interface_sm.c b/source/WanManager/wanmgr_interface_sm.c
+index d3b228a..a971baf 100644
+--- a/source/WanManager/wanmgr_interface_sm.c
++++ b/source/WanManager/wanmgr_interface_sm.c
+@@ -1355,7 +1355,7 @@ static int wan_tearDownIPv4(WanMgr_IfaceSM_Controller_t * pWanIfaceCtrl)
+     DML_VIRTUAL_IFACE* p_VirtIf = WanMgr_getVirtualIfaceById(pInterface->VirtIfList, pWanIfaceCtrl->VirIfIdx);
+ 
+     /** Reset IPv4 DNS configuration. */
+-#if (defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined (_RDKB_GLOBAL_PRODUCT_REQ_))
++#if (defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_) || defined (_RDKB_GLOBAL_PRODUCT_REQ_))
+ #if defined (_RDKB_GLOBAL_PRODUCT_REQ_)
+     WanMgr_Config_Data_t    *pWanConfigData = WanMgr_GetConfigData_locked();
+     unsigned char           BackupWanDnsSupport = TRUE;
+@@ -1552,7 +1552,7 @@ static int wan_tearDownIPv6(WanMgr_IfaceSM_Controller_t * pWanIfaceCtrl)
+     DML_VIRTUAL_IFACE* p_VirtIf = WanMgr_getVirtualIfaceById(pInterface->VirtIfList, pWanIfaceCtrl->VirIfIdx);
+ 
+     //TODO: FIXME: XB devices use the DNS of primary for backup and doesn't deconfigure the primary ipv6 prefix from the LAN interface. 
+-#if (!(defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_))) || defined (_RDKB_GLOBAL_PRODUCT_REQ_)
++#if (!(defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_))) || defined (_RDKB_GLOBAL_PRODUCT_REQ_)
+ #if defined (_RDKB_GLOBAL_PRODUCT_REQ_)
+     unsigned char BackupWanDnsSupport = TRUE;
+ 
+diff --git a/source/WanManager/wanmgr_net_utils.c b/source/WanManager/wanmgr_net_utils.c
+index a9c1da8..9eac16d 100644
+--- a/source/WanManager/wanmgr_net_utils.c
++++ b/source/WanManager/wanmgr_net_utils.c
+@@ -367,7 +367,7 @@ int WanManager_Ipv6PrefixUtil(char *ifname, Ipv6OperType opr, int preflft, int v
+         {
+             if (strlen(prefix) > 0)
+             {
+-#if !(defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_)) || defined(_RDKB_GLOBAL_PRODUCT_REQ_) //Do not delete prefix from LAn bridge for the comcast platforms.
++#if !(defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)) || defined(_RDKB_GLOBAL_PRODUCT_REQ_) //Do not delete prefix from LAn bridge for the comcast platforms.
+ #if defined(_RDKB_GLOBAL_PRODUCT_REQ_)
+                 WanMgr_Config_Data_t    *pWanConfigData = WanMgr_GetConfigData_locked();
+                 unsigned char           ConfigureWANIPv6OnLANBridgeSupport = FALSE;
+diff --git a/source/WanManager/wanmgr_policy_auto_impl.c b/source/WanManager/wanmgr_policy_auto_impl.c
+index 77e8413..aa2310d 100644
+--- a/source/WanManager/wanmgr_policy_auto_impl.c
++++ b/source/WanManager/wanmgr_policy_auto_impl.c
+@@ -1137,7 +1137,7 @@ static WcAwPolicyState_t State_InterfaceReconfiguration (WanMgr_Policy_Controlle
+         }
+     }
+ 
+-#if (defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_))
++#if (defined (_XB6_PRODUCT_REQ_) || defined (_CBR2_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_))
+     // HW configuration already done using SelectedOperationalMode for XB platforms. Skipping this state.
+     CcspTraceInfo(("%s %d: HW configuration already done using SelectedOperationalMode.\n", __FUNCTION__, __LINE__));
+     return Transition_ActivatingInterface (pWanController);
+-- 
+2.39.5
+
