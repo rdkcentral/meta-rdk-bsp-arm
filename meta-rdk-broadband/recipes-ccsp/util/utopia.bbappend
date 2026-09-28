@@ -34,6 +34,7 @@ SRC_URI:append = " \
     file://0019-move-dhcp_options-into-var-volatile.patch \
     file://0020-waninfo-take-the-WAN-ifname-fallback-from-syscfg.patch \
     file://0021-firewall_ipv6-do-not-hardcode-erouter0-in-guest-isola.patch \
+    file://0022-Remove-PLATFORM_TURRIS-flags.patch \
     file://vlan_util_genericarm.sh \
     file://resolve-wan-ifname.sh \
     file://utopia.service \

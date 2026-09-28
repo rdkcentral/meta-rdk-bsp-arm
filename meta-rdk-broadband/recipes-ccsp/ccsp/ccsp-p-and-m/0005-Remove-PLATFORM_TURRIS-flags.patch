@@ -1,0 +1,129 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
+Date: Fri, 25 Sep 2026 16:24:37 +0200
+Subject: [PATCH] Remove _PLATFORM_TURRIS_ flags
+
+Removed _PLATFORM_TURRIS_ guard flags.
+
+---
+ .../source/TR-181/custom_ml/cosa_deviceinfo_dml_custom.c    | 4 ++--
+ source-arm/TR-181/board_sbapi/cosa_deviceinfo_apis.c        | 6 +-----
+ source-arm/TR-181/board_sbapi/cosa_users_apis.c             | 6 +++---
+ source/TR-181/middle_layer_src/cosa_deviceinfo_dml.c        | 2 +-
+ source/TR-181/middle_layer_src/cosa_users_internal.c        | 2 +-
+ source/TR-181/middle_layer_src/plugin_main_apis.c           | 2 +-
+ 6 files changed, 9 insertions(+), 13 deletions(-)
+
+diff --git a/custom/comcast/source/TR-181/custom_ml/cosa_deviceinfo_dml_custom.c b/custom/comcast/source/TR-181/custom_ml/cosa_deviceinfo_dml_custom.c
+index 86abb51..8838d60 100644
+--- a/custom/comcast/source/TR-181/custom_ml/cosa_deviceinfo_dml_custom.c
++++ b/custom/comcast/source/TR-181/custom_ml/cosa_deviceinfo_dml_custom.c
+@@ -340,7 +340,7 @@ DeviceInfo_GetParamStringValue_Custom
+ #if !defined (NO_MTA_FEATURE_SUPPORT)
+ 	if (strcmp(ParamName, "X_COMCAST-COM_MTA_MAC") == 0)
+ 	{
+-#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_TURRIS_) && !defined(_PLATFORM_BANANAPI_R4_)
++#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_BANANAPI_R4_)
+   	   CosaDmlDiGetMTAMacAddress(NULL, pValue,pulSize);
+ #endif
+ 	   return 0;
+@@ -383,7 +383,7 @@ DeviceInfo_GetParamStringValue_Custom
+ #if !defined (NO_MTA_FEATURE_SUPPORT)
+ 	if (strcmp(ParamName, "X_COMCAST-COM_MTA_IP") == 0)
+ 	{
+-#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_TURRIS_) && !defined(_PLATFORM_BANANAPI_R4_)
++#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_BANANAPI_R4_)
+    	   CosaDmlDiGetMTAIPAddress(NULL, pValue,pulSize);
+ #endif
+ 	   return 0;
+diff --git a/source-arm/TR-181/board_sbapi/cosa_deviceinfo_apis.c b/source-arm/TR-181/board_sbapi/cosa_deviceinfo_apis.c
+index ef13075..83e896a 100644
+--- a/source-arm/TR-181/board_sbapi/cosa_deviceinfo_apis.c
++++ b/source-arm/TR-181/board_sbapi/cosa_deviceinfo_apis.c
+@@ -123,10 +123,6 @@ static int writeToJson(char *data, char *file);
+ #include "ccsp_vendor.h"
+ #endif
+ 
+-#ifdef _PLATFORM_TURRIS_
+-#include "ccsp_vendor.h"
+-#endif
+-
+ #ifdef _PLATFORM_BANANAPI_R4_
+ #include "ccsp_vendor.h"
+ #endif
+@@ -477,7 +473,7 @@ CosaDmlDiGetManufacturerOUI
+     UNREFERENCED_PARAMETER(hContext);
+     errno_t rc = -1;
+ 
+-#if defined(_COSA_BCM_ARM_) || defined(_PLATFORM_TURRIS_) || defined(_COSA_QCA_ARM_)
++#if defined(_COSA_BCM_ARM_) || defined(_COSA_QCA_ARM_)
+         rc = sprintf_s(pValue, *pulSize, "%s%c", CONFIG_VENDOR_ID, '\0');
+         if(rc < EOK)
+         {
+diff --git a/source-arm/TR-181/board_sbapi/cosa_users_apis.c b/source-arm/TR-181/board_sbapi/cosa_users_apis.c
+index 43bf32d..cad82f5 100644
+--- a/source-arm/TR-181/board_sbapi/cosa_users_apis.c
++++ b/source-arm/TR-181/board_sbapi/cosa_users_apis.c
+@@ -577,7 +577,7 @@ user_validatepwd
+ 
+    if(fromDB[0] == '\0')
+    {
+-#if defined(_HUB4_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_) || defined(_PLATFORM_IPQ_)
++#if defined(_HUB4_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_) || defined(_PLATFORM_IPQ_)
+          user_hashandsavepwd(hContext,pEntry->Password,pEntry);
+ #elif defined(LIBRDKCONFIG_BUILD)
+ #if defined (_RDKB_GLOBAL_PRODUCT_REQ_)
+@@ -741,12 +741,12 @@ CosaDmlUserResetPassword
+    UNREFERENCED_PARAMETER(bValue);
+    CcspTraceWarning(("%s, Entered Reset function\n",__FUNCTION__)); 
+    char defPassword[10];
+-#if defined(_HUB4_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_)  || defined(_PLATFORM_BANANAPI_R4_) || defined(LIBRDKCONFIG_BUILD) || (defined(_COSA_FOR_BCI_) &&  defined(LIBRDKCONFIG_BUILD))
++#if defined(_HUB4_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_) || defined(LIBRDKCONFIG_BUILD) || (defined(_COSA_FOR_BCI_) &&  defined(LIBRDKCONFIG_BUILD))
+    errno_t safec_rc = -1;
+ #endif
+    if(!strcmp(pEntry->Username,"admin"))
+    {
+-#if defined(_HUB4_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_)  || defined(_PLATFORM_BANANAPI_R4_) || defined(_PLATFORM_IPQ_)
++#if defined(_HUB4_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_) || defined(_PLATFORM_IPQ_)
+          //TODO: Avoid the hardcoded password.        
+          safec_rc = strcpy_s(defPassword,sizeof(defPassword),"password");
+          if(safec_rc != EOK)
+diff --git a/source/TR-181/middle_layer_src/cosa_deviceinfo_dml.c b/source/TR-181/middle_layer_src/cosa_deviceinfo_dml.c
+index 13c4c5f..03fda23 100644
+--- a/source/TR-181/middle_layer_src/cosa_deviceinfo_dml.c
++++ b/source/TR-181/middle_layer_src/cosa_deviceinfo_dml.c
+@@ -25036,7 +25036,7 @@ SelfHeal_SetParamUlongValue
+ 	        AnscTraceWarning(("Minimum interval is 2 for %s !\n", ParamName));
+ 	        return FALSE;
+ 	    }
+-#if defined(_ARRIS_XB6_PRODUCT_REQ_) || defined(_CBR_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_) || \
++#if defined(_ARRIS_XB6_PRODUCT_REQ_) || defined(_CBR_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_) || \
+ (defined(_XB6_PRODUCT_REQ_) && defined(_COSA_BCM_ARM_))
+ 	    syscfg_get( NULL, "resource_monitor_interval", buf, sizeof(buf));
+         if( 0 == strlen(buf) )
+diff --git a/source/TR-181/middle_layer_src/cosa_users_internal.c b/source/TR-181/middle_layer_src/cosa_users_internal.c
+index 138b986..9c46201 100644
+--- a/source/TR-181/middle_layer_src/cosa_users_internal.c
++++ b/source/TR-181/middle_layer_src/cosa_users_internal.c
+@@ -171,7 +171,7 @@ CosaUsersInitialize
+     errno_t safec_rc = -1;
+     int res;
+     
+-    #if defined(_HUB4_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_) || defined(_PLATFORM_IPQ_)
++    #if defined(_HUB4_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_) || defined(_PLATFORM_IPQ_)
+         //No need to remove any hardcoded passwords
+     #else
+     #if defined(_RDKB_GLOBAL_PRODUCT_REQ_)
+diff --git a/source/TR-181/middle_layer_src/plugin_main_apis.c b/source/TR-181/middle_layer_src/plugin_main_apis.c
+index e7606fa..1ddf2ca 100644
+--- a/source/TR-181/middle_layer_src/plugin_main_apis.c
++++ b/source/TR-181/middle_layer_src/plugin_main_apis.c
+@@ -394,7 +394,7 @@ CosaBackEndManagerInitialize
+     returnStatus = CosaDmlMlanInit((ANSC_HANDLE)pMyObject, &pMyObject->hMultiLan);
+     AnscTraceWarning(("  CosaDmlMlanInit -- status %lu!\n", returnStatus));
+ 
+-#if !defined(INTEL_PUMA7) && !defined(_COSA_BCM_MIPS_) && !defined(_COSA_BCM_ARM_) && !defined(_PLATFORM_TURRIS_) && !defined(_COSA_QCA_ARM_)
++#if !defined(INTEL_PUMA7) && !defined(_COSA_BCM_MIPS_) && !defined(_COSA_BCM_ARM_) && !defined(_COSA_QCA_ARM_)
+     printf("pnm-status is renamed to bring-lan and set in PSM for XB3\n");
+ #else
+    printf("**************** sysevent set pnm-status up \n");

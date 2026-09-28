@@ -10,6 +10,7 @@ SRC_URI:append = " \
     file://onewifi_pre_start.sh \
     file://0001-db-fix-compile-error-when-ONEWIFI_DB_SUPPORT-not-set.patch \
     file://0002-wifi_db-fix-incorrect-type-for-index-variable.patch \
+    file://0003-Remove-PLATFORM_TURRIS-flags.patch \
 "
 
 # revert RDKB-62931,XB10-2872-OneWifi sync 08/07/26
