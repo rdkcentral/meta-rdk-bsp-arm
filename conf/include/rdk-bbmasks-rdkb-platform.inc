@@ -132,4 +132,7 @@ BBMASK .= "|meta-cmf-broadband/recipes-ccsp/ccsp/ccsp-dhcp-mgr.bbappend"
 # (out of date recipe causes fetch stalls, feature not required)
 BBMASK:append:kirkstone = "|openembedded-core/meta/recipes-graphics/virglrenderer/virglrenderer_0.9.1.bb"
 
+# 2026-09-21 not compatible with kernel 6.18
+BBMASK .= "${@bb.utils.contains('DISTRO_FEATURES', 'kernel-6-18', '|meta-rdk-broadband/recipes-ccsp/ccsp/ccsp-hotspot-kmod.bb', '', d)}"
+
 BBMASK:append:kirkstone = "|meta-rdk-opensync/recipes/python3-jinja2/python3-jinja2_2.11.1.bb"
