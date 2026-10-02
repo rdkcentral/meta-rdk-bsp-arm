@@ -7,6 +7,7 @@ SRC_URI += "\
         file://0002-Generic-ARM-only-disable-sending-WebPA-notifications.patch \
         file://0003-Generic-ARM-only-disable-telemetry-reporting-for-WAN.patch \
         file://0004-Route6_GetIfNames-do-not-probe-erouter0-wan0.patch \
+        file://0005-Add-_PLATFORM_GENERICARM_-for-generic-Arm-reference-.patch \
 "
 
 DEPENDS:append = " utopia curl "

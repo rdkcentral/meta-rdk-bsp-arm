@@ -1,0 +1,34 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
+Date: Wed, 23 Sep 2026 12:43:21 +2000
+Subject: [PATCH] Add _PLATFORM_GENERICARM_ for generic Arm reference platform
+
+---
+ .../TR-181/board_sbapi/cosa_x_cisco_com_devicecontrol_apis.c  | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/source/TR-181/board_sbapi/cosa_x_cisco_com_devicecontrol_apis.c b/source/TR-181/board_sbapi/cosa_x_cisco_com_devicecontrol_apis.c
+index 9a51960..c6ae989 100755
+--- a/source/TR-181/board_sbapi/cosa_x_cisco_com_devicecontrol_apis.c
++++ b/source/TR-181/board_sbapi/cosa_x_cisco_com_devicecontrol_apis.c
+@@ -212,7 +212,7 @@ void* WebGuiRestart( void *arg )
+ }
+ 
+ 
+-#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_)  || defined(_PLATFORM_BANANAPI_R4_)
++#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_)  || defined(_PLATFORM_BANANAPI_R4_) || defined(_PLATFORM_GENERICARM_)
+ static int
+ DmSetBool(const char *param, BOOL value)
+ {
+@@ -1083,7 +1083,7 @@ CosaDmlLanMngm_SetConf(ULONG ins, PCOSA_DML_LAN_MANAGEMENT pLanMngm)
+     }
+ #endif
+ 
+-#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_)
++#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_) || defined(_PLATFORM_GENERICARM_)
+     char buf[7] = {0};
+     BOOL value;
+     snprintf(buf,sizeof(buf),"%d",bridge_info.mode);
+-- 
+2.39.5
+

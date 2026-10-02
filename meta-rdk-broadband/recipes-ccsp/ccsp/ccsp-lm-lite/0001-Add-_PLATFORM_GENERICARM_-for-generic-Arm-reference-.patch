@@ -1,0 +1,25 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
+Date: Wed, 23 Sep 2026 13:21:45 +2000
+Subject: [PATCH] Add _PLATFORM_GENERICARM_ for generic Arm reference platform
+
+---
+ source/lm/lm_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/source/lm/lm_main.c b/source/lm/lm_main.c
+index 614225f..878dd33 100644
+--- a/source/lm/lm_main.c
++++ b/source/lm/lm_main.c
+@@ -2953,7 +2953,7 @@ static void *Hosts_StatSyncThreadFunc(void *args)
+         }
+         else
+         {
+-#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_TURRIS_) && !defined(_PLATFORM_BANANAPI_R4_)
++#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_TURRIS_) && !defined(_PLATFORM_BANANAPI_R4_) && !defined(_PLATFORM_GENERICARM_)
+             if(bridgemode)
+             {
+                 Send_Eth_Host_Sync_Req(); 
+-- 
+2.39.5
+

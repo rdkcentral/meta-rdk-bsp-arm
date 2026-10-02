@@ -1,0 +1,39 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
+Date: Wed, 23 Sep 2026 14:52:51 +2000
+Subject: [PATCH] Add _PLATFORM_GENERICARM_ for generic Arm reference platform
+
+---
+ source/dmltad/cosa_selfheal_dml.c | 2 +-
+ source/dmltad/diag.c              | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/source/dmltad/cosa_selfheal_dml.c b/source/dmltad/cosa_selfheal_dml.c
+index fe2c0da..89a4e16 100644
+--- a/source/dmltad/cosa_selfheal_dml.c
++++ b/source/dmltad/cosa_selfheal_dml.c
+@@ -1597,7 +1597,7 @@ ResourceMonitor_SetParamUlongValue
+             return TRUE;
+         }
+   
+-#if defined(_ARRIS_XB6_PRODUCT_REQ_) || defined(_CBR_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_) || \
++#if defined(_ARRIS_XB6_PRODUCT_REQ_) || defined(_CBR_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_) || defined(_PLATFORM_GENERICARM_) || \
+ (defined(_XB6_PRODUCT_REQ_) && defined(_COSA_BCM_ARM_))
+         char buf[8];
+         errno_t rc = -1;
+diff --git a/source/dmltad/diag.c b/source/dmltad/diag.c
+index 395a19f..f8b83b7 100644
+--- a/source/dmltad/diag.c
++++ b/source/dmltad/diag.c
+@@ -503,7 +503,7 @@ static void *diag_task(void *arg)
+             break;
+     }
+ 
+-#if defined(_PLATFORM_RASPBERRYPI_) || (_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_)
++#if defined(_PLATFORM_RASPBERRYPI_) || (_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_) || defined(_PLATFORM_GENERICARM_)
+ /**
+  inet_pton is failing because of extra quotes in ip address (cfg.host)
+ **/
+-- 
+2.39.5
+
