@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
+Date: Mon, 28 Sep 2026 13:03:57 +0200
+Subject: [PATCH] Remove RDKB_EMU flag
+
+Removed RDKB_EMU guard flag.
+
+---
+ src/rdkb/impl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/rdkb/impl.c b/src/rdkb/impl.c
+index 665a0eb..d729c81 100644
+--- a/src/rdkb/impl.c
++++ b/src/rdkb/impl.c
+@@ -47,7 +47,7 @@
+ #define DEVICE_MAC                   "Device.DPoE.Mac_address"
+ #elif defined(PLATFORM_RASPBERRYPI)
+ #define DEVICE_MAC                   "Device.Ethernet.Interface.5.MACAddress"
+-#elif defined(RDKB_EMU) || defined(_PLATFORM_BANANAPI_R4_) || defined(_PLATFORM_GENERICARM_)
++#elif defined(_PLATFORM_BANANAPI_R4_) || defined(_PLATFORM_GENERICARM_)
+ #define DEVICE_MAC                   "Device.DeviceInfo.X_COMCAST-COM_WAN_MAC"
+ #elif defined(_HUB4_PRODUCT_REQ_)
+ #define DEVICE_MAC                   "Device.DeviceInfo.X_COMCAST-COM_WAN_MAC"

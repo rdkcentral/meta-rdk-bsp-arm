@@ -36,6 +36,10 @@ SRC_URI:append = " \
     file://0005-WIP-use-AddPortToLanBridge-to-manage-brlan0-members.patch \
 "
 
+SRC_URI:append = " \
+    file://0006-Remove-PLATFORM_TURRIS-flags.patch \
+"
+
 do_install:append() {
    install -d ${D}/lib/rdk/
    install -m 755 ${WORKDIR}/bring_up_all_eth.sh ${D}/lib/rdk/

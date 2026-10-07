@@ -1,0 +1,88 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
+Date: Mon, 28 Sep 2026 11:14:26 +0200
+Subject: [PATCH] Remove _PLATFORM_TURRIS_ flags
+
+Removed _PLATFORM_TURRIS_ guard flags.
+
+---
+ source/dmltad/cosa_selfheal_dml.c |  2 +-
+ source/dmltad/diag.c              |  2 +-
+ source/dmltad/diag_ping.c         | 24 ------------------------
+ 3 files changed, 2 insertions(+), 26 deletions(-)
+
+diff --git a/source/dmltad/cosa_selfheal_dml.c b/source/dmltad/cosa_selfheal_dml.c
+index fe2c0da..67ab5a5 100644
+--- a/source/dmltad/cosa_selfheal_dml.c
++++ b/source/dmltad/cosa_selfheal_dml.c
+@@ -1597,7 +1597,7 @@ ResourceMonitor_SetParamUlongValue
+             return TRUE;
+         }
+   
+-#if defined(_ARRIS_XB6_PRODUCT_REQ_) || defined(_CBR_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_) || \
++#if defined(_ARRIS_XB6_PRODUCT_REQ_) || defined(_CBR_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_) || \
+ (defined(_XB6_PRODUCT_REQ_) && defined(_COSA_BCM_ARM_))
+         char buf[8];
+         errno_t rc = -1;
+diff --git a/source/dmltad/diag.c b/source/dmltad/diag.c
+index 395a19f..4d16cab 100644
+--- a/source/dmltad/diag.c
++++ b/source/dmltad/diag.c
+@@ -503,7 +503,7 @@ static void *diag_task(void *arg)
+             break;
+     }
+ 
+-#if defined(_PLATFORM_RASPBERRYPI_) || (_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_)
++#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_)
+ /**
+  inet_pton is failing because of extra quotes in ip address (cfg.host)
+ **/
+diff --git a/source/dmltad/diag_ping.c b/source/dmltad/diag_ping.c
+index 0b9c67b..9c5471c 100644
+--- a/source/dmltad/diag_ping.c
++++ b/source/dmltad/diag_ping.c
+@@ -112,17 +112,6 @@ static diag_err_t ping_start(diag_obj_t *diag, const diag_cfg_t *cfg, diag_stat_
+     else
+         cnt = cfg->cnt;
+ 
+-#if defined(_PLATFORM_TURRIS_)
+-    rc = sprintf_s(cmd + strlen(cmd), left, "ping ");
+-    if (rc < EOK)
+-    {
+-        ERR_CHK(rc);
+-    }
+-    else
+-    {
+-        left -= rc;
+-    }
+-#else
+     rc = sprintf_s(cmd + strlen(cmd), left, "ping %s ", cfg->host);
+     if (rc < EOK)
+     {
+@@ -132,7 +121,6 @@ static diag_err_t ping_start(diag_obj_t *diag, const diag_cfg_t *cfg, diag_stat_
+     {
+         left -= rc;
+     }
+-#endif
+     if (isDSLiteEnabled() && isIPv4Host(cfg->host))
+     {
+         char ifip[16];
+@@ -217,18 +205,6 @@ static diag_err_t ping_start(diag_obj_t *diag, const diag_cfg_t *cfg, diag_stat_
+     }
+ #endif
+ 
+-#if defined(_PLATFORM_TURRIS_)
+-    rc = sprintf_s(cmd + strlen(cmd), left, "%s ", cfg->host);
+-    if (rc < EOK)
+-    {
+-        ERR_CHK(rc);
+-    }
+-    else
+-    {
+-        left -= rc;
+-    }
+-#endif
+-
+     rc = sprintf_s(cmd + strlen(cmd), left, "2>&1 ");
+     if (rc < EOK)
+     {
