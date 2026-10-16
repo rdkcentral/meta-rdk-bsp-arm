@@ -29,6 +29,7 @@ SRC_URI:append = " \
     file://${DEFAULT_BBHM_CONFIG:raspberrypi64-rdk-broadband} \
     file://${DEFAULT_BBHM_CONFIG:ten64-rdk-broadband} \
     file://bbhm_def_cfg_ten64.xml \
+    file://bbhm_def_cfg_an7581_evb.xml \
     file://copy_config.sh \
     file://copy_config_stub.sh \
 "
@@ -55,6 +56,7 @@ do_install:armefi64-rdk-broadband() {
     ln -sr ${D}/usr/ccsp/machine_configs/raspberrypi_4-model-b.xml ${D}/usr/ccsp/machine_configs/raspberrypi_3-model-b-plus.xml
     cp ${UNPACKDIR}/${DEFAULT_BBHM_CONFIG:ten64-rdk-broadband} ${D}/usr/ccsp/machine_configs/traverse_ten64-4.xml
 
+    cp ${UNPACKDIR}/bbhm_def_cfg_an7581_evb.xml ${D}/usr/ccsp/machine_configs/airoha_an7581-evb.xml
     install -m 755 ${UNPACKDIR}/copy_config.sh ${D}/usr/ccsp/psm/copy_config.sh
 }
 

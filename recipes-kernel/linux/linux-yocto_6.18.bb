@@ -1,9 +1,8 @@
 KBRANCH ?= "v6.18/standard/genericarm64"
 require recipes-kernel/linux/linux-yocto.inc
 
-# 6.18.52
-SRCREV_machine:armefi64 ?= "07acbdc95f3e934116546b9a90b813d7b30397b7"
-LINUX_VERSION ?= "6.18.52"
+SRCREV_machine:armefi64 ?= "d566d697f1ef92ad9025eb48b32ff36d1e64fa00"
+LINUX_VERSION ?= "6.18.54"
 SRCREV_meta ?= "f94e250f9bd55d855b1a41e3cd72beebb3849ae3"
 
 # set your preferred provider of linux-yocto to 'linux-yocto-upstream', and you'll

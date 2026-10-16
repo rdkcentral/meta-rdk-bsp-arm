@@ -15,6 +15,7 @@ SRC_URI:append = " \
     file://InterfaceMap_mt7990.json \
     file://0003-Remove-PLATFORM_TURRIS-flags.patch \
     file://0004-Add-_PLATFORM_GENERICARM_-for-generic-Arm-reference-.patch \
+    file://InterfaceMap_mt7996.json \
 "
 
 # revert RDKB-62931,XB10-2872-OneWifi sync 08/07/26
@@ -50,12 +51,14 @@ do_install:append() {
     install -d ${D}/usr/ccsp/wifi/
     install -m 644 ${WORKDIR}/wifi_defaults.txt ${D}/usr/ccsp/wifi/
     install -m 644 ${WORKDIR}/InterfaceMap_mt7990.json ${D}/usr/ccsp/wifi/
+    install -m 644 ${WORKDIR}/InterfaceMap_mt7996.json ${D}/usr/ccsp/wifi/
 }
 
 FILES:${PN}:append = " \
     /usr/bin/wifi_events_consumer \
     /usr/ccsp/wifi/wifi_defaults.txt \
     /usr/ccsp/wifi/InterfaceMap_mt7990.json \
+    /usr/ccsp/wifi/InterfaceMap_mt7996.json \
     ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', '', '/usr/ccsp/wifi/onewifi_pre_start.sh', d)} \
 "
 

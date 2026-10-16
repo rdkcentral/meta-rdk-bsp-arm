@@ -13,4 +13,5 @@ PACKAGES = "${PN}"
 RDEPENDS:${PN} = " \
     virtual/firmware-mtk-wifi6 \
     linux-firmware-bcm43455 \
+    linux-firmware-as21xxx \
 "

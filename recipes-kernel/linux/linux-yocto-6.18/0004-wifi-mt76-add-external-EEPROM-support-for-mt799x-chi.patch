@@ -1,4 +1,4 @@
-From a9dc76560429cd388163a971a075d425ab0ce899 Mon Sep 17 00:00:00 2001
+From d96f5b5d166dd36304d1ae9ab4f5829761a8b8ed Mon Sep 17 00:00:00 2001
 From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
 Date: Thu, 12 Feb 2026 17:03:08 +0800
 Subject: [PATCH] wifi: mt76: add external EEPROM support for mt799x chipsets
@@ -26,7 +26,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  6 files changed, 149 insertions(+), 68 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 8d59cf43f0e2..012bae394d40 100644
+index 8d59cf43f0e2d..012bae394d404 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
 @@ -1308,6 +1308,7 @@ enum {
@@ -38,7 +38,7 @@ index 8d59cf43f0e2..012bae394d40 100644
  	MCU_UNI_CMD_SDO = 0x88,
  };
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
-index 1b26662e9272..eb3bbd0da526 100644
+index 1b26662e92726..eb3bbd0da5260 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
 @@ -159,7 +159,7 @@ mt7996_eeprom_check_or_use_default(struct mt7996_dev *dev, bool use_default)
@@ -138,7 +138,7 @@ index 1b26662e9272..eb3bbd0da526 100644
  
  out:
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 8f1810a063fa..3702063d92f6 100644
+index 8f1810a063fa8..3702063d92f6f 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
 @@ -1171,7 +1171,8 @@ static int mt7996_variant_fem_init(struct mt7996_dev *dev)
@@ -152,7 +152,7 @@ index 8f1810a063fa..3702063d92f6 100644
  		return ret;
  
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 43755790d519..e7763e657579 100644
+index 43755790d5196..e7763e6575798 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
 @@ -3842,7 +3842,7 @@ static int mt7996_mcu_set_eeprom_flash(struct mt7996_dev *dev)
@@ -290,7 +290,7 @@ index 43755790d519..e7763e657579 100644
  	struct {
  		u8 _rsv[4];
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-index 3fccee52103b..61db528332b6 100644
+index 3fccee52103b8..61db528332b62 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
 @@ -147,7 +147,7 @@ struct mt7996_mcu_background_chain_ctrl {
@@ -358,7 +358,7 @@ index 3fccee52103b..61db528332b6 100644
  	UNI_VOW_DRR_CTRL,
  	UNI_VOW_RX_AT_AIRTIME_EN = 0x0b,
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index a9e6a4fe0112..a66c32d0f116 100644
+index a9e6a4fe0112f..a66c32d0f1160 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
 @@ -81,6 +81,7 @@
