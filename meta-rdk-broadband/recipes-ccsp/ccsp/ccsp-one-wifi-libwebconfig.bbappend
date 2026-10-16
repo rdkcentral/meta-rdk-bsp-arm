@@ -12,6 +12,8 @@ CFLAGS += " ${@bb.utils.contains('DISTRO_FEATURES', 'EasyMesh', ' -Wno-error=may
 CFLAGS:remove = " -DONEWIFI_MULTIAP_APP_SUPPORT"
 EXTRA_OECONF:remove = " ONEWIFI_MULTIAP_APP_SUPPORT=true"
 
+# Undo RDKB-66764/66765/66766 (references header not installed in our pinned SRCREV)
+MATH_UTILS_COMPILE = "0"
 
 do_compile:append() {
     oe_runmake -C source/platform

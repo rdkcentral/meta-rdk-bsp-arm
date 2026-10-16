@@ -1,5 +1,12 @@
 require meta-rdk-broadband/recipes-ccsp/ccsp/ccsp_common_genericarm.inc
 
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+
+SRC_URI:append = " \
+    file://0001-Remove-PLATFORM_TURRIS-flags.patch \
+    file://0002-Add-_PLATFORM_GENERICARM_-for-generic-Arm-reference-.patch \
+"
+
 do_install:append () {
     # Test and Diagnostics XML
     install -m 644 ${S}/config/TestAndDiagnostic_arm.XML ${D}/usr/ccsp/tad/TestAndDiagnostic.XML

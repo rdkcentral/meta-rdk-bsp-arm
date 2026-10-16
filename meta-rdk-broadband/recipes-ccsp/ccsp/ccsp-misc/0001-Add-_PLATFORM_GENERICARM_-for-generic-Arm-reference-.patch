@@ -1,0 +1,25 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
+Date: Mon, 5 Oct 2026 14:58:01 +0000
+Subject: [PATCH] Add _PLATFORM_GENERICARM_ for generic Arm reference platform
+
+---
+ source/dhcp_client_utils/udhcpc_client_utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/source/dhcp_client_utils/udhcpc_client_utils.c b/source/dhcp_client_utils/udhcpc_client_utils.c
+index 7ea7dc3..6f69424 100644
+--- a/source/dhcp_client_utils/udhcpc_client_utils.c
++++ b/source/dhcp_client_utils/udhcpc_client_utils.c
+@@ -330,7 +330,7 @@ int stop_udhcpc (dhcp_params * params)
+     }
+ 
+ #ifdef UDHCPC_TX_RELEASE_ON_EXIT
+-#if defined(_PLATFORM_RASPBERRYPI_)
++#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+     //In RPI, udhcpc is not getting terminated after sending unicast release packet with SIGUSR2, thus SIGTERM is used
+     if (signal_process(pid, SIGTERM) != RETURN_OK)
+ #else
+-- 
+2.39.5
+
