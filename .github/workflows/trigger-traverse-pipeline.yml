@@ -1,7 +1,7 @@
 name: Trigger GitLab pipeline
 
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize]
 
 concurrency:
@@ -19,140 +19,28 @@ jobs:
         "mcbridematt/meta-rdk-bsp-arm"
       ]'), github.repository)
     steps:
-      # Try to avoid writing the push token onto disk (via .git/config)
-      - name: Create askpass helper script
-        run: |
-          echo '#!/bin/sh' > /tmp/git-askpass.sh
-          echo 'printf "%s" "$GIT_TOKEN"' >> /tmp/git-askpass.sh
-          chmod +x /tmp/git-askpass.sh
-
-      # Checkout note: the code checked out here is not executed by the runner,
-      # it is merely pulled and pushed to the mirror environment.
-      # We need to use the pull_request_target type to use configured
-      # secrets in the repo.
-      - name: Checkout repository
+      - name: Check out target branch # needed to retrieve the pipeline handler script
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0
-          # Required to fetch the fork commit inside pull_request_target
-          allow-unsafe-pr-checkout: true
-          persist-credentials: false
+          repository: ${{ github.event.pull_request.base.repo.full_name }}
+          ref: ${{ github.event.pull_request.base.ref }}
+          fetch-depth: 1
 
       - name: Run GitLab pipeline
         timeout-minutes: 300
         id: pipelinevars
         shell: bash
-        env:
-          GIT_ASKPASS: /tmp/git-askpass.sh
-          GIT_TOKEN: ${{ secrets.GITLAB_PUSH_TOKEN_CREDS }}
         run: |
-          cleanup() {
-            if [ -n "${NEW_PIPELINE_ID}" ]; then
-              echo "Trying to cancel GitLab pipeline ${NEW_PIPELINE_ID}"
-              CANCEL_URL="https://${{ vars.GITLAB_SERVER }}/api/v4/projects/${{ vars.GITLAB_PROJECT_ID }}/pipelines/${NEW_PIPELINE_ID}/cancel"
-              echo "Cancellation URL: ${CANCEL_URL}"
-              curl --request POST \
-              --header "PRIVATE-TOKEN: ${GIT_TOKEN}" \
-              "${CANCEL_URL}"
-            fi
-            exit 130
-          }
-          # Gets the test log for the first non-cancelled (or skipped) job in the pipeline
-          # The last job in the pipeline will be presented first in the list
-          # (Last in, first out), so we are iterating in descending order
-          # (example: test -> build -> .pre)
-          get_test_log() {
-            curl -o pipelinejobs.json -H "PRIVATE-TOKEN: ${GIT_TOKEN}" "https://${{ vars.GITLAB_SERVER }}/api/v4/projects/${{ vars.GITLAB_PROJECT_ID }}/pipelines/${NEW_PIPELINE_ID}/jobs" 1>/dev/null 2>&1
-            NUM_PIPELINE_JOBS=$(cat pipelinejobs.json | jq length)
-            for i in $(seq 1 "${NUM_PIPELINE_JOBS}"); do
-              array_ref=$((i-1))
-              job_info=$(cat pipelinejobs.json | jq ".[$array_ref]")
-              job_name=$(echo "${job_info}" | jq -r ".name")
-              job_id=$(echo "${job_info}" | jq -r ".id")
-              job_status=$(echo "${job_info}" | jq -r ".status")
-              if [ "${job_status}" = "canceled" ] || [ "${job_status}" = "skipped" ]; then
-                echo "Job ${job_id} / ${job_name} was cancelled or skipped, not pulling log"
-                continue
-              fi
-              curl -o testlog.txt -H "PRIVATE-TOKEN: ${GIT_TOKEN}" "https://${{ vars.GITLAB_SERVER }}/api/v4/projects/${{ vars.GITLAB_PROJECT_ID}}/jobs/${job_id}/trace" 1>/dev/null 2>&1
-              cat testlog.txt
-              break
-            done
-            echo "Please go to ${PIPELINE_WEB_URL} to view the full pipeline details"
-          }
+          chmod +x .github/scripts/trigger-traverse-pipeline.sh
+          ./.github/scripts/trigger-traverse-pipeline.sh
+        env:
+          GITHUB_REPOSITORY_NAME: ${{ github.event.pull_request.base.repo.name }}
+          GITHUB_PR_NUMBER: ${{ github.event.number }}
+          GITHUB_PR_SHA: ${{ github.event.pull_request.head.sha }}
+          GITHUB_ACTION_RUN_ID: ${{ github.run_id }}
+          GITHUB_ACTION_RUN_ATTEMPT: ${{ github.run_attempt }}
+          PROXY_STATUS_URL: "${{ vars.PROXY_API_BASE }}/status"
+          PROXY_LOG_URL: "${{ vars.PROXY_API_BASE }}/log"
+          PROXY_CREATE_PIPELINE_URL: "${{ vars.PROXY_API_BASE }}/webhook"
 
-          trap 'cleanup' SIGINT
-
-          git remote add gitlabcom https://glpat@gitlab.com/traversetech/rdk/meta-rdk-bsp-arm.git
-          PR_SUBMITTER="${{ github.event.pull_request.user.login }}"
-          PR_SUBMITTER="${PR_SUBMITTER//\[/_}"
-          PR_SUBMITTER="${PR_SUBMITTER//\]/_}"
-          export MIRROR_REFERENCE="refs/heads/${GITHUB_REPOSITORY_OWNER}/${GITHUB_BASE_REF}/${PR_SUBMITTER}/pull/${{ github.event.number }}"
-          echo "Mirror repository reference will be ${MIRROR_REFERENCE}"
-          git push --no-verify --force gitlabcom "HEAD:${MIRROR_REFERENCE}"
-          MIRROR_REPOSITORY_REFERENCE="${MIRROR_REFERENCE#refs/heads/}"
-
-          if ! (curl --fail --request POST \
-          -H "PRIVATE-TOKEN: ${GIT_TOKEN}" \
-          -H "Content-Type: application/json" \
-          --data "{ \"ref\": \"${MIRROR_REPOSITORY_REFERENCE}\" }" \
-          -o new_pipeline.json \
-          "https://${{ vars.GITLAB_SERVER }}/api/v4/projects/${{ vars.GITLAB_PROJECT_ID }}/pipeline"); then
-            echo "ERROR: Failed to trigger GitLab pipeline"
-            exit 1
-          fi
-
-          if ! NEW_PIPELINE_ID=$(jq -er '.id' new_pipeline.json); then
-            echo "ERROR: GitLab trigger response did not contain a pipeline ID"
-            exit 1
-          fi
-          export NEW_PIPELINE_ID
-
-          echo "Created pipeline ID: ${NEW_PIPELINE_ID}"
-          export PIPELINE_WEB_URL=$(cat new_pipeline.json | jq -r ".web_url")
-          echo "GitLab CI URL: ${PIPELINE_WEB_URL}"
-
-          max_polls=100 # 100 * 120s is just above 3 hours
-          polls=0
-          EXITCODE=1
-          while true; do
-            if ! (curl --fail --silent --show-error \
-              -o pipelinestatus.json \
-              -H "PRIVATE-TOKEN: ${GIT_TOKEN}" \
-              "https://${{ vars.GITLAB_SERVER }}/api/v4/projects/${{ vars.GITLAB_PROJECT_ID }}/pipelines/${NEW_PIPELINE_ID}"); then
-              echo "ERROR: Failed to query pipeline status"
-              exit 1
-            fi
-            CURRENT_PIPELINE_STATUS=$(cat pipelinestatus.json | jq -r .status)
-            if [ "${CURRENT_PIPELINE_STATUS}" = "running" ] || [ "${CURRENT_PIPELINE_STATUS}" = "pending" ] || [ "${CURRENT_PIPELINE_STATUS}" = "created" ] || [ "${CURRENT_PIPELINE_STATUS}" = "waiting_for_resource" ] || [ "${CURRENT_PIPELINE_STATUS}" = "preparing" ] || [ "${CURRENT_PIPELINE_STATUS}" = "scheduled" ] ; then
-              echo "Current pipeline status: ${CURRENT_PIPELINE_STATUS}"
-              polls=$((polls + 1))
-              if [ "${polls}" -ge "${max_polls}" ]; then
-                echo "ERROR: Timed out waiting for pipeline to finish"
-                EXITCODE=1
-                break
-              fi
-              sleep 120 &
-              PID=$!
-              # Wait in the background, so if the pipeline is cancelled, the SIGINT handler works
-              wait $PID
-              continue
-            elif [ "${CURRENT_PIPELINE_STATUS}" = "success" ]; then
-              echo "Pipeline successful"
-              EXITCODE=0
-              break
-            elif [ "${CURRENT_PIPELINE_STATUS}" = "failed" ]; then
-              echo "ERROR: Pipeline failed"
-              break
-            else
-              echo "ERROR: Unrecognized status ${CURRENT_PIPELINE_STATUS}"
-              break
-            fi
-          done
-          set +e
-          get_test_log
-          set -e
-          exit "${EXITCODE}"
 
