@@ -2,13 +2,12 @@ require ccsp_common_genericarm.inc
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/ccsp-p-and-m:"
 
-SRC_URI += "\
+SRC_URI:append = " \
         file://0001-Remove-erouter0-reference-from-Device.IP.Interface.patch \
         file://0002-Generic-ARM-only-disable-sending-WebPA-notifications.patch \
         file://0003-Generic-ARM-only-disable-telemetry-reporting-for-WAN.patch \
-        file://0004-Route6_GetIfNames-do-not-probe-erouter0-wan0.patch \
-        file://0005-Remove-PLATFORM_TURRIS-flags.patch \
-        file://0006-Add-_PLATFORM_GENERICARM_-for-generic-Arm-reference-.patch \
+        file://0004-Remove-_PLATFORM_TURRIS_-flags.patch \
+        file://0005-Add-_PLATFORM_GENERICARM_-for-generic-Arm-reference-.patch \
 "
 
 DEPENDS:append = " utopia curl "
