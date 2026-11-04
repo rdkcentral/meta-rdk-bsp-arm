@@ -8,6 +8,7 @@ SRC_URI:append = " \
         file://0003-Generic-ARM-only-disable-telemetry-reporting-for-WAN.patch \
         file://0004-Remove-_PLATFORM_TURRIS_-flags.patch \
         file://0005-Add-_PLATFORM_GENERICARM_-for-generic-Arm-reference-.patch \
+        file://0006-TR-181-use-TR-181-path-for-Route6_GetIfNames.patch \
 "
 
 DEPENDS:append = " utopia curl "

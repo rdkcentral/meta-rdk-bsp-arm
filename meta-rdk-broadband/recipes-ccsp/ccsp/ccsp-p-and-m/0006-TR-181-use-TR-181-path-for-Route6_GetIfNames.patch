@@ -1,0 +1,50 @@
+From 3c6333f20d047cf014bdf0317a6199dfc06b5ff9 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Wed, 4 Nov 2026 00:09:03 +0000
+Subject: [PATCH] TR-181: use TR-181 path for Route6_GetIfNames
+
+The TR181 path avoids using hardcoded interface names.
+
+Test procedure: run "dmcli eRT getv Device.Routing.Router.1.IPv6Forwarding."
+
+---
+ source-arm/TR-181/board_sbapi/cosa_routing_apis.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/source-arm/TR-181/board_sbapi/cosa_routing_apis.c b/source-arm/TR-181/board_sbapi/cosa_routing_apis.c
+index ba8b20a..8142e8e 100644
+--- a/source-arm/TR-181/board_sbapi/cosa_routing_apis.c
++++ b/source-arm/TR-181/board_sbapi/cosa_routing_apis.c
+@@ -3218,12 +3218,12 @@ Route6_GetIfNames(char iflist[][IFNAME_SIZ], int *nlist)
+     if (!iflist || !nlist)
+         return -1;
+ 
+-#if defined(USE_TR181_PATH)
++#if defined(USE_TR181_PATH) || defined(_PLATFORM_GENERICARM_)
+     int ifnum = g_GetParamValueUlong(g_pDslhDmlAgent, "Device.IP.InterfaceNumberOfEntries");
+     if (ifnum <= 0)
+     {
+ #endif
+-        if (*nlist < 2)
++        if (*nlist < 3)
+             return -1;
+ 
+         /*get current eRT interface*/
+@@ -3235,7 +3235,7 @@ Route6_GetIfNames(char iflist[][IFNAME_SIZ], int *nlist)
+         }
+         snprintf(iflist[0], IFNAME_SIZ, "%s", wan_interface);
+         snprintf(iflist[1], IFNAME_SIZ, "%s", "brlan0");
+-#if defined (_COSA_BCM_MIPS_) || defined(_ENABLE_DSL_SUPPORT_)
++#if defined (_COSA_BCM_MIPS_) || defined(_ENABLE_DSL_SUPPORT_) || defined(_PLATFORM_GENERICARM_)
+         snprintf(iflist[2], IFNAME_SIZ, "%s", "lo");
+         *nlist = 3;
+ #else
+@@ -3244,7 +3244,7 @@ Route6_GetIfNames(char iflist[][IFNAME_SIZ], int *nlist)
+ 
+         *nlist = 4;
+ #endif
+-#if defined(USE_TR181_PATH)
++#if defined(USE_TR181_PATH) || defined(_PLATFORM_GENERICARM_)
+     }
+     else
+     {
