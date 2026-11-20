@@ -1,4 +1,4 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From 25de54f611f4fa83d8bd8744649b5a3f178f7180 Mon Sep 17 00:00:00 2001
 From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
 Date: Wed, 23 Sep 2026 15:12:09 +2000
 Subject: [PATCH] Add _PLATFORM_GENERICARM_ for generic Arm reference platform
@@ -207,7 +207,7 @@ index c276b22..daf76e6 100644
                          _ansc_memset(ucEntryNameValue, 0, sizeof(ucEntryNameValue));
                          rc = sprintf_s(ucEntryParamName, sizeof(ucEntryParamName),"Device.Ethernet.Interface.%lu.Enable",ulEntryInstanceNum);
 diff --git a/source/TR-181/middle_layer_src/cosa_deviceinfo_dml.c b/source/TR-181/middle_layer_src/cosa_deviceinfo_dml.c
-index c0d6515..583ae46 100644
+index d2e3297..cc4f578 100644
 --- a/source/TR-181/middle_layer_src/cosa_deviceinfo_dml.c
 +++ b/source/TR-181/middle_layer_src/cosa_deviceinfo_dml.c
 @@ -96,7 +96,7 @@
@@ -219,7 +219,7 @@ index c0d6515..583ae46 100644
  #include <unistd.h>
  #include <sys/types.h>
  #endif
-@@ -304,7 +304,7 @@ static const char *atomIp = ATOM_IP;
+@@ -305,7 +305,7 @@ static const char *atomIp = ATOM_IP;
      #define BLOCKLIST_FILE "/opt/secure/Blocklist_file.txt"
  #endif
  
@@ -228,7 +228,7 @@ index c0d6515..583ae46 100644
  int sock;
  int id = 0;
  #endif
-@@ -1294,7 +1294,7 @@ DeviceInfo_SetParamBoolValue
+@@ -1295,7 +1295,7 @@ DeviceInfo_SetParamBoolValue
  {
      PCOSA_DATAMODEL_DEVICEINFO      pMyObject = (PCOSA_DATAMODEL_DEVICEINFO)g_pCosaBEManager->hDeviceInfo;
      BOOL                            bReturnValue;
@@ -237,7 +237,7 @@ index c0d6515..583ae46 100644
      id =getuid();    
  #endif
      
-@@ -1316,7 +1316,7 @@ DeviceInfo_SetParamBoolValue
+@@ -1317,7 +1317,7 @@ DeviceInfo_SetParamBoolValue
          {
  		/* Restart Firewall */
  		v_secure_system("sysevent set firewall-restart");
@@ -246,7 +246,7 @@ index c0d6515..583ae46 100644
                 if(id!=0)
                 {
                         char *lxcevt = "sysevent set firewall-restart";
-@@ -8679,7 +8679,7 @@ Iot_SetParamBoolValue
+@@ -8687,7 +8687,7 @@ Iot_SetParamBoolValue
      /* check the parameter name and set the corresponding value */
      if (strcmp(ParamName, "X_RDKCENTRAL-COM_ENABLEIOT") == 0)
      {
@@ -255,7 +255,7 @@ index c0d6515..583ae46 100644
         id=getuid();
  #endif
  
-@@ -8692,7 +8692,7 @@ Iot_SetParamBoolValue
+@@ -8700,7 +8700,7 @@ Iot_SetParamBoolValue
                  if(bValue){
                     AnscTraceWarning(("IOT_LOG : Raise IOT event up from DML\n"));
                     v_secure_system("sysevent set iot_status up");
@@ -264,7 +264,7 @@ index c0d6515..583ae46 100644
                 if(id!=0)
                 {
                   char *lxcevt = "sysevent set iot_status up";
-@@ -8703,7 +8703,7 @@ Iot_SetParamBoolValue
+@@ -8711,7 +8711,7 @@ Iot_SetParamBoolValue
                  else{
                     AnscTraceWarning(("IOT_LOG : Raise IOT event down from DML\n"));
                     v_secure_system("sysevent set iot_status down");
@@ -273,7 +273,7 @@ index c0d6515..583ae46 100644
                  if(id!=0)
                   {
                     char *lxcevt = "sysevent set iot_status down";
-@@ -12946,7 +12946,7 @@ AllowOpenPorts_SetParamBoolValue
+@@ -12961,7 +12961,7 @@ AllowOpenPorts_SetParamBoolValue
  
              // restart firewall
              v_secure_system("sysevent set firewall-restart");
@@ -282,7 +282,7 @@ index c0d6515..583ae46 100644
        if(id!=0)
         {
  		   char *lxcevt = "sysevent set firewall-restart";
-@@ -25136,7 +25136,7 @@ SelfHeal_SetParamUlongValue
+@@ -25150,7 +25150,7 @@ SelfHeal_SetParamUlongValue
  	        AnscTraceWarning(("Minimum interval is 2 for %s !\n", ParamName));
  	        return FALSE;
  	    }
@@ -392,6 +392,3 @@ index 1ddf2ca..2226200 100644
      // Device Control Networking Mode init
      devCtrlRbusInit();
  #endif
--- 
-2.39.5
-

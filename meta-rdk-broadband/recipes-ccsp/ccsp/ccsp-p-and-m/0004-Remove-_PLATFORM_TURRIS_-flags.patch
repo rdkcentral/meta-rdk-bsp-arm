@@ -1,10 +1,9 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From 5cf336a1d710adfd7baf783ffb0ff5d9f5cd85bb Mon Sep 17 00:00:00 2001
 From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
 Date: Fri, 25 Sep 2026 16:24:37 +0200
 Subject: [PATCH] Remove _PLATFORM_TURRIS_ flags
 
 Removed _PLATFORM_TURRIS_ guard flags.
-
 ---
  .../source/TR-181/custom_ml/cosa_deviceinfo_dml_custom.c    | 4 ++--
  source-arm/TR-181/board_sbapi/cosa_deviceinfo_apis.c        | 6 +-----
@@ -37,10 +36,10 @@ index 86abb51..8838d60 100644
  #endif
  	   return 0;
 diff --git a/source-arm/TR-181/board_sbapi/cosa_deviceinfo_apis.c b/source-arm/TR-181/board_sbapi/cosa_deviceinfo_apis.c
-index ef13075..83e896a 100644
+index 65155d7..73c6a5d 100644
 --- a/source-arm/TR-181/board_sbapi/cosa_deviceinfo_apis.c
 +++ b/source-arm/TR-181/board_sbapi/cosa_deviceinfo_apis.c
-@@ -123,10 +123,6 @@ static int writeToJson(char *data, char *file);
+@@ -125,10 +125,6 @@ static int writeToJson(char *data, char *file);
  #include "ccsp_vendor.h"
  #endif
  
@@ -51,7 +50,7 @@ index ef13075..83e896a 100644
  #ifdef _PLATFORM_BANANAPI_R4_
  #include "ccsp_vendor.h"
  #endif
-@@ -477,7 +473,7 @@ CosaDmlDiGetManufacturerOUI
+@@ -479,7 +475,7 @@ CosaDmlDiGetManufacturerOUI
      UNREFERENCED_PARAMETER(hContext);
      errno_t rc = -1;
  
@@ -89,10 +88,10 @@ index 43bf32d..cad82f5 100644
           safec_rc = strcpy_s(defPassword,sizeof(defPassword),"password");
           if(safec_rc != EOK)
 diff --git a/source/TR-181/middle_layer_src/cosa_deviceinfo_dml.c b/source/TR-181/middle_layer_src/cosa_deviceinfo_dml.c
-index 13c4c5f..03fda23 100644
+index 61f7d66..d2e3297 100644
 --- a/source/TR-181/middle_layer_src/cosa_deviceinfo_dml.c
 +++ b/source/TR-181/middle_layer_src/cosa_deviceinfo_dml.c
-@@ -25036,7 +25036,7 @@ SelfHeal_SetParamUlongValue
+@@ -25150,7 +25150,7 @@ SelfHeal_SetParamUlongValue
  	        AnscTraceWarning(("Minimum interval is 2 for %s !\n", ParamName));
  	        return FALSE;
  	    }
