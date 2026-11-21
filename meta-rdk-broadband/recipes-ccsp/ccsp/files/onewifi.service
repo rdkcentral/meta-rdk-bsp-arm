@@ -18,7 +18,8 @@
 ##################################################################################
 [Unit]
 Description=OneWiFi
-#After=CcspPandMSsp.service
+Requires=checkarmwifisupport.service
+After=checkarmwifisupport.service
 
 [Service]
 Type=forking
