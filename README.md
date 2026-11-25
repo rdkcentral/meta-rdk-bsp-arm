@@ -386,7 +386,7 @@ echo 'OMP_NUM_THREADS="8"' >> "conf/local.conf"
 echo 'BB_NUMBER_THREADS="16"' >> "conf/local.conf"
 ```
 
-See issue (#162)[https://github.com/rdkcentral/meta-rdk-bsp-arm/issues/162] for more information.
+See issue [#162](https://github.com/rdkcentral/meta-rdk-bsp-arm/issues/162) for more information.
 
 ### Reference build container
 
