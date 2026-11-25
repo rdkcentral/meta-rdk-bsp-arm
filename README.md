@@ -358,7 +358,7 @@ Provide a portable, reusable, and maintainable RDK-B platform where responsibili
 
 **Debian 12** is the recommended distribution for building `meta-rdk-bsp-arm`.
 
-AppArmor on an Ubuntu 24.04 host can cause BitBake failures even when the build runs in a container based on another distribution. The traceback can look like this.
+AppArmor on hosts such as Ubuntu 24.04 can cause BitBake failures even when the build runs in a container based on another distribution. The traceback can look like this.
 
 ```text
 Traceback (most recent call last):
