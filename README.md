@@ -904,7 +904,7 @@ The kernel uses `rootflags=subvolid=...` to mount the image's root subvolume. Th
 
 #### Installing new images
 
-The `efi-image-manager` utility installs new operating system images from a `.tar.gz` archive. It creates a subvolume, extracts the archive into it, and copies the included kernel to the `/boot` partition. It then creates a bootloader entry and sets the new image as the default.
+The `efi-image-manager` utility installs new operating system images from a `.tar.gz` archive. It creates a subvolume, extracts the archive into it, and copies the included kernel to the `/boot` partition. It then creates a bootloader entry without changing the default. Select the new image from the systemd-boot menu on the next boot.
 
 ```text
 root@rdkb-arm:/tmp# efi-image-manager import rdk-generic-broadband-image-armefi64-rdk-broadband.tar.gz
