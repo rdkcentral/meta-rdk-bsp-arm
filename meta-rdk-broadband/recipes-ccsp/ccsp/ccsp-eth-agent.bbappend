@@ -4,15 +4,12 @@ CFLAGS:remove = "-D_PLATFORM_RASPBERRYPI_"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/ccsp-eth-agent:"
 
-SRC_URI:remove = "${CMF_GITHUB_ROOT}/ethernet-agent;protocol=https;nobranch=1"
-SRC_URI = "git://github.com/rdkcentral/ethernet-agent.git;protocol=https;branch=develop"
-SRCREV_pn-ccsp-eth-agent = "3a0058c9699a15f9190fbdc02e411c9a541294f5"
+# As used with RDK-B 2026.Q3
+SRCREV_pn-ccsp-eth-agent = "375b931eb5a41adf9fd4e2ffa1ec760c70f40c15"
 
 SRC_URI:append = "\
-    file://0001-genericarm-increase-maximum-number-of-Ethernet-interfaces.patch \
-    file://0002-cosa_ethernet_internal-force-CcspHalEthSw_RegisterLink.patch \
     file://bring_up_all_eth.sh \
-    "
+"
 
 # Missing from meta-rdk-broadband
 # TODO: Submit upstream pull request
@@ -25,11 +22,6 @@ FILES:${PN}:append = " /lib/rdk/bring_up_all_eth.sh"
 CFLAGS:append = " -DUSE_SYSTEMD_NOTIFICATIONS"
 DEPENDS:append = " systemd"
 LDFLAGS:append = " -lsystemd"
-
-SRC_URI:append = " \
-    file://0003-Send-READY-notification-to-systemd-when-data-model-ready.patch \
-    file://0004-main-do-not-background-fork-when-systemd-notification.patch \
-"
 
 # WIP to manage brlan0 members from TR-181 / PSM instead of syscfg
 SRC_URI:append = " \
