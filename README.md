@@ -402,6 +402,7 @@ RUN groupadd builder && \
 
 RUN chown -R builder:builder /builder
 
+WORKDIR /builder
 USER builder
 ```
 
