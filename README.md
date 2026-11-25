@@ -826,7 +826,7 @@ When there is an asterisk `*` marked in this column, it is planned to integrate 
 | Name and Image | SoC | Ethernet | WiFi | 4G/5G | Firmware Source | Support Level | Application Note |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | qemu-system-aarch64 + U-Boot | Virtual | 3x1G | No | No | Meta-layer | Tier 1 | [Direct QEMU invocation](#method-2-direct-qemu-invocation) |
-| [Incus](https://linuxcontainers.org/incus/) (Virtual Machine Mode) | Virtual | 2x1G | No | No | Meta-layer | Tier 1 | Incus Agent will be automatically installed when run as a guest, to allow introspection of RDK-B VMs from the host |
+| [Incus](https://linuxcontainers.org/incus/) (Virtual Machine Mode) | Virtual | 2x1G | No | No | Platform | Tier 1 | Incus Agent will be automatically installed when run as a guest, to allow introspection of RDK-B VMs from the host |
 | [UTM](https://mac.getutm.app/)<br/>_macOS only_ | Apple M-series | Up to 3x1G | No | No | Platform | Tier 2 | [utm-vm.md](doc/virtualization/utm-vm.md) |
 | GNS3 | Virtual | Up to 3x1G | No | No | Meta-layer | Tier 2 | [gns3.md](doc/virtualization/gns3.md) |
 | virt-manager | Virtual | Up to 3x1G | No | No | Platform | Tier 2 | [Command line/virsh](doc/virtualization/virt-manager.md)<br/>[GUI](doc/virtualization/virt-manager-gui-setup.pdf) |
