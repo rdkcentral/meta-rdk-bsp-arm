@@ -372,6 +372,22 @@ These references describe the issue and possible workarounds.
 * [Workaround for uid_map error on Ubuntu 24.04](https://lists.yoctoproject.org/g/yocto/topic/workaround_for_uid_map_error/106192359)
 * [Ubuntu bug #2056555: Allow bitbake to create user namespace](https://bugs.launchpad.net/ubuntu/+source/apparmor/+bug/2056555)
 
+On high core/thread count machines, an issue with Yocto 5's perl package may cause build failures like:
+
+```text
+libgomp: Thread creation failed: Resource temporarily unavailable
+```
+
+The workaround for this issue is to manually set the maximum number of threads for certain
+operations:
+
+```
+echo 'OMP_NUM_THREADS="8"' >> "conf/local.conf"
+echo 'BB_NUMBER_THREADS="16"' >> "conf/local.conf"
+```
+
+See issue (#162)[https://github.com/rdkcentral/meta-rdk-bsp-arm/issues/162] for more information.
+
 ### Reference build container
 
 This Dockerfile defines the reference build environment.
