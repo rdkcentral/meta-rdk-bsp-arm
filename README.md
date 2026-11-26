@@ -1,16 +1,16 @@
-# RDK-B Reference BSP for Arm SystemReady
+# RDK-B Reference BSP for Arm Architecture
 
-This Yocto BSP layer builds a portable RDK-B operating system image for supported boards and virtual machines that implement [Arm SystemReady](https://www.arm.com/architecture/system-architectures/systemready-certification-program).
+This Yocto Project BSP layer builds a portable RDK-B operating system image for supported Arm®-based boards and virtual machines with compatible UEFI firmware.
 
 Other compatible hardware may also boot the image, with support on a best-effort basis. The layer uses only community-maintained upstream sources, including the Linux kernel from kernel.org.
 
-## Arm SystemReady introduction
+## Arm architecture alignment
 
-Arm SystemReady gives RDK-B a common firmware-to-OS interface. Firmware uses UEFI to boot the operating system and, on Device Tree-based platforms, describes the board hardware to Linux. This common boot flow reduces board-specific integration work and lets the same RDK-B image boot across supported platforms.
+The layer aligns with the Arm architecture and uses common firmware interfaces to support portable RDK-B images. Firmware uses UEFI to boot the operating system and, on Device Tree-based platforms, describes the board hardware to Linux. This common boot flow reduces board-specific integration work and lets the same RDK-B image boot across supported platforms.
 
 ## Table of contents
 
-- [Arm SystemReady introduction](#arm-systemready-introduction)
+- [Arm architecture alignment](#arm-architecture-alignment)
 - [Architecture and platform integration](#architecture-and-platform-integration)
 - [Build environment](#build-environment)
 - [How to use](#how-to-use)
@@ -64,9 +64,9 @@ Adding a new SoC can require custom work across several parts of the stack.
 - image layout
 - upgrade flow
 
-**Arm SystemReady provides a common firmware-to-OS contract that greatly reduces platform-specific adaptation.**
+**Common firmware-to-OS interfaces reduce platform-specific adaptation.**
 
-### Arm SystemReady building blocks
+### Architecture and firmware building blocks
 
 | Component | Purpose |
 |-----------|---------|
@@ -90,14 +90,14 @@ Adding a new SoC can require custom work across several parts of the stack.
 - Firmware–OS interoperability — Defines a consistent firmware-to-OS interface through EBBR/UEFI, so RDK-B can use a common boot flow across SoCs.
 - Security consistency — Provides an industry-standard model for Secure Boot and authenticated firmware updates through BBSR.
 - Standard OS update and rollback flow — Enables the OS to request the next boot target through standard UEFI boot variables and boot-management mechanisms, supporting A/B updates, recovery, and rollback.
-- Trusted firmware updates — Enables authenticated board-firmware updates using standard UEFI Capsule Update services, where the platform supports the SystemReady Security Extension.
-- Portable RDK-B OS image — Uses firmware-provided Device Tree hardware descriptions, allowing one RDK-B image to support multiple compliant platforms while keeping board-specific hardware configuration in firmware.
+- Trusted firmware updates — Enables authenticated board-firmware updates using standard UEFI Capsule Update services where supported by the platform.
+- Portable RDK-B OS image — Uses firmware-provided Device Tree hardware descriptions, allowing one RDK-B image to support multiple compatible platforms while keeping board-specific hardware configuration in firmware.
 
 ### Firmware-to-OS contract
 
 #### Firmware and hardware responsibilities
 
-The firmware shall provide a standard firmware-to-operating-system contract aligned with Arm SystemReady, including the required EBBR-based UEFI boot behavior.
+The firmware shall provide a standard firmware-to-operating-system interface, including the required EBBR-based UEFI boot behavior.
 
 The firmware has the following responsibilities on Device Tree-based platforms.
 
@@ -130,7 +130,7 @@ The operating system relies on standard firmware interfaces.
 * The bootloader can be started through standard UEFI boot entries (`BootOrder`, `BootNext`, EFI executable paths).
 * The kernel uses the firmware-supplied Device Tree to discover CPUs, memory, interrupt controllers, timers, buses, and board peripherals.
 
-This gives the operating system image a common boot path. The same RDK-B image can run on multiple Arm SystemReady platforms when the kernel includes the required drivers and Device Tree bindings.
+This gives the operating system image a common boot path. The same RDK-B image can run on multiple compatible Arm-based platforms when the kernel includes the required drivers and Device Tree bindings.
 
 ### Proposed boot chain
 
@@ -158,7 +158,7 @@ Linux Userspace
 
 #### Purpose
 
-`meta-rdk-bsp-arm` is the RDK-B reference BSP meta-layer used to build portable SystemReady/UEFI-based operating system images and integrate board firmware for supported targets.
+`meta-rdk-bsp-arm` is the RDK-B reference BSP meta-layer used to build portable UEFI-bootable operating system images and integrate board firmware for supported targets.
 
 ##### Current strategy
 
@@ -166,26 +166,18 @@ Linux Userspace
 * Provides greater implementation flexibility
 * Reduces dependency-alignment effort
 
-<a href="doc/rdk-arm-generic-current.png">
-  <img src="doc/rdk-arm-generic-current.png" width="640" alt="Current Arm SystemReady stack with RDK Core, meta-rdk-bsp-arm, Yocto, Linux, and Device Tree support across Arm platforms">
-</a>
-
 ##### Long-term layering strategy
 
-To align with the upstream Arm SystemReady Yocto ecosystem, we plan to split `meta-rdk-bsp-arm` into two Yocto layers.
+To align with the upstream Arm-based Yocto Project ecosystem, we plan to split `meta-rdk-bsp-arm` into two Yocto Project layers.
 
 - `meta-rdkb-bsp` will own board support and all Linux platform dependencies required by RDK-B, including machine configurations, board firmware, the Linux kernel, and system packages.
-- `meta-rdkb-runtime` will be dedicated to RDK-B components and their Yocto recipes and runtime configuration. These components will run on the Linux platform provided by the BSP layer.
+- `meta-rdkb-runtime` will be dedicated to RDK-B components and their Yocto Project recipes and runtime configuration. These components will run on the Linux platform provided by the BSP layer.
 
-<a href="doc/rdk-arm-generic-evolution.png">
-  <img src="doc/rdk-arm-generic-evolution.png" width="640" alt="Proposed Arm SystemReady stack with meta-rdkb-bsp for the Linux hardware image and meta-rdkb-runtime added for the RDK-B image with TR-181">
-</a>
-
-Where possible, `meta-rdkb-bsp` will build on the following Arm-provided Yocto support.
+Where possible, `meta-rdkb-bsp` will build on the following Arm-provided Yocto Project support.
 
 - `meta-arm`
 - `generic-arm64` / `genericarm64`
-- SystemReady-related support available in the `meta-arm` repository
+- Firmware and machine support available in the `meta-arm` repository
 
 ### Requirements from SoC vendors
 
@@ -193,7 +185,7 @@ Where possible, `meta-rdkb-bsp` will build on the following Arm-provided Yocto s
 
 ##### Firmware
 
-- SystemReady / EBBR compliant firmware
+- EBBR-compliant firmware
 - UEFI firmware image
 - Trusted Firmware-A (TF-A)
 - U-Boot (or equivalent bootloader)
@@ -247,9 +239,8 @@ Where possible, `meta-rdkb-bsp` will build on the following Arm-provided Yocto s
 - Supported boot devices
 - Known platform-specific limitations
 
-##### Arm SystemReady compliance
+##### Firmware interface compliance
 
-- SystemReady compliance level
 - EBBR capabilities
 - BBSR capabilities
 - Compliance evidence or certification reports
@@ -275,8 +266,8 @@ Where possible, `meta-rdkb-bsp` will build on the following Arm-provided Yocto s
 
 ##### Integration guidance
 
-- How to boot a generic EFI/SystemReady operating system
-- How to integrate the platform with Yocto
+- How to boot a generic UEFI operating system
+- How to integrate the platform with the Yocto Project
 - Guidance for other Linux distributions
 - Required proprietary firmware blobs or packages
 - Reference board setup
@@ -288,7 +279,7 @@ Where possible, `meta-rdkb-bsp` will build on the following Arm-provided Yocto s
 
 #### SoC vendor proposed ownership
 
-* Deliver a SystemReady Device Tree compliant firmware stack.
+* Deliver a firmware stack with UEFI boot support and a valid Device Tree.
 * Perform hardware bring-up.
 * Maintain UEFI / EBBR firmware.
 * Enable Secure Boot where supported.
@@ -297,37 +288,18 @@ Where possible, `meta-rdkb-bsp` will build on the following Arm-provided Yocto s
 
 #### RDK Management proposed ownership
 
-* Maintain the reusable Yocto integration.
+* Maintain the reusable Yocto Project integration.
 * Provide machine configurations.
 * Maintain the common Linux kernel baseline.
 * Build EFI bootable RDK-B images.
 * Maintain a common upgrade strategy.
 * Provide validation and lifecycle management across supported platforms.
 
-#### Arm current ownership
-
-- Define and maintain the Arm SystemReady specifications.
-- Define the EBBR and BBSR compliance requirements.
-- Maintain the Base System Architecture (BSA) specifications.
-- Provide reference firmware implementations and tooling where applicable.
-- Define and evolve the firmware-to-operating-system contract.
-- Operate the SystemReady compliance and certification program.
-
-#### Arm proposed contribution
-
-- Provide guidance on the recommended use of `meta-arm`, `generic-arm64`, and SystemReady-related Yocto support.
-- Help identify gaps between the upstream Arm Yocto ecosystem and broadband gateway requirements.
-- Review the `meta-rdk-bsp-arm` layering strategy and suggest alignment points with upstream Arm layers.
-- Support technical sync-ups to discuss missing functionality, integration blockers, and possible upstream improvements.
-- Advise on SystemReady, EBBR, BBSR, and firmware-to-OS contract interpretation.
-- Help define what should remain RDK-specific and what could be contributed or aligned upstream.
-- Provide feedback on how `meta-arm` could better support broadband-oriented use cases.
-
 ### Final goal
 
 #### RDK Management
 
-* Define the Yocto release.
+* Define the Yocto Project release.
 * Define the Linux kernel baseline.
 * Maintain kernel configuration.
 * Integrate common upstream fixes.
@@ -341,18 +313,9 @@ Where possible, `meta-rdkb-bsp` will build on the following Arm-provided Yocto s
 * Supply unavoidable vendor patches.
 * Validate the platform against the agreed kernel baseline.
 
-#### Arm
-
-- Provide guidance on the recommended use of `meta-arm`, `generic-arm64`, and SystemReady-related Yocto support.
-- Help identify gaps between the upstream Arm Yocto ecosystem and broadband gateway requirements.
-- Clarify SystemReady, EBBR, and BBSR expectations for broadband-oriented platforms.
-- Support alignment between `meta-rdk-bsp-arm` and the upstream Arm SystemReady ecosystem.
-- Advise on what should remain RDK-specific and what could be aligned or contributed upstream.
-- Provide feedback on platform compliance evidence, known deviations, and integration limitations.
-
 ### Objective
 
-Provide a portable, reusable, and maintainable RDK-B platform where responsibilities between RDK Management and SoC vendors are clearly separated through the Arm SystemReady firmware-to-operating-system contract.
+Provide a portable, reusable, and maintainable RDK-B platform with a common firmware-to-operating-system interface and clearly separated responsibilities between RDK Management and SoC vendors.
 
 ## Build environment
 
@@ -453,7 +416,7 @@ copy of `meta-rdk-bsp-arm`), like so:
 echo 'DISTRO_FEATURES:append:broadband = " EasyMesh"' >> conf/distro/include/local-settings.inc
 ```
 
-At the current time, the `main` branch mainfest will build RDK-B 2025Q1 (based on Yocto `kirkstone`),
+At the current time, the `main` branch mainfest will build RDK-B 2025Q1 (based on Yocto Project `kirkstone`),
 and will be updated following the next major RDK-B release.
 
 The `develop` branch is intended to follow `rdk-next` as closely as possible.
@@ -464,22 +427,22 @@ The `develop` branch is intended to follow `rdk-next` as closely as possible.
 
 There are two types of build outputs:
 
-* The _platform firmware_, which abstracts the hardware platform in a standard manner (the SystemReady standards).
+* The _platform firmware_, which provides standard boot interfaces to the operating system.
 
 * The _operating system image_, which includes the root filesystem, Linux kernel and boot manager.
   
   Development images generated by this layer can be used across any machine which has a compatible _platform firmware_ deployed.
 
 The default `armefi64-rdk-broadband` machine type will generate an _operating system image_
-that will be bootable on platforms with SystemReady (EFI) compatible firmware **and** a
-_platform firmware_ firmware which can be used with QEMU's arm64 
+that can boot on platforms with compatible UEFI firmware **and**
+_platform firmware_ which can be used with QEMU's arm64
 [`virt`](https://qemu-project.gitlab.io/qemu/system/arm/virt.html) machine type.
 
 The following generated binaries (in `build-armefi64-rdk-broadband/tmp/deploy/images/armefi64-rdk-broadband/`) are relevant:
 
 * `rdk-generic-broadband-image-armefi64-rdk-broadband.wic`: Uncompressed operating system image (kernel + rootfs + boot manager)
   
-  This image can be booted on a board (or virtual machine) which already has SystemReady compatible firmware
+  This image can be booted on a board (or virtual machine) which already has compatible UEFI firmware
 * `rdk-generic-broadband-image-armefi64-rdk-broadband.wic.qcow2`: QCOW2 operating system image, best to use with virtual machine programs
 * `rdk-generic-broadband-image-armefi64-rdk-broadband.tar.gz`: Compressed tar archive of the operating system image (including kernel). See [Image management and upgrades on generic Arm](#image-management-and-upgrades-on-generic-arm) for upgrade instructions.
 * `u-boot-armefi64-rdk-broadband.bin` (linked to `u-boot.bin`): Reference _platform firmware_ (used with QEMU `virt` machine)
@@ -491,7 +454,7 @@ A production device may use flash (NOR or NAND) devices for storing the system l
 
 Additional files like `Image` (Linux kernel Image file), `linuxaa64.efi.stub` (Kernel EFI stub),
 `systemd-bootaa64.efi` (systemd-boot executable) and `u-boot-initial-env-armefi64-rdk-broadband`
-(U-Boot "Factory" environment) are also generated by the Yocto build process.
+(U-Boot "Factory" environment) are also generated by the Yocto Project build process.
 These are not needed for normal development and deployment activities.
 
 It is intended that the `rdk-generic-broadband-image-armefi64-rdk-broadband.wic` is a _universal_
@@ -507,13 +470,13 @@ For further information, see [Real hardware](#real-hardware), [Development Notes
 
 ## Building platform firmware for different hardware types
 
-Many development boards will not have a SystemReady-compatible firmware pre-loaded,
+Many development boards will not have compatible UEFI firmware pre-loaded,
 or the pre-loaded firmware will be out of date.
 
 To provide an easier developer experience, this meta-layer can build the platform
 firmware for several common developer boards.
 
-Once you have deployed the SystemReady-compatible _platform firmware_ to your board,
+Once you have deployed compatible _platform firmware_ to your board,
 you will not need to replace it and only need to consider updating your
 _operating system image_.
 
@@ -578,9 +541,9 @@ raspberrypi64-rdk-broadband
 
 ### QEMU (Arm64 virtualized or emulated)
 
-#### Method 1: Yocto runqemu
+#### Method 1: Yocto Project runqemu
 
-The Yocto machine files are setup to boot the VM with `runqemu`.
+The Yocto Project machine files are setup to boot the VM with `runqemu`.
 
 This setup is not as flexible as other methods, but it allows quick verification
 that the built image is working.
@@ -622,7 +585,7 @@ as the `tapX` interface, while the WAN interface will use QEMU's Userspace emula
 You can use the generated `wic.qcow2` and `u-boot.bin` to invoke QEMU directly.
 This allows you to customize your QEMU setup for your own environment and requirements.
 
-On virtualization capable Arm64 hosts you can use KVM for near-native performance.
+On virtualization capable 64-bit Arm-based hosts you can use KVM for near-native performance.
 
 You can invoke QEMU like this:
 
@@ -666,17 +629,17 @@ sudo qemu-system-aarch64 -nographic \
     -device pci-serial
 ```
 
-On native Arm64 platforms with virtualization, enable KVM by replacing `-cpu cortex-a53` with `-cpu host --enable-kvm`.
+On native 64-bit Arm-based platforms with virtualization, enable KVM by replacing `-cpu cortex-a53` with `-cpu host --enable-kvm`.
 
 #### QEMU frontends (UTM.app, virt-manager etc.)
 See the [doc/virtualization](doc/virtualization) folder for information on using various QEMU frontend programs (like UTM.app and virt-manager).
 
 ### Real hardware
-A benefit of the SystemReady architecture is being able to use the same images
+A benefit of common firmware interfaces is being able to use the same images
 on virtual machines and bare-metal hardware.
 
-Note that images generated by this reference layer SHOULD boot on SystemReady compatible
-hardware, but hardware and vendor specific features like LED configurations, hardware
+Note that images generated by this reference layer should boot on hardware with compatible
+UEFI firmware and the required kernel drivers, but hardware and vendor specific features like LED configurations, hardware
 dataplanes and SoC-specific WiFi integrations are not included in this layer.
 
 See [Building platform firmware for different hardware types](#building-platform-firmware-for-different-hardware-types)
@@ -778,11 +741,11 @@ to external services are placeholder/test values only.
 
 `meta-rdk-bsp-arm` provides machine configurations and integrates board firmware for the targets it builds.
 
-Platforms with existing SystemReady-compatible firmware, such as EDK II under QEMU, can use the EFI-bootable operating system artifacts directly.
+Platforms with compatible UEFI firmware, such as EDK II under QEMU, can use the EFI-bootable operating system artifacts directly.
 
-#### SystemReady-compliant platforms without a machine configuration
+#### Compatible platforms without a machine configuration
 
-A compliant platform may be able to boot the portable RDK-B image using the vendor's firmware. To add support for that platform to this layer, follow these steps.
+A compatible platform may be able to boot the portable RDK-B image using the vendor's firmware. To add support for that platform to this layer, follow these steps.
 
 1. Obtain the vendor firmware.
 2. Add a machine configuration.
@@ -810,8 +773,8 @@ _This is simply an estimation of how much testing and development activity the p
 ### Firmware Source
 
 * Meta-layer: `meta-rdk-bsp-arm` has a machine type for this machine and can generate board-level firmware for it
-* External: You need to obtain and install the SystemReady/EFI-compatible firmware from elsewhere (usually the vendor) first
-* Platform: This platform has a SystemReady/EFI-compatible firmware built in (e.g virtualization programs using EDK-II), and we do not see the need to provide any customization for it
+* External: You need to obtain and install compatible UEFI firmware from elsewhere (usually the vendor) first
+* Platform: This platform has compatible UEFI firmware built in (e.g virtualization programs using EDK-II), and we do not see the need to provide any customization for it
 
 When there is an asterisk `*` marked in this column, it is planned to integrate firmware generation into `meta-rdk-bsp-arm` in the near future.
 
@@ -864,7 +827,7 @@ This approach is modeled on the [Snapper](https://documentation.suse.com/smart/s
 1. Allows rollback to previous image versions.
 2. Avoids repartitioning and writing raw disk images during upgrades, reducing disk wear.
 3. Uses native Btrfs snapshots for read-only system images.
-4. Integrates with Arm EFI and SystemReady boot flows. The basic implementation works on platforms with the required firmware features. Platforms with additional EFI features can support deeper integration.
+4. Integrates with UEFI boot flows on Arm-based platforms. The basic implementation works on platforms with the required firmware features. Platforms with additional EFI features can support deeper integration.
 
 ### Implementation
 
@@ -984,10 +947,14 @@ For development purposes, there is both a "core" image type and a RDK-B image ty
 
 * `armefi64`
    This is the "base" machine type that serves as a base. It does not import any RDK packages or
-   configuration. When updating to newer Yocto project versions, use this
-   machine for the initial porting (with Yocto image types like `core-image-minimal`).
+   configuration. When updating to newer Yocto Project versions, use this
+   machine for the initial porting (with Yocto Project image types like `core-image-minimal`).
 
 * `armefi64-rdk-broadband`
    This is the RDK-B reference machine which inherits from `armefi64`
 
 When adding another machine to the layer, it should inherit from `armefi64-rdk-broadband`.
+
+## Trademark notice
+
+Arm is a registered trademark of Arm Limited (or its subsidiaries or affiliates) in the US and/or elsewhere.

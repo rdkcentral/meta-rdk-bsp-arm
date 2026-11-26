@@ -145,7 +145,7 @@
     <g font-size="24px" stroke-linecap="butt" transform="matrix(1,0,0,1,-197,-197)" text-rendering="geometricPrecision" font-family="sans-serif" shape-rendering="geometricPrecision" stroke-miterlimit="1.45">
       <text x="561.4924" xml:space="preserve" y="342.0254" clip-path="url(#clipPath2)" stroke="none">Same OS image can work on</text>
       <text x="643.5413" xml:space="preserve" y="371.4277" clip-path="url(#clipPath2)" stroke="none">platforms with</text>
-      <text x="532.1663" xml:space="preserve" y="400.8301" clip-path="url(#clipPath2)" stroke="none">SystemReady compatible firmware</text>
+      <text x="532.1663" xml:space="preserve" y="400.8301" clip-path="url(#clipPath2)" stroke="none">Compatible UEFI firmware</text>
     </g>
     <g fill="silver" text-rendering="geometricPrecision" shape-rendering="geometricPrecision" transform="matrix(1,0,0,1,-197,-197)" stroke="silver">
       <rect x="278.5" width="170" height="30" y="379.3" clip-path="url(#clipPath2)" stroke="none"/>
