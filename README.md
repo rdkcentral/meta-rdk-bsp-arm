@@ -335,7 +335,7 @@ These references describe the issue and possible workarounds.
 * [Workaround for uid_map error on Ubuntu 24.04](https://lists.yoctoproject.org/g/yocto/topic/workaround_for_uid_map_error/106192359)
 * [Ubuntu bug #2056555: Allow bitbake to create user namespace](https://bugs.launchpad.net/ubuntu/+source/apparmor/+bug/2056555)
 
-On high core/thread count machines, an issue with Yocto 5's perl package may cause build failures like:
+On high core/thread count machines, an issue with the Yocto Project version 5 perl package may cause build failures like:
 
 ```text
 libgomp: Thread creation failed: Resource temporarily unavailable
