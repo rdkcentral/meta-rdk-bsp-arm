@@ -1,7 +1,7 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-# revert RDKB-62931,XB10-2872-OneWifi sync 08/07/26
-SRCREV_rdk-wifi-hal = "28645c9250ec4a9b0ba86be9ffa2bd4aa0e932cc"
+# RDK-B 2026.Q3 version
+SRCREV_rdk-wifi-hal = "67a05e9182d5b13778fd6f2248d71c5d64155af8"
 
 SRC_URI:append = " \
 	file://0001-platform-raspberry-pi-remove-unused-variable-in-plat.patch;patchdir=.. \
