@@ -2,7 +2,10 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 inherit systemd
 
-SRC_URI:append = " file://network@.service"
+SRC_URI:append = " \
+    file://network@.service \
+    file://network.rules \
+"
 
 S = "${WORKDIR}"
 do_install:append() {

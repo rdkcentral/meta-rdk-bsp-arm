@@ -1,0 +1,1 @@
+SUBSYSTEM=="net", KERNEL!="lo", KERNEL!="gre*|erspan*", ENV{SYSTEMD_WANTS}+="network@$name.service" ENV{SYSTEMD_ALIAS}="/$name"
