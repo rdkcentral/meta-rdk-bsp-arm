@@ -1,0 +1,38 @@
+From b97fa0d67ca08cb2433bfae6ac2407737dc22904 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Fri, 28 Aug 2026 14:09:16 +1000
+Subject: [PATCH] service_misc: fix errors when run with busybox sh
+
+busybox sh does not support the full double-bracket syntax
+( [[ ... ]] ).
+
+Fixes this error message seen on the system console:
+/etc/utopia/service.d/service_misc.sh: line 78:
+syntax error in conditional expression
+syntax error near `-o'
+`if [[ "$RG_MD" = "1" -o "$RG_MD" = "3" ]] && [ -f /etc/utopia/service.d/service_mcastproxy.sh ]; then'
+
+Fixes: 51707e8a7b1c6 ("RDKCOM-5422: RDKBDEV-3258 Remove UTOPIA mcast
+services from the build (#80)")
+---
+ source/scripts/init/service.d/service_misc.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/source/scripts/init/service.d/service_misc.sh b/source/scripts/init/service.d/service_misc.sh
+index bea1fd0..0d882f8 100755
+--- a/source/scripts/init/service.d/service_misc.sh
++++ b/source/scripts/init/service.d/service_misc.sh
+@@ -75,11 +75,11 @@ if [ "$RG_MD" = "1" -o "$RG_MD" = "3" ]; then
+ 	/etc/utopia/service.d/service_igd.sh lan-status&
+ fi
+ 
+-if [[ "$RG_MD" = "1" -o "$RG_MD" = "3" ]] && [ -f /etc/utopia/service.d/service_mcastproxy.sh ]; then
++if ( [ "$RG_MD" = "1" ] || [ "$RG_MD" = "3" ] ) && [ -f /etc/utopia/service.d/service_mcastproxy.sh ]; then
+ 	/etc/utopia/service.d/service_mcastproxy.sh lan-status&
+ fi
+ 
+-if [[ "$RG_MD" = "2" -o "$RG_MD" = "3" ]] && [ -f /etc/utopia/service.d/service_mldproxy.sh ]; then
++if ( [ "$RG_MD" = "2" ] || [ "$RG_MD" = "3" ] ) && [ -f /etc/utopia/service.d/service_mldproxy.sh ]; then
+ 	/etc/utopia/service.d/service_mldproxy.sh lan-status&
+ fi
+ 

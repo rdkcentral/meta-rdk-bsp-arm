@@ -1,0 +1,25 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
+Date: Mon, 5 Oct 2026 14:58:01 +0000
+Subject: [PATCH] Add _PLATFORM_GENERICARM_ for generic Arm reference platform
+
+---
+ source/dml/tr_181/sbapi/cosa_wifi_apis.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/source/dml/tr_181/sbapi/cosa_wifi_apis.c b/source/dml/tr_181/sbapi/cosa_wifi_apis.c
+index 8133f91e..d7dea373 100644
+--- a/source/dml/tr_181/sbapi/cosa_wifi_apis.c
++++ b/source/dml/tr_181/sbapi/cosa_wifi_apis.c
+@@ -143,7 +143,7 @@
+ #define OnboardLog(...)
+ #endif
+ 
+-#if defined (_PLATFORM_RASPBERRYPI_)
++#if defined (_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+ #define MAX_BUF_SIZE 128
+ #endif
+ 
+-- 
+2.39.5
+

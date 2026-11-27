@@ -1,0 +1,68 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
+Date: Fri, 25 Sep 2026 13:58:41 +0200
+Subject: [PATCH] Remove _PLATFORM_TURRIS_ flags
+
+Removed _PLATFORM_TURRIS_ flags for Wi-Fi backhaul.
+
+---
+ .../DHCPv4Server/dhcp_server_functions.c      | 23 -------------------
+ .../cosa_x_cisco_com_devicecontrol_apis.c     |  4 ++--
+ 2 files changed, 2 insertions(+), 25 deletions(-)
+
+diff --git a/source/DHCPServerUtils/DHCPv4Server/dhcp_server_functions.c b/source/DHCPServerUtils/DHCPv4Server/dhcp_server_functions.c
+index 488626f..df76ee3 100644
+--- a/source/DHCPServerUtils/DHCPv4Server/dhcp_server_functions.c
++++ b/source/DHCPServerUtils/DHCPv4Server/dhcp_server_functions.c
+@@ -1831,29 +1831,6 @@ int prepare_dhcp_conf (char *input)
+                         DHCPMGR_LOG_INFO("DHCP_SERVER : [brlan113] dhcp-option=brlan113,6,%s", l_cWan_Dhcp_Dns);
+                 }
+ 
+-#endif
+-#if defined (_PLATFORM_TURRIS_)
+-        //Wifi Backhaul link local connections
+-        fprintf(l_fLocal_Dhcp_ConfFile, "interface=wifi2\n");
+-        fprintf(l_fLocal_Dhcp_ConfFile, "dhcp-range=169.254.0.5,169.254.0.126,255.255.255.128,infinite\n");
+-        fprintf(l_fLocal_Dhcp_ConfFile, "dhcp-option=wifi2,3\n");
+-        fprintf(l_fLocal_Dhcp_ConfFile, "dhcp-option=wifi2,6\n");
+-
+-        fprintf(l_fLocal_Dhcp_ConfFile, "interface=wifi3\n");
+-        fprintf(l_fLocal_Dhcp_ConfFile, "dhcp-range=169.254.1.5,169.254.1.126,255.255.255.128,infinite\n");
+-        fprintf(l_fLocal_Dhcp_ConfFile, "dhcp-option=wifi3,3\n");
+-        fprintf(l_fLocal_Dhcp_ConfFile, "dhcp-option=wifi3,6\n");
+-
+-        fprintf(l_fLocal_Dhcp_ConfFile, "interface=wifi6\n");
+-        fprintf(l_fLocal_Dhcp_ConfFile, "dhcp-range=169.254.0.130,169.254.0.252,255.255.255.128,infinite\n");
+-        fprintf(l_fLocal_Dhcp_ConfFile, "dhcp-option=wifi6,3\n");
+-        fprintf(l_fLocal_Dhcp_ConfFile, "dhcp-option=wifi6,6\n");
+-
+-        fprintf(l_fLocal_Dhcp_ConfFile, "interface=wifi7\n");
+-        fprintf(l_fLocal_Dhcp_ConfFile, "dhcp-range=169.254.1.130,169.254.1.252,255.255.255.128,infinite\n");
+-        fprintf(l_fLocal_Dhcp_ConfFile, "dhcp-option=wifi7,3\n");
+-        fprintf(l_fLocal_Dhcp_ConfFile, "dhcp-option=wifi7,6\n");
+-        fprintf(l_fLocal_Dhcp_ConfFile, "dhcp-script=/etc/dhcp_script.sh\n");
+ #endif
+         if (TRUE == l_bCaptivePortal_Mode)
+         {
+diff --git a/source/TR-181/board_sbapi/cosa_x_cisco_com_devicecontrol_apis.c b/source/TR-181/board_sbapi/cosa_x_cisco_com_devicecontrol_apis.c
+index 9a51960..17d88de 100755
+--- a/source/TR-181/board_sbapi/cosa_x_cisco_com_devicecontrol_apis.c
++++ b/source/TR-181/board_sbapi/cosa_x_cisco_com_devicecontrol_apis.c
+@@ -212,7 +212,7 @@ void* WebGuiRestart( void *arg )
+ }
+ 
+ 
+-#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_)  || defined(_PLATFORM_BANANAPI_R4_)
++#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_)
+ static int
+ DmSetBool(const char *param, BOOL value)
+ {
+@@ -1083,7 +1083,7 @@ CosaDmlLanMngm_SetConf(ULONG ins, PCOSA_DML_LAN_MANAGEMENT pLanMngm)
+     }
+ #endif
+ 
+-#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_)
++#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_)
+     char buf[7] = {0};
+     BOOL value;
+     snprintf(buf,sizeof(buf),"%d",bridge_info.mode);

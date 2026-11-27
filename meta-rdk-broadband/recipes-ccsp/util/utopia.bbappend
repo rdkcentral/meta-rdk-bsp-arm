@@ -1,25 +1,44 @@
 require meta-rdk-broadband/recipes-ccsp/ccsp/ccsp_common_genericarm.inc
 
-SRCREV:utopia = "9d6535c9476c3ef52c6cb04fccd9abefa0de592c"
-SRCPV:utopia = "2.4.0"
+inherit systemd
+
+# See conf/include/srcrev-override.inc
+# Due to the mechanics of bitbake, we cannot override these
+# at the layer level ourselves, they must be overridden in the
+# .bbappend
+SRCREV:utopia = "${GENERIC_ARM_UTOPIA_SRCREV}"
+PV:pn-utopia = "${GENERIC_ARM_UTOPIA_PV}"
 
 DEPENDS:append = " kernel-autoconf utopia-headers libsyswrapper"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 SRC_URI:append = " \
-    file://0001-scripts-lan_handler-treat-generic-Arm-boards-Ten64-q.patch \
-    file://0002-lan_handler-refresh-fix-lan-handler-for-rpi.patch.patch \
-    file://0003-bridge-use-service_bridge_rpi-for-generic-arm-platfo.patch \
-    file://0004-firewall-use-_GENERIC_LINUX_DATA_PATH_-for-reference.patch \
-    file://0005-service_wan-use-_GENERIC_LINUX_DATA_PATH_-to-introdu.patch \
-    file://0006-scripts-utopia_init-do-nvram-restore_reboot-and-drop.patch \
-    file://0007-scripts-lan_handler-create-flag-files-for-lan-start-.patch \
-    file://0008-dhcp-place-dnsmasq.conf-in-RAM-var-volatile.patch \
-    file://0009-igd-place-IGD-temporary-files-under-var-volatile.patch \
-    file://0010-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch \
-    file://0011-service-dhcpv6_client-log-to-syslog-instead-of-dev-c.patch \
-    file://0012-firewall-disable-mac-filter.patch \
-    file://0013-scripts-fix-compile-errors-with-DNO_MTA_FEATURE_SUPP.patch \
+    file://0001-firewall-add-_PLATFORM_GENERICARM_-for-generic-Arm-r.patch \
+    file://0002-service_wan-extend-reference-board-behaviour-to-gene.patch \
+    file://0003-firewall-fix-typo-in-RDKB-21814-comment.patch \
+    file://0004-scripts-utopia_init-do-nvram-restore_reboot-and-drop.patch \
+    file://0005-scripts-lan_handler-extend-OSS-reference-treatment-t.patch \
+    file://0006-bridge-use-generic-service-bridge-for-generic-arm-pl.patch \
+    file://0007-dhcp-place-dnsmasq.conf-in-RAM-var-volatile.patch \
+    file://0008-igd-place-IGD-temporary-files-under-var-volatile.patch \
+    file://0009-RDKBDEV-XXXX-remove-usages-of-get_current_wan_ifname.patch \
+    file://0010-service-dhcpv6_client-log-to-syslog-instead-of-dev-c.patch \
+    file://0011-scripts-fix-compile-errors-with-DNO_MTA_FEATURE_SUPP.patch \
+    file://0012-multinet-add-handling-for-genericarm-platform.patch \
+    file://0013-utopia_init-add-creation-of-brlan0.patch \
+    file://0014-init-wire-up-lan-start-stop-restart-to-lan_handler.patch \
+    file://0015-services-create-a-simpler-stub-registration-for-mult.patch \
+    file://0016-utopia_init-send-systemd-notification-and-keep-runni.patch \
+    file://0017-service_ipv6-process-ipv6-prefix-additions-for-brlan.patch \
+    file://0018-service_misc-fix-errors-when-run-with-busybox-sh.patch \
+    file://0019-move-dhcp_options-into-var-volatile.patch \
+    file://0020-waninfo-take-the-WAN-ifname-fallback-from-syscfg.patch \
+    file://0021-firewall_ipv6-do-not-hardcode-erouter0-in-guest-isola.patch \
+    file://0022-Remove-PLATFORM_TURRIS-flags.patch \
+    file://vlan_util_genericarm.sh \
+    file://resolve-wan-ifname.sh \
+    file://utopia.service \
+    file://nudge-lan-handler.service \
     file://system_defaults \
 "
 
@@ -27,11 +46,14 @@ LDFLAGS:append = " \
     -lsecure_wrapper \
 "
 
-CFLAGS:append = " -Wno-error=unused-function \
-    -D_GENERIC_LINUX_DATA_PATH_ \
-"
+CFLAGS:append = " -Wno-error=unused-function"
 
 CFLAGS:remove = " ${@bb.utils.contains('DISTRO_FEATURES', 'bci', '-DWAN_FAILOVER_SUPPORTED', '', d)}"
+
+# This package now has generic Arm platform specific handlers, so
+# _PLATFORM_RASPBERRYPI_ (defined in ccsp_common_genericarm.inc as
+# a transition aid) should be removed.
+CFLAGS:remove = " -D_PLATFORM_RASPBERRYPI_"
 
 EXTRA_OECONF:remove = "--with-machine=${MACHINE}"
 
@@ -42,6 +64,11 @@ do_install:append() {
     rm -f ${D}${includedir}/utctx/utctx.h
     rm -f ${D}${includedir}/utctx/utctx_api.h
     rm -f ${D}${includedir}/utctx/utctx_rwlock.h
+
+    # systemd units
+    install -d ${D}/${systemd_unitdir}
+    install -D -m 0644 ${WORKDIR}/utopia.service ${D}${systemd_unitdir}/system/utopia.service
+    install -D -m 0644 ${WORKDIR}/nudge-lan-handler.service ${D}${systemd_unitdir}/system/nudge-lan-handler.service
 
     # Config files and scripts
     install -d ${D}/rdklogs
@@ -68,7 +95,14 @@ do_install:append() {
     install -m 755 ${S}/source/scripts/init/system/utopia_init.sh ${D}${sysconfdir}/utopia/
     install -m 644 ${S}/source/scripts/init/defaults/system_defaults_arm ${D}${sysconfdir}/utopia/system_defaults
     install -m 755 ${S}/source/scripts/init/service.d/*.sh ${D}${sysconfdir}/utopia/service.d/
-    install -m 755 ${S}/source/scripts/init/service.d/service_bridge/*.sh ${D}${sysconfdir}/utopia/service.d/service_bridge
+    # remove service_bridge.sh related to other devices
+    rm ${D}${sysconfdir}/utopia/service.d/service_bridge_rpi.sh
+    rm ${D}${sysconfdir}/utopia/service.d/service_bridge_puma7.sh
+    rm ${D}${sysconfdir}/utopia/service.d/service_bridge_arm.sh
+    rm ${D}${sysconfdir}/utopia/service.d/service_bridge_generic.sh
+
+    install -m 755 ${WORKDIR}/vlan_util_genericarm.sh ${D}${sysconfdir}/utopia/service.d/
+
     install -m 755 ${S}/source/scripts/init/service.d/service_ddns/*.sh ${D}${sysconfdir}/utopia/service.d/service_ddns
     install -m 755 ${S}/source/scripts/init/service.d/service_dhcp_server/* ${D}${sysconfdir}/utopia/service.d/service_dhcp_server
     install -m 755 ${S}/source/scripts/init/service.d/service_lan/*.sh ${D}${sysconfdir}/utopia/service.d/service_lan
@@ -87,7 +121,6 @@ do_install:append() {
     install -m 755 ${S}/source/scripts/init/service.d/service_cosa_arm.sh ${D}${sysconfdir}/utopia/service.d/service_cosa.sh
     install -m 755 ${S}/source/scripts/init/system/need_wifi_default.sh ${D}${sysconfdir}/utopia/
     touch ${D}${sysconfdir}/dhcp_static_hosts
-    install -m 755 ${S}/source/scripts/init/service.d/service_bridge_rpi.sh ${D}${sysconfdir}/utopia/service.d/service_bridge.sh
     install -m 755 ${S}/source/scripts/init/service.d/service_dynamic_dns.sh ${D}${sysconfdir}/utopia/service.d/service_dynamic_dns.sh     
 
     # Creating symbolic links to install files in specific directory as in legacy builds
@@ -100,6 +133,7 @@ do_install:append() {
     ln -sf /usr/bin/02_bridge ${D}${sysconfdir}/utopia/registration.d/02_bridge
     ln -sf /usr/bin/02_forwarding ${D}${sysconfdir}/utopia/registration.d/02_forwarding
     ln -sf /usr/bin/02_ipv4 ${D}${sysconfdir}/utopia/registration.d/02_ipv4
+    ln -sf /usr/bin/02_ipv6 ${D}${sysconfdir}/utopia/registration.d/02_ipv6
     ln -sf /usr/bin/02_lanHandler ${D}${sysconfdir}/utopia/registration.d/02_lanHandler
     ln -sf /usr/bin/02_multinet ${D}${sysconfdir}/utopia/registration.d/02_multinet
     ln -sf /usr/bin/02_wan ${D}${sysconfdir}/utopia/registration.d/02_wan
@@ -108,7 +142,6 @@ do_install:append() {
     ln -sf /usr/bin/15_dhcp_server ${D}${sysconfdir}/utopia/registration.d/15_dhcp_server
     ln -sf /usr/bin/15_hotspot ${D}${sysconfdir}/utopia/registration.d/15_hotspot
     ln -sf /usr/bin/15_ssh_server ${D}${sysconfdir}/utopia/registration.d/15_ssh_server
-    ln -sf /usr/bin/15_wecb ${D}${sysconfdir}/utopia/registration.d/15_wecb
     ln -sf /usr/bin/20_routing ${D}${sysconfdir}/utopia/registration.d/20_routing
     ln -sf /usr/bin/25_crond ${D}${sysconfdir}/utopia/registration.d/25_crond
     ln -sf /usr/bin/33_cosa ${D}${sysconfdir}/utopia/registration.d/33_cosa
@@ -126,9 +159,31 @@ do_install:append() {
     ln -sf /usr/bin/15_dynamic_dns ${D}${sysconfdir}/utopia/registration.d/15_dynamic_dns
     
     install -m 755 ${WORKDIR}/system_defaults ${D}${sysconfdir}/utopia/system_defaults
+
+    # update legacy WAN interface names (syscfg wan_physical_ifname /
+    # ecm_wan_ifname, sysevent wan_ifname) to actually used one.
+    # must run after apply_system_defaults, which re-applies the force-set defaults on every boot.
+    install -d ${D}${base_libdir}/rdk
+    install -m 0755 ${WORKDIR}/resolve-wan-ifname.sh ${D}${base_libdir}/rdk/
+    grep -qx 'apply_system_defaults' ${D}${sysconfdir}/utopia/utopia_init.sh || \
+        bbfatal "utopia_init.sh no longer calls apply_system_defaults"
+    sed -i -e '/^apply_system_defaults$/a /lib/rdk/resolve-wan-ifname.sh' \
+        ${D}${sysconfdir}/utopia/utopia_init.sh
+
     sed -i -e "s/dropbear -E -s -b \/etc\/sshbanner.txt/dropbear -R -E /g" ${D}/etc/utopia/service.d/service_sshd.sh
     sed -i -e "/dropbear -R -E  -a -r/s/$/ -B/" ${D}${sysconfdir}/utopia/service.d/service_sshd.sh
 
+    # fix dropbear "-f authorized_keys_dev" invalid argument.
+    grep -q 'USE_DEVKEYS="-f authorized_keys_dev"' ${D}${sysconfdir}/utopia/service.d/service_sshd.sh || \
+        bbfatal "service_sshd.sh no longer sets USE_DEVKEYS to an OpenSSH style option"
+    sed -i -e 's/USE_DEVKEYS="-f authorized_keys_dev"/USE_DEVKEYS=""/' \
+        ${D}${sysconfdir}/utopia/service.d/service_sshd.sh
+
+    # change hardcoded WAN_INTERFACE="erouter0" to actual runtime value
+    grep -q '^WAN_INTERFACE="erouter0"$' ${D}${sysconfdir}/utopia/service.d/log_env_var.sh || \
+        bbfatal "log_env_var.sh no longer hardcodes WAN_INTERFACE - drop this workaround"
+    sed -i -e 's|^WAN_INTERFACE="erouter0"$|. /etc/waninfo.sh\nWAN_INTERFACE="$(getWanInterfaceName)"|' \
+        ${D}${sysconfdir}/utopia/service.d/log_env_var.sh
 
     #Backup and Restore feature related
     sed -i "/rm -f \/nvram\/syscfg.db.prev/a \ \trm -f \/nvram\/hostapd0.conf.prev \ \n \trm -f \/nvram\/hostapd1.conf.prev" ${D}${sysconfdir}/utopia/utopia_init.sh
@@ -198,8 +253,13 @@ FILES:${PN} += " \
     /fss/gw/etc/utopia/* \
     /etc/utopia/system_defaults \
     /minidumps/ \
+    /lib/systemd/system/utopia.service \
+    /lib/systemd/system/nudge-lan-handler.service \
+    ${base_libdir}/rdk/resolve-wan-ifname.sh \
 "
 
 # 0001-fix-lan-handler-for-rpi.patch contains bash specific syntax which doesn't run with busybox sh
 RDEPENDS:${PN} += "bash"
 
+SYSTEMD_SERVICE:${PN}:append = " utopia.service"
+SYSTEMD_SERVICE:${PN}:append = " nudge-lan-handler.service"

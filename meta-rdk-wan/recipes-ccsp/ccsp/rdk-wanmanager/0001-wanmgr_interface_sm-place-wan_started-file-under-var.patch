@@ -1,0 +1,50 @@
+From a5fd32667ce48ba0f7083c8485c3807ba6d3ee78 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Wed, 22 Jul 2026 09:27:29 +1000
+Subject: [PATCH] wanmgr_interface_sm: place wan_started file under /var/run on
+ genericarm
+
+meta-rdk-bsp-arm has a read-only rootfs configuration where only specific
+folders on the directory tree are writable.
+
+On this platform, all temporary files must be placed under /var/run.
+
+---
+ source/WanManager/wanmgr_interface_sm.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/source/WanManager/wanmgr_interface_sm.c b/source/WanManager/wanmgr_interface_sm.c
+index 139d0f2..0452ea5 100644
+--- a/source/WanManager/wanmgr_interface_sm.c
++++ b/source/WanManager/wanmgr_interface_sm.c
+@@ -52,6 +52,12 @@
+ #define IPOE_STATUS_IDLE "idle"
+ #endif
+ 
++#ifndef _PLATFORM_GENERICARM_
++#define WAN_STARTED_FILE_PATH "/var/wan_started"
++#else
++#define WAN_STARTED_FILE_PATH "/var/run/wan_started"
++#endif
++
+ #define POSTD_START_FILE "/tmp/.postd_started"
+ #define SELECTED_MODE_TIMEOUT_SECONDS 10
+ 
+@@ -1294,7 +1300,7 @@ static int wan_setUpIPv4(WanMgr_IfaceSM_Controller_t * pWanIfaceCtrl)
+ 
+         /*TODO: touch /var/wan_started for wan-initialized.path in systemd and register /etc/utopia/post.d/. 
+          *This is a comcast specific configuration, should be removed from Wan state machine */
+-        v_secure_system("touch /var/wan_started");
++        v_secure_system("touch " WAN_STARTED_FILE_PATH);
+         /* Register services from /etc/utopia/post.d/ if not registered.*/
+         if (access(POSTD_START_FILE, F_OK) != 0)
+         {
+@@ -1459,7 +1465,7 @@ static int wan_setUpIPv6(WanMgr_IfaceSM_Controller_t * pWanIfaceCtrl)
+     {
+         /*TODO: touch /var/wan_started for wan-initialized.path in systemd and register /etc/utopia/post.d/. 
+          *This is a comcast specific configuration, should be removed from Wan state machine */
+-        v_secure_system("touch /var/wan_started");
++        v_secure_system("touch " WAN_STARTED_FILE_PATH);
+         /* Register services from /etc/utopia/post.d/ if not registered.*/
+         if (access(POSTD_START_FILE, F_OK) != 0)
+         {

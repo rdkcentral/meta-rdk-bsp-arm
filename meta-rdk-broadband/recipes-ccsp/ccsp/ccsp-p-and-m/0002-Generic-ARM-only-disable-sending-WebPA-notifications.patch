@@ -1,17 +1,17 @@
-From 672d51d7b3bcdc340a787867093d620ef01a24f8 Mon Sep 17 00:00:00 2001
+From f8cd72ad67252d7b5833af92d9c29d8240633874 Mon Sep 17 00:00:00 2001
 From: Mathew McBride <matt@traverse.com.au>
 Date: Mon, 27 Oct 2025 16:24:48 +1100
-Subject: [PATCH 2/3] (Generic ARM only) disable sending WebPA notifications
+Subject: [PATCH] (Generic ARM only) disable sending WebPA notifications
 
 ---
  source-arm/TR-181/board_sbapi/cosa_common_util.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/source-arm/TR-181/board_sbapi/cosa_common_util.c b/source-arm/TR-181/board_sbapi/cosa_common_util.c
-index 2c480a9..e29ecda 100644
+index 05a2a40..1d895de 100644
 --- a/source-arm/TR-181/board_sbapi/cosa_common_util.c
 +++ b/source-arm/TR-181/board_sbapi/cosa_common_util.c
-@@ -447,7 +447,7 @@ Set_Notifi_ParamName(arg_struct_t arguments)
+@@ -463,7 +463,7 @@ Set_Notifi_ParamName(arg_struct_t arguments)
  
      char* faultParam = NULL;
      int ret = 0;
@@ -20,7 +20,7 @@ index 2c480a9..e29ecda 100644
      rc = sprintf_s(str1,sizeof(str1),"%s,%u,%s,%s,%d",arguments.parameterName, arguments.writeID, strlen(arguments.newValue)>0 ? arguments.newValue : "NULL", strlen(arguments.oldValue)>0 ? arguments.oldValue : "NULL", arguments.type);
      CcspTraceInfo(("%s rc: %d, str1: %s\n", __FUNCTION__ , rc, str1));
  
-@@ -513,7 +513,7 @@ Set_Notifi_ParamName(arg_struct_t arguments)
+@@ -529,7 +529,7 @@ Set_Notifi_ParamName(arg_struct_t arguments)
      {
          CcspTraceWarning(("%s: CcspBaseIf_setParameterValues: Param value set succesfully and sent to WebPA.\n", __FUNCTION__ ));
      }
@@ -29,6 +29,3 @@ index 2c480a9..e29ecda 100644
      EXIT:
          CcspTraceWarning(("%s: CcspBaseIf_setParameterValues: Exit.\n", __FUNCTION__ ));
          return NULL;
--- 
-2.51.0
-

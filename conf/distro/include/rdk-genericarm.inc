@@ -1,6 +1,8 @@
 # Derived from meta-cmf-raspberrypi/conf/distro/include/rdk-rpi.inc
 IMAGE_GEN_DEBUGFS = "0"
 
+PREFERRED_VERSION:linux-yocto:kirkstone = "${@bb.utils.contains('DISTRO_FEATURES', 'kernel-6-18', '6.18%', '5.15%', d)}"
+
 #preferred version for linux kirkstone build
 PREFERRED_VERSION:libnl:kirkstone ?= "3.5.0"
 PREFERRED_VERSION:jansson:kirkstone = "2.13.1"
@@ -12,6 +14,9 @@ PREFERRED_VERSION:icu-native:kirkstone ?= "58.2"
 #preferred version for meson
 PREFERRED_VERSION_meson-native_kirkstone = "0.61.3"
 PREFERRED_VERSION_meson_kirkstone = "0.61.3"
+
+# Newer iw required for MLO/wiphy support
+PREFERRED_VERSION:iw:kirkstone = "${@bb.utils.contains('DISTRO_FEATURES', 'kernel-6-18', '6.17', '4.7', d)}"
 
 ### preferred providers
 PREFERRED_PROVIDER_libevent = "libevent"
@@ -73,8 +78,7 @@ IMAGE_FEATURES:remove = "read-only-rootfs"
 ### others
 ENABLE_UART = "1"
 
-# 2024-11-11: meta-cmf-arm: usppa disabled due to erouter0 dependency
-# DISTRO_FEATURES:append:broadband = " usppa"
+DISTRO_FEATURES:append:broadband = " usppa"
 
 # REFPLTV-1137: DLNA support for xupnp
 DISTRO_FEATURES:append:broadband = " dlna"
@@ -98,7 +102,7 @@ DISTRO_FEATURES:append:broadband = " rdkb_configurable_wan_interface"
 #DISTRO_FEATURES:append:broadband = " rdkb_voice_manager_dmltr104_v2"
 DISTRO_FEATURES:append:broadband = " rdkb_xdsl_ppp_manager"
 DISTRO_FEATURES:append:broadband = " fwupgrade_manager"
-DISTRO_FEATURES:append:broadband = " rdkb_inter_device_manager"
+#DISTRO_FEATURES:append:broadband = " rdkb_inter_device_manager"
 
 DISTRO_FEATURES:append:broadband = " no_moca_support"
 
@@ -171,6 +175,7 @@ DISTRO_FEATURES:append:broadband = " no_mta_support"
 # Disable RDM
 DISTRO_FEATURES:remove:broadband = " RDM"
 
+DISTRO_FEATURES:append:broadband = " rdkb_auto_port_switch"
 SESSIONMGR_WS_RPC_ENABLE = "1"
 
 #REFPLTB-2784 : easymesh controller arch only supports with wifiagent

@@ -28,7 +28,10 @@ $$Version=11
 #-------------------------------------------------------------------
 
 # wan_ifname is the name (as known to the OS) of the wan interface
-@wan_ifname=erouter0
+# the real name is board-specific and is reapplied on every boot
+# by /lib/rdk/resolve-wan-ifname.sh (after apply_system_defaults).
+# the value below is only the fallback used if that lookup fails.
+@wan_ifname=eth1
 
 # model_name          - display friendly model name of this device
 @model_name=USGv2 0x00000004
@@ -95,7 +98,8 @@ $last_erouter_mode=3
 
 # wan_physical_ifname - the name (as known to the OS) of the physical interface
 #    that is used for the wan. This setting is not meant for users to manipulate.
-$$wan_physical_ifname=erouter0
+#    check @wan_ifname for additional info.
+$$wan_physical_ifname=eth1
 
 # wan_bridge_ifname - the name (as known to the OS) of the wan interface that is
 #    to be enslaved in the lan bridge when in bridge mode.
@@ -228,7 +232,7 @@ $lan_ifname=brlan0
 #    which will be enslaved into the lan bridge (which is known as lan_ifname
 #    as described above)
 #    This setting is not meant for users to manipulate
-$$lan_ethernet_physical_ifnames=eth0 eth1 eth2 eth3
+$$lan_ethernet_physical_ifnames=
 
 # lan_wl_physical_ifnames - a list of names of 802.11 interfaces, which will
 #    be enslaved into the lan bridge (which is known as lan_ifname as
@@ -658,7 +662,7 @@ $cosa_usgv2_rip00::TimoutTime=180
 
 $cosa_usgv2_rip00::If1Enable=1
 $cosa_usgv2_rip00::If1KeyChainName=keychain1
-$cosa_usgv2_rip00::If1Name=erouter0
+$cosa_usgv2_rip00::If1Name=eth1
 $cosa_usgv2_rip00::If1Alias=Ethernet
 $cosa_usgv2_rip00::If1AuthenticateType=3
 $cosa_usgv2_rip00::If1ReceiveEnable=1
@@ -799,7 +803,8 @@ $ccsp_recovery_enable=1
 # CM Diagnostic IP Support (192.168.100.1), also used for inter-processor DBUS
 $$cmdiag_ifname=lan0
 $cmdiag_enabled=1
-$$ecm_wan_ifname=erouter0
+# check @wan_ifname for additional info.
+$$ecm_wan_ifname=eth1
 $$emta_wan_ifname=mta0
 
 # Parental Control Defaults

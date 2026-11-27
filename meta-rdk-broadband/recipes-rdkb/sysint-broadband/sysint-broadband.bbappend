@@ -62,6 +62,33 @@ do_install:append() {
     install -m 0755 ${S}/devicegenericarm/lib/rdk/self_heal_connectivity_test.sh ${D}/usr/ccsp/tad
     install -m 0755 ${S}/devicegenericarm/lib/rdk/resource_monitor.sh ${D}/usr/ccsp/tad
     install -m 0755 ${S}/devicegenericarm/lib/rdk/task_health_monitor.sh ${D}/usr/ccsp/tad
+
+    # Add waninfo.sh dependency, needed to resolve WAN interface later
+    grep -q '^source /etc/device.properties' ${D}/usr/ccsp/tad/corrective_action.sh || \
+        bbfatal "corrective_action.sh no longer sources /etc/device.properties"
+    sed -i -e '/^source \/etc\/device.properties/a source /etc/waninfo.sh' \
+        ${D}/usr/ccsp/tad/corrective_action.sh
+
+    # Change CM_INTERFACE and WAN_INTERFACE hardcode to actual runtime value
+    for f in corrective_action.sh self_heal_connectivity_test.sh task_health_monitor.sh; do
+        if ! grep -qE '(WAN|CM)_INTERFACE=("?erouter0"?|"?wan0"?)' ${D}/usr/ccsp/tad/$f; then
+            bbfatal "$f no longer hardcodes erouter0/wan0"
+        fi
+        sed -i -e 's/^\( *\)CM_INTERFACE="\?erouter0"\?$/\1CM_INTERFACE=$(getWanInterfaceName)/' \
+               -e 's/^\( *\)WAN_INTERFACE="\?erouter0"\?$/\1WAN_INTERFACE=$(getWanInterfaceName)/' \
+               -e 's/^\( *\)WAN_INTERFACE="\?wan0"\?$/\1WAN_INTERFACE=$(getWanInterfaceName)/' \
+               ${D}/usr/ccsp/tad/$f
+    done
+
+    # Change remaining hardcoded values
+    sed -i -e 's/ifconfig erouter0 |/ifconfig $CM_INTERFACE |/g' \
+        ${D}/usr/ccsp/tad/corrective_action.sh
+
+    sed -i -e 's/erouter0/$WAN_INTERFACE/g' \
+        ${D}/usr/ccsp/tad/self_heal_connectivity_test.sh \
+        ${D}/usr/ccsp/tad/task_health_monitor.sh
+
+
     install -m 0644 ${S}/devicegenericarm/systemd_units/disable_systemd_restart_param.service ${D}${systemd_unitdir}/system
     install -m 0755 ${S}/devicegenericarm/lib/rdk/disable_systemd_restart_param.sh ${D}${base_libdir}/rdk
 }

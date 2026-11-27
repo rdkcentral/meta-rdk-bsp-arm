@@ -1,0 +1,84 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
+Date: Mon, 28 Sep 2026 10:22:48 +0200
+Subject: [PATCH] Remove _PLATFORM_TURRIS_ flags
+
+Removed _PLATFORM_TURRIS_ guard flags.
+
+---
+ source/dml/tr_181/ml/cosa_wifi_dml.c     | 2 +-
+ source/dml/tr_181/ml/plugin_main.c       | 2 +-
+ source/dml/tr_181/sbapi/cosa_wifi_apis.c | 6 +++---
+ source/dml/wifi_ssp/ssp_main.c           | 2 +-
+ 4 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/source/dml/tr_181/ml/cosa_wifi_dml.c b/source/dml/tr_181/ml/cosa_wifi_dml.c
+index 2023668..f76ae0a 100755
+--- a/source/dml/tr_181/ml/cosa_wifi_dml.c
++++ b/source/dml/tr_181/ml/cosa_wifi_dml.c
+@@ -86,7 +86,7 @@
+ #include "wifi_webconfig.h"//ONE_WIFI
+ #endif
+ 
+-#if defined(_COSA_BCM_MIPS_) || defined(_XB6_PRODUCT_REQ_) || defined(_COSA_BCM_ARM_) || defined(_PLATFORM_TURRIS_) || \
++#if defined(_COSA_BCM_MIPS_) || defined(_XB6_PRODUCT_REQ_) || defined(_COSA_BCM_ARM_) || \
+     defined(_XER5_PRODUCT_REQ_) || defined(_SCER11BEL_PRODUCT_REQ_) || defined(_SCXF11BFL_PRODUCT_REQ_)
+ #include "ccsp_base_api.h"
+ #include "messagebus_interface_helper.h"
+diff --git a/source/dml/tr_181/ml/plugin_main.c b/source/dml/tr_181/ml/plugin_main.c
+index 4ab53db..7aff5e0 100644
+--- a/source/dml/tr_181/ml/plugin_main.c
++++ b/source/dml/tr_181/ml/plugin_main.c
+@@ -258,7 +258,7 @@ COSA_Init
+         g_pCosaBEManager->hCosaPluginInfo = pPlugInfo;
+ 
+         g_pCosaBEManager->Initialize   ((ANSC_HANDLE)g_pCosaBEManager);
+-#if defined(_COSA_INTEL_USG_ATOM_) || defined(_COSA_BCM_MIPS_) || defined(_COSA_BCM_ARM_) || defined(_PLATFORM_TURRIS_)
++#if defined(_COSA_INTEL_USG_ATOM_) || defined(_COSA_BCM_MIPS_) || defined(_COSA_BCM_ARM_)
+ 	AssociatedDevice_callback_register();
+ #endif      
+     }
+diff --git a/source/dml/tr_181/sbapi/cosa_wifi_apis.c b/source/dml/tr_181/sbapi/cosa_wifi_apis.c
+index 32362f1..8133f91 100644
+--- a/source/dml/tr_181/sbapi/cosa_wifi_apis.c
++++ b/source/dml/tr_181/sbapi/cosa_wifi_apis.c
+@@ -109,7 +109,7 @@
+ #include "ovsdb_table.h"
+ #include "wifi_db.h"
+ 
+-#if defined(_COSA_BCM_MIPS_) || defined(_XB6_PRODUCT_REQ_) || defined(_COSA_BCM_ARM_) || defined(_PLATFORM_TURRIS_)
++#if defined(_COSA_BCM_MIPS_) || defined(_XB6_PRODUCT_REQ_) || defined(_COSA_BCM_ARM_)
+ #include "cJSON.h"
+ #include <ctype.h>
+ #endif
+@@ -129,7 +129,7 @@
+ #define WLAN_WAIT_LIMIT 3
+ #endif
+ 
+-#if defined(_COSA_BCM_MIPS_) || defined(_XB6_PRODUCT_REQ_) || defined(_COSA_BCM_ARM_) || defined(_PLATFORM_TURRIS_)
++#if defined(_COSA_BCM_MIPS_) || defined(_XB6_PRODUCT_REQ_) || defined(_COSA_BCM_ARM_)
+ #define PARTNERS_INFO_FILE              "/nvram/partners_defaults.json"
+ #define BOOTSTRAP_INFO_FILE             "/opt/secure/bootstrap.json"
+ #define BOOTSTRAP_INFO_FILE_BACKUP      "/nvram/bootstrap.json"
+@@ -143,7 +143,7 @@
+ #define OnboardLog(...)
+ #endif
+ 
+-#if defined (_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_)
++#if defined (_PLATFORM_RASPBERRYPI_)
+ #define MAX_BUF_SIZE 128
+ #endif
+ 
+diff --git a/source/dml/wifi_ssp/ssp_main.c b/source/dml/wifi_ssp/ssp_main.c
+index dc3827d..5596d69 100644
+--- a/source/dml/wifi_ssp/ssp_main.c
++++ b/source/dml/wifi_ssp/ssp_main.c
+@@ -566,7 +566,7 @@ wifi_util_dbg_print(WIFI_MGR,"%s:%d: RDK_LOGGER_INIT done!\n", __func__, __LINE_
+ #endif//ONE_WIFI
+ 
+ /* Legacy Devices Like XB3 have systemd on the side with WiFi Agent, but don't use Service Files */
+-#if defined(ENABLE_SD_NOTIFY) && (defined(_XB6_PRODUCT_REQ_) || defined(_COSA_BCM_MIPS_)|| defined(_COSA_BCM_ARM_) || defined(_PLATFORM_TURRIS_))
++#if defined(ENABLE_SD_NOTIFY) && (defined(_XB6_PRODUCT_REQ_) || defined(_COSA_BCM_MIPS_)|| defined(_COSA_BCM_ARM_))
+     char cmd[1024]          = {0};
+     /*This is used for systemd */
+     fd = fopen("/var/tmp/OneWifi.pid", "w+");

@@ -1,0 +1,11 @@
+[Unit]
+Requires=utopia.service
+After=utopia.service
+Description=Manually send ipv4_4-status event for brlan0
+
+[Service]
+Type=oneshot
+ExecStart=/etc/utopia/service.d/lan_handler.sh ipv4_4-status up
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,36 @@
+From 07e14f27d75ee03423a6b62fa151ff037f52cf5e Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Fri, 7 Aug 2026 12:39:21 +1000
+Subject: [PATCH] multinet: add handling for genericarm platform
+
+Avoids use of device handlers for production devices.
+
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
+
+---
+ source/scripts/init/c_registration/02_multinet.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/source/scripts/init/c_registration/02_multinet.c b/source/scripts/init/c_registration/02_multinet.c
+index f37b6cd..d6fd226 100644
+--- a/source/scripts/init/c_registration/02_multinet.c
++++ b/source/scripts/init/c_registration/02_multinet.c
+@@ -47,7 +47,7 @@ const char* SERVICE_NAME            = "multinet";
+ #ifdef MULTILAN_FEATURE
+ #if defined (_CBR_PRODUCT_REQ_)
+ const char* SERVICE_DEFAULT_HANDLER = "/etc/utopia/service.d/vlan_util_tchcbr.sh";
+-#elif defined (_COSA_QCA_ARM_)
++#elif defined (_COSA_QCA_ARM_) || defined (_PLATFORM_GENERICARM_)
+ const char* SERVICE_DEFAULT_HANDLER = "/etc/utopia/service.d/service_multinet.sh";
+ #elif (_COSA_BCM_ARM_)
+ const char* SERVICE_DEFAULT_HANDLER = "/etc/utopia/service.d/vlan_util_tchxb6.sh";
+@@ -75,7 +75,8 @@ const char* SERVICE_DEFAULT_HANDLER = "/etc/utopia/service.d/bridgeutil_sr213.sh
+ const char* SERVICE_DEFAULT_HANDLER = "/etc/utopia/service.d/bridgeutil_sr300.sh";
+ #elif defined (_HUB4_PRODUCT_REQ_)
+ const char* SERVICE_DEFAULT_HANDLER = "/etc/utopia/service.d/bridgeutil_hub4.sh";
+-#elif defined (_COSA_BCM_ARM_) && ! defined (_PLATFORM_RASPBERRYPI_) && ! defined(_PLATFORM_BANANAPI_R4_)
++#elif defined (_COSA_BCM_ARM_) && ! defined (_PLATFORM_RASPBERRYPI_) && ! defined(_PLATFORM_BANANAPI_R4_) && \
++	!defined (_PLATFORM_GENERICARM_)
+ const char* SERVICE_DEFAULT_HANDLER = "/etc/utopia/service.d/vlan_util_tchxb6.sh";
+ #elif defined (_COSA_QCA_ARM_)
+ const char* SERVICE_DEFAULT_HANDLER = "/etc/utopia/service.d/service_multinet.sh";

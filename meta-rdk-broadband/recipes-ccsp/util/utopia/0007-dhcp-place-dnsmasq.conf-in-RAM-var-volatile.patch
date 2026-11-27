@@ -1,0 +1,52 @@
+From d95562c7a216caf2b8d1d42ae3d06af4ec60ea32 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Wed, 7 Aug 2024 15:17:54 +1000
+Subject: [PATCH] dhcp: place dnsmasq.conf in RAM (/var/volatile)
+
+On a completely read-only filesystem, it is not possible to create a file under /var itself
+
+---
+ source/scripts/init/service.d/service_dhcp_server.sh | 2 +-
+ source/service_dhcp/dhcp_server_functions.c          | 2 +-
+ source/service_dhcp/service_dhcp_server.c            | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/source/scripts/init/service.d/service_dhcp_server.sh b/source/scripts/init/service.d/service_dhcp_server.sh
+index 60c0dec..2057fcf 100755
+--- a/source/scripts/init/service.d/service_dhcp_server.sh
++++ b/source/scripts/init/service.d/service_dhcp_server.sh
+@@ -59,7 +59,7 @@ UTOPIA_PATH="/etc/utopia/service.d"
+ SERVICE_NAME="dhcp_server"
+ 
+ #DHCP_CONF=/etc/dnsmasq.conf
+-DHCP_CONF=/var/dnsmasq.conf
++DHCP_CONF=/var/volatile/dnsmasq.conf
+ RESOLV_CONF=/etc/resolv.conf
+ BIN=dnsmasq
+ SERVER=${BIN}
+diff --git a/source/service_dhcp/dhcp_server_functions.c b/source/service_dhcp/dhcp_server_functions.c
+index 8f239be..7a8fc49 100644
+--- a/source/service_dhcp/dhcp_server_functions.c
++++ b/source/service_dhcp/dhcp_server_functions.c
+@@ -59,7 +59,7 @@
+ #define STATIC_URLS_FILE        "/etc/static_urls"
+ #define STATIC_DNS_URLS_FILE    "/etc/static_dns_urls"
+ #define NETWORK_RES_FILE      	"/var/tmp/networkresponse.txt"
+-#define DHCP_CONF               "/var/dnsmasq.conf"
++#define DHCP_CONF               "/var/volatile/dnsmasq.conf"
+ #define DHCP_LEASE_FILE         "/nvram/dnsmasq.leases"
+ #define DEFAULT_RESOLV_CONF     "/var/default/resolv.conf"
+ #define DEFAULT_CONF_DIR      	"/var/default"
+diff --git a/source/service_dhcp/service_dhcp_server.c b/source/service_dhcp/service_dhcp_server.c
+index 77b2d35..5e6d1c1 100644
+--- a/source/service_dhcp/service_dhcp_server.c
++++ b/source/service_dhcp/service_dhcp_server.c
+@@ -41,7 +41,7 @@
+ #define SERVER      "dnsmasq"
+ #define PMON        "/etc/utopia/service.d/pmon.sh"
+ #define RESOLV_CONF "/etc/resolv.conf"
+-#define DHCP_CONF   "/var/dnsmasq.conf"
++#define DHCP_CONF   "/var/volatile/dnsmasq.conf"
+ #define PID_FILE    "/var/run/dnsmasq.pid"
+ #define RPC_CLIENT	"/usr/bin/rpcclient"
+ #define XHS_IF_NAME "brlan1"
