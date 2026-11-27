@@ -13,7 +13,7 @@ if [ "$1" = "multinet-syncMembers" ] && [ "$2" = "1" ]; then
 			continue
 		fi
 
-		if !(echo "${PSM_BRIDGE_MEMBERS}" | grep -q "${intf}"); then
+		if ! echo " ${PSM_BRIDGE_MEMBERS} " | grep -Fq " ${intf} "; then
 			echo "Interface ${intf} needs to be removed from brlan0" >> /tmp/vlan_util.log
 			brctl delif brlan0 "${intf}"
 		fi
