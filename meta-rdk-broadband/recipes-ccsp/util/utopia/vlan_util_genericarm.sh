@@ -3,7 +3,10 @@ echo "Multinet vlan util called with arguments: $*" >> /tmp/vlan_util.log
 # This event will be invoked by CcspEthAgent, which writes the Members.Eth
 # PSM property just before sending this event
 if [ "$1" = "multinet-syncMembers" ] && [ "$2" = "1" ]; then
-	PSM_BRIDGE_MEMBERS=$(psmcli get "dmsb.l2net.1.Members.Eth")
+	if ! PSM_BRIDGE_MEMBERS=$(psmcli get "dmsb.l2net.1.Members.Eth"); then
+		echo "Failed to read PSM bridge members; leaving brlan0 unchanged" >> /tmp/vlan_util.log
+		exit 0
+	fi
 	CURRENT_MEMBERS=$(find /sys/class/net/brlan0/ -name 'lower_*' -exec basename {} \; | cut -c 7- | tr '\n' ' ')
 	echo "PSM_BRIDGE_MEMBERS=${PSM_BRIDGE_MEMBERS}" >> /tmp/vlan_util.log
 	echo "CURRENT_MEMBERS=${CURRENT_MEMBERS}" >> /tmp/vlan_util.log
@@ -13,7 +16,7 @@ if [ "$1" = "multinet-syncMembers" ] && [ "$2" = "1" ]; then
 			continue
 		fi
 
-		if !(echo "${PSM_BRIDGE_MEMBERS}" | grep -q "${intf}"); then
+		if ! echo " ${PSM_BRIDGE_MEMBERS} " | grep -Fq " ${intf} "; then
 			echo "Interface ${intf} needs to be removed from brlan0" >> /tmp/vlan_util.log
 			brctl delif brlan0 "${intf}"
 		fi

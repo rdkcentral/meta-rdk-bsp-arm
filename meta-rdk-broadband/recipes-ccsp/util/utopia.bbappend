@@ -70,6 +70,10 @@ do_install:append() {
     install -D -m 0644 ${WORKDIR}/utopia.service ${D}${systemd_unitdir}/system/utopia.service
     install -D -m 0644 ${WORKDIR}/nudge-lan-handler.service ${D}${systemd_unitdir}/system/nudge-lan-handler.service
 
+    # Fix executable bit incorrectly added by meta-rdk-broadband/recipes-ccsp/util/utopia.bb
+    if [ -f "${D}${systemd_unitdir}/system/ApplySystemDefaults.service" ]; then
+        chmod 0644 ${D}${systemd_unitdir}/system/ApplySystemDefaults.service
+    fi
     # Config files and scripts
     install -d ${D}/rdklogs
     install -d ${D}/fss/gw/bin
