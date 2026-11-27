@@ -1,0 +1,42 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
+Date: Mon, 28 Sep 2026 14:41:08 +0200
+Subject: [PATCH] Remove _PLATFORM_TURRIS_ flags
+
+Removed _PLATFORM_TURRIS_ guard flags.
+
+---
+ source/MeshAgentSsp/cosa_mesh_apis.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/source/MeshAgentSsp/cosa_mesh_apis.c b/source/MeshAgentSsp/cosa_mesh_apis.c
+index 525aaf6..5aa5e70 100644
+--- a/source/MeshAgentSsp/cosa_mesh_apis.c
++++ b/source/MeshAgentSsp/cosa_mesh_apis.c
+@@ -6182,7 +6182,7 @@ static void *Mesh_sysevent_handler(void *data)
+     async_id_t wifi_dynamic_profile_asyncid;
+     async_id_t mesh_firewall_restart_asyncid;
+ 
+-#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_)
++#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_)
+     async_id_t lease_resync_asyncid;
+ #endif
+     sysevent_set_options(sysevent_fd,     sysevent_token, meshSyncMsgArr[MESH_WIFI_RESET].sysStr,                     TUPLE_FLAG_EVENT);
+@@ -6240,7 +6240,7 @@ static void *Mesh_sysevent_handler(void *data)
+ #endif
+     sysevent_set_options(sysevent_fd,     sysevent_token, meshSyncMsgArr[MESH_WIFI_DYNAMIC_PROFILE].sysStr,           TUPLE_FLAG_EVENT);
+     sysevent_setnotification(sysevent_fd, sysevent_token, meshSyncMsgArr[MESH_WIFI_DYNAMIC_PROFILE].sysStr,           &wifi_dynamic_profile_asyncid);
+-#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_)
++#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_)
+     sysevent_set_options(sysevent_fd,     sysevent_token, meshSyncMsgArr[MESH_DHCP_RESYNC_LEASES].sysStr,                   TUPLE_FLAG_EVENT);
+     sysevent_setnotification(sysevent_fd, sysevent_token, meshSyncMsgArr[MESH_DHCP_RESYNC_LEASES].sysStr,                   &lease_resync_asyncid);
+ #endif
+@@ -7762,7 +7762,7 @@ static void *Mesh_sysevent_handler(void *data)
+                     }
+                 }
+             }
+-#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_TURRIS_) || defined(_PLATFORM_BANANAPI_R4_)
++#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_)
+             else if (strcmp(name, meshSyncMsgArr[MESH_DHCP_RESYNC_LEASES].sysStr)==0)
+             {
+                 //This will handle sending lease information to plume for every new connection, without restarting the MeshAgent

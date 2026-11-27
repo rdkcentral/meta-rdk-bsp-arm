@@ -1,0 +1,132 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
+Date: Wed, 23 Sep 2026 14:52:51 +2000
+Subject: [PATCH] Add _PLATFORM_GENERICARM_ for generic Arm reference platform
+
+---
+ source/dmltad/cosa_selfheal_dml.c |  2 +-
+ source/dmltad/diag.c              |  2 +-
+ source/dmltad/diag_traceroute.c   | 20 ++++++++++----------
+ 3 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/source/dmltad/cosa_selfheal_dml.c b/source/dmltad/cosa_selfheal_dml.c
+index 67ab5a5..532473c 100644
+--- a/source/dmltad/cosa_selfheal_dml.c
++++ b/source/dmltad/cosa_selfheal_dml.c
+@@ -1597,7 +1597,7 @@ ResourceMonitor_SetParamUlongValue
+             return TRUE;
+         }
+   
+-#if defined(_ARRIS_XB6_PRODUCT_REQ_) || defined(_CBR_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_) || \
++#if defined(_ARRIS_XB6_PRODUCT_REQ_) || defined(_CBR_PRODUCT_REQ_) || defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_) || defined(_PLATFORM_GENERICARM_) || \
+ (defined(_XB6_PRODUCT_REQ_) && defined(_COSA_BCM_ARM_))
+         char buf[8];
+         errno_t rc = -1;
+diff --git a/source/dmltad/diag.c b/source/dmltad/diag.c
+index 4d16cab..96aea34 100644
+--- a/source/dmltad/diag.c
++++ b/source/dmltad/diag.c
+@@ -503,7 +503,7 @@ static void *diag_task(void *arg)
+             break;
+     }
+ 
+-#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_)
++#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_BANANAPI_R4_) || defined(_PLATFORM_GENERICARM_)
+ /**
+  inet_pton is failing because of extra quotes in ip address (cfg.host)
+ **/
+diff --git a/source/dmltad/diag_traceroute.c b/source/dmltad/diag_traceroute.c
+index 36ee159..b0b65af 100755
+--- a/source/dmltad/diag_traceroute.c
++++ b/source/dmltad/diag_traceroute.c
+@@ -83,7 +83,7 @@ static diag_obj_t diag_tracert = {
+  * as TR181 do not support that, let's discard the "address(name)" info.
+  */
+ static void convert_rtts(char *rtts, size_t size
+-#if !defined (_PLATFORM_RASPBERRYPI_)
++#if !defined (_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_GENERICARM_)
+ , float *sum, int *counter, int timeout
+ #endif
+ )
+@@ -94,7 +94,7 @@ static void convert_rtts(char *rtts, size_t size
+     errno_t rc = -1;
+ 
+     buf[0] = '\0';
+-#if defined(_PLATFORM_RASPBERRYPI_)
++#if defined(_PLATFORM_RASPBERRYPI_) || defined(_PLATFORM_GENERICARM_)
+     for (start = rtts; 
+             (tok1 = strtok_r(start, delim, &sp)) && (tok2 = strtok_r(NULL, delim, &sp));
+             start = NULL) {
+@@ -185,7 +185,7 @@ static diag_err_t tracert_start(diag_obj_t *diag, const diag_cfg_t *cfg, diag_st
+     size_t left;
+     FILE *fp;
+     errno_t rc = -1;
+-#if !defined(_PLATFORM_RASPBERRYPI_)
++#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_GENERICARM_)
+     int timeout;
+     float avgresptime=0;
+ #endif
+@@ -197,7 +197,7 @@ static diag_err_t tracert_start(diag_obj_t *diag, const diag_cfg_t *cfg, diag_st
+ 
+     cmd[0] = '\0', left = sizeof(cmd);
+ 
+-#if !defined(_PLATFORM_RASPBERRYPI_)
++#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_GENERICARM_)
+     timeout = cfg->timo;
+     rc = sprintf_s(cmd + strlen(cmd), left, "traceroute %s ", cfg->host);
+     if (rc < EOK)
+@@ -350,7 +350,7 @@ static diag_err_t tracert_start(diag_obj_t *diag, const diag_cfg_t *cfg, diag_st
+         void *ptr;
+         int idx;
+         char msg[300], dest_ip[65];
+-#if !defined(_PLATFORM_RASPBERRYPI_)
++#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_GENERICARM_)
+ 	int dest_reached=0;
+         char query_ip[65], line_cpy[512];
+         float *sum,val=0;
+@@ -383,13 +383,13 @@ static diag_err_t tracert_start(diag_obj_t *diag, const diag_cfg_t *cfg, diag_st
+             sscanf(line, "%d %s (%[^)]) %[^\n]",
+                     &idx, hops[nhop].host, hops[nhop].addr, hops[nhop].rtts);
+             /* TR-181 doesn't like the format, let's convert it */
+-#if !defined(_PLATFORM_RASPBERRYPI_)
++#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_GENERICARM_)
+             convert_rtts(hops[nhop].rtts, sizeof(hops[nhop].rtts), sum, counter, timeout);
+ #else
+             convert_rtts(hops[nhop].rtts, sizeof(hops[nhop].rtts));
+ #endif
+             hops[nhop].icmperr = 0; // TODO: we can use output: '!H, !S, ...'
+-#if !defined(_PLATFORM_RASPBERRYPI_)
++#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_GENERICARM_)
+             len = strlen (line);
+             if (len >= sizeof(line_cpy))
+                 len = sizeof(line_cpy) - 1;
+@@ -407,7 +407,7 @@ static diag_err_t tracert_start(diag_obj_t *diag, const diag_cfg_t *cfg, diag_st
+ #endif
+             nhop++;
+         }
+-#if !defined(_PLATFORM_RASPBERRYPI_)
++#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_GENERICARM_)
+         avgresptime=*sum/(*counter);
+         stat->u.tracert.resptime = avgresptime;
+         *sum = 0;
+@@ -426,7 +426,7 @@ static diag_err_t tracert_start(diag_obj_t *diag, const diag_cfg_t *cfg, diag_st
+ 	    int rtt_sum = 0, rtt_count = 0, resp =0;
+ 	    char rtts[256];
+ 	    char *rtt, *sp;
+-#if !defined(_PLATFORM_RASPBERRYPI_)
++#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_GENERICARM_)
+ 	    if(nhop > 0 && dest_reached==1)
+ #else
+ 	    if(nhop > 0 && (strncmp(dest_ip,hops[nhop-1].addr,65)==0))
+@@ -443,7 +443,7 @@ static diag_err_t tracert_start(diag_obj_t *diag, const diag_cfg_t *cfg, diag_st
+ 		{
+ 		    resp = rtt_sum/rtt_count;
+ 		}
+-#if !defined(_PLATFORM_RASPBERRYPI_)
++#if !defined(_PLATFORM_RASPBERRYPI_) && !defined(_PLATFORM_GENERICARM_)
+                 dest_reached=0;
+ #endif
+ 	    }
+-- 
+2.39.5
+

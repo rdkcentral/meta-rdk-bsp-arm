@@ -1,0 +1,36 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
+Date: Fri, 18 Sep 2026 12:23:57 +2000
+Subject: [PATCH] waninfo: take the WAN ifname fallback from syscfg/sysevent
+
+Both of waninfo.sh lookups fall back to "erouter0" when the sysevent/syscfg value is not available.
+Fall back to the values provided by /lib/rdk/resolve-wan-ifname.sh instead.
+
+---
+ source/scripts/init/service.d/waninfo.sh | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/source/scripts/init/service.d/waninfo.sh b/source/scripts/init/service.d/waninfo.sh
+--- a/source/scripts/init/service.d/waninfo.sh
++++ b/source/scripts/init/service.d/waninfo.sh
+@@ -27,7 +27,7 @@
+   sysevent_ret=`echo $?`
+   #TCXB7-5773 - checking sysevent returns any value other than interface name by return status
+   if [ -z "$interface_name" ] || [ $sysevent_ret -ne 0 ];then
+-      interface_name="erouter0"
++      interface_name=`syscfg get wan_physical_ifname`
+   fi
+   echo "$interface_name"
+ }
+@@ -38,7 +40,7 @@
+   else
+     mac_interface=`syscfg get wan_physical_ifname`
+     if [ -z "$mac_interface" ];then
+-        mac_interface="erouter0"
++        mac_interface=`sysevent get wan_ifname`
+     fi  
+   fi
+   echo "$mac_interface"
+-- 
+2.51.0
+

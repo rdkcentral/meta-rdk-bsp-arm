@@ -22,6 +22,22 @@ unset _RDK_FLAVOR
 TOP_DIR=$(pwd)
 export RDK_BSP_LAYER=none
 
+# 2026-10-02 cherry pick webconfig-framework SRC_URI change ONLY if running in CI
+# This will be removed once the CI pipeline successfully builds and updates the
+# daily manifest
+# (https://gitlab.com/traversetech/rdk/traverse-rdk-build/#manifest-snapshots)
+# Non-CI users must update their meta layers.
+if (grep -q "RDK_GENERIC_ROOT_GIT" meta-rdk/recipes-common/webconfig-framework/webconfig-framework.bb); then
+	if [ -n "${GITLAB_CI}" ]  && [ "${IS_PULL_REQUEST_PIPELINE}" = "true" ]; then
+		(git -C meta-rdk fetch cmf rdk-next && \
+			git -C meta-rdk cherry-pick 146ef27e9cde6735e22e9cc66b30afd2a3fc709b && \
+			echo "meta-rdk webconfig-framework change cherry picked") || return 1
+		else
+			echo "Old copy of meta-rdk detected, please update your meta layers (repo sync)!"
+			return 1
+	fi
+fi
+
 BUILD_ALL_MACHINES=0
 if [ -z "${MACHINE}" ]; then
 	echo -e "The default machine for this layer is \"armefi64-rdk-broadband\""
@@ -69,3 +85,5 @@ if [ "${BUILD_ALL_MACHINES}" = "1" ]; then
 	echo -e 'MACHINE="ten64-rdk-broadband"' > "conf/multiconfig/ten64.conf"
 	echo -e 'BBMULTICONFIG="generic raspberrypi ten64"' >> "conf/local.conf"
 fi
+
+

@@ -14,6 +14,7 @@ on:
 
 jobs:
   CLA-Lite:
+    if: startsWith(github.repository, 'rdkcentral/')
     name: "Signature"
     uses: rdkcentral/cmf-actions/.github/workflows/cla.yml@v1
     secrets:

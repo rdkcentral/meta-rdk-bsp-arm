@@ -1,0 +1,2352 @@
+From 5aa868a50deca6b1834ac6174e66fe30471cc6ab Mon Sep 17 00:00:00 2001
+From: Felix Fietkau <nbd@nbd.name>
+Date: Wed, 8 Oct 2025 12:42:50 +0200
+Subject: [PATCH] wifi: mt76: relicense to BSD-3-Clause-Clear
+
+MediaTek has asked to switch from the ISC license to BSD-3-Clause-Clear,
+in order to improve clarity and the legal integrity of the code.
+
+The BSD-3-Clause license includes the "no endorsement" clause, which is
+important for protecting the reputation of the original authors and
+contributors by preventing unauthorized use of their names for endorsement
+purposes.
+
+This clause is absent in the BSD-2-Clause license, which is more permissive
+but lacks this specific protection.
+
+This change also cleans up the license of some Kconfig/Makefile files,
+which were accidentally marked as GPL.
+
+The GPL 2.0 remains in use on mt76x0, as well as two source files in mt7615
+for which the license situation still needs to be clarified.
+
+Link: https://patch.msgid.link/20251008104250.46292-2-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+(cherry picked from commit a96fed2825d8dfb068bf640419c619b5f2df4218)
+---
+ drivers/net/wireless/mediatek/mt76/Kconfig               | 2 +-
+ drivers/net/wireless/mediatek/mt76/Makefile              | 2 +-
+ drivers/net/wireless/mediatek/mt76/agg-rx.c              | 2 +-
+ drivers/net/wireless/mediatek/mt76/channel.c             | 2 +-
+ drivers/net/wireless/mediatek/mt76/debugfs.c             | 2 +-
+ drivers/net/wireless/mediatek/mt76/dma.c                 | 2 +-
+ drivers/net/wireless/mediatek/mt76/dma.h                 | 2 +-
+ drivers/net/wireless/mediatek/mt76/eeprom.c              | 2 +-
+ drivers/net/wireless/mediatek/mt76/mac80211.c            | 2 +-
+ drivers/net/wireless/mediatek/mt76/mcu.c                 | 2 +-
+ drivers/net/wireless/mediatek/mt76/mmio.c                | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h                | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/Kconfig        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/Makefile       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/beacon.c       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/core.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/dma.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/init.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.h          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/main.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/mcu.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/mcu.h          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/pci.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/regs.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/soc.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/Kconfig        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/Makefile       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/dma.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/init.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.h          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.h          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/mmio.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/mt7615_trace.h | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/pci.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/regs.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/sdio.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/soc.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/testmode.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/trace.c        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/usb.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76_connac.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h    | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c    | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h    | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x0/pci.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x0/pci_mcu.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x0/usb_mcu.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02.h             | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_dfs.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_dma.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.h      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_mac.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_mac.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_mcu.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_phy.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_phy.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_regs.h        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_trace.c       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_trace.h       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_txrx.c        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_usb.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c    | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_util.c        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/Kconfig        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/Makefile       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.h       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/init.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/mac.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/mac.h          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/mcu.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/mcu.h          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2.h       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2u.h      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci_mcu.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/phy.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb_mac.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb_mcu.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/Kconfig        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/Makefile       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/coredump.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/coredump.h     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/dma.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.h          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.h          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mmio.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/pci.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/regs.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/soc.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/testmode.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/testmode.h     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/Kconfig        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/Makefile       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/init.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.h          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/regs.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/sdio.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/testmode.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/usb.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/Kconfig        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/Makefile       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/debugfs.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/init.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/mac.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/mac.h          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.h          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/pci.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/regs.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/testmode.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/usb.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt792x.h              | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.h     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt792x_core.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt792x_debugfs.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt792x_dma.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt792x_mac.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt792x_regs.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt792x_trace.c        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt792x_trace.h        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt792x_usb.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/Kconfig        | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/Makefile       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/coredump.c     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/coredump.h     | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c      | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/dma.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/eeprom.h       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.h          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.h          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/mmio.c         | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h       | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/pci.c          | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/regs.h         | 2 +-
+ drivers/net/wireless/mediatek/mt76/pci.c                 | 2 +-
+ drivers/net/wireless/mediatek/mt76/scan.c                | 2 +-
+ drivers/net/wireless/mediatek/mt76/sdio.c                | 2 +-
+ drivers/net/wireless/mediatek/mt76/sdio.h                | 2 +-
+ drivers/net/wireless/mediatek/mt76/sdio_txrx.c           | 2 +-
+ drivers/net/wireless/mediatek/mt76/testmode.c            | 2 +-
+ drivers/net/wireless/mediatek/mt76/testmode.h            | 2 +-
+ drivers/net/wireless/mediatek/mt76/trace.c               | 2 +-
+ drivers/net/wireless/mediatek/mt76/trace.h               | 2 +-
+ drivers/net/wireless/mediatek/mt76/tx.c                  | 2 +-
+ drivers/net/wireless/mediatek/mt76/usb.c                 | 2 +-
+ drivers/net/wireless/mediatek/mt76/usb_trace.c           | 2 +-
+ drivers/net/wireless/mediatek/mt76/usb_trace.h           | 2 +-
+ drivers/net/wireless/mediatek/mt76/util.c                | 2 +-
+ drivers/net/wireless/mediatek/mt76/util.h                | 2 +-
+ drivers/net/wireless/mediatek/mt76/wed.c                 | 2 +-
+ 211 files changed, 211 insertions(+), 211 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/Kconfig b/drivers/net/wireless/mediatek/mt76/Kconfig
+index 71e58689e12c4..2ca96e0527c02 100644
+--- a/drivers/net/wireless/mediatek/mt76/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/Kconfig
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: GPL-2.0-only
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ config MT76_CORE
+ 	tristate
+ 	select PAGE_POOL
+diff --git a/drivers/net/wireless/mediatek/mt76/Makefile b/drivers/net/wireless/mediatek/mt76/Makefile
+index df2ac99c88729..cacdd2b13d05b 100644
+--- a/drivers/net/wireless/mediatek/mt76/Makefile
++++ b/drivers/net/wireless/mediatek/mt76/Makefile
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: GPL-2.0-only
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ obj-$(CONFIG_MT76_CORE) += mt76.o
+ obj-$(CONFIG_MT76_USB) += mt76-usb.o
+ obj-$(CONFIG_MT76_SDIO) += mt76-sdio.o
+diff --git a/drivers/net/wireless/mediatek/mt76/agg-rx.c b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+index 936ab1ca92460..3d34caf7e4f76 100644
+--- a/drivers/net/wireless/mediatek/mt76/agg-rx.c
++++ b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2018 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/channel.c b/drivers/net/wireless/mediatek/mt76/channel.c
+index 6adaeaf63e46a..c33690e7b319f 100644
+--- a/drivers/net/wireless/mediatek/mt76/channel.c
++++ b/drivers/net/wireless/mediatek/mt76/channel.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2024 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/debugfs.c b/drivers/net/wireless/mediatek/mt76/debugfs.c
+index b6a2746c187d0..5a105c8b0bfd4 100644
+--- a/drivers/net/wireless/mediatek/mt76/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/debugfs.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index a487887ef5444..e8a7391bd2ba9 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.h b/drivers/net/wireless/mediatek/mt76/dma.h
+index 1c556c8c86347..d782de487a3ba 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.h
++++ b/drivers/net/wireless/mediatek/mt76/dma.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
+index 6ce8e4af18fe5..3a10143786474 100644
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 2d8cd627ef4c6..f1e0e14715799 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mcu.c b/drivers/net/wireless/mediatek/mt76/mcu.c
+index 951781dcf0ade..9940837b1d815 100644
+--- a/drivers/net/wireless/mediatek/mt76/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2019 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mmio.c b/drivers/net/wireless/mediatek/mt76/mmio.c
+index cd2e9737c3bf9..0ea97295f5c4c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mmio.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 2a186b47659b6..0e135b8445431 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7603/Kconfig
+index dd16acfd9735d..ae40a596e49c3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/Kconfig
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: GPL-2.0-only
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ config MT7603E
+ 	tristate "MediaTek MT7603E (PCIe) and MT76x8 WLAN support"
+ 	select MT76_CORE
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/Makefile b/drivers/net/wireless/mediatek/mt76/mt7603/Makefile
+index 6878e305c24d3..e954165ee1339 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/Makefile
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/Makefile
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: GPL-2.0-only
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ obj-$(CONFIG_MT7603E) += mt7603e.o
+ 
+ mt7603e-y := \
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c b/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c
+index 6457ee06bb5a1..300a7f9c2ef11 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/beacon.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ #include "mt7603.h"
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/core.c b/drivers/net/wireless/mediatek/mt76/mt7603/core.c
+index 915b8349146af..9c2943fd904e4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/core.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ #include "mt7603.h"
+ #include "../trace.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c
+index 3967f2f057747..c891ad5498e61 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/debugfs.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ #include "mt7603.h"
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
+index e26cc78fff949..3a16851524a03 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ #include "mt7603.h"
+ #include "mac.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
+index 88382b537a33b..b89db2db65737 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ #include <linux/of.h>
+ #include "mt7603.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h
+index 4687d6dc00dc1..b6b746d1e56f9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ 
+ #ifndef __MT7603_EEPROM_H
+ #define __MT7603_EEPROM_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+index 86617a3e4328b..10f2ec70c792b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ #include <linux/etherdevice.h>
+ #include "mt7603.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index 6387f9e61060a..d3110eeb45d71 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ #include <linux/etherdevice.h>
+ #include <linux/timekeeping.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.h b/drivers/net/wireless/mediatek/mt76/mt7603/mac.h
+index 17e34ecf2bfb4..9f5fab51ff83c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ 
+ #ifndef __MT7603_MAC_H
+ #define __MT7603_MAC_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/main.c b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
+index 0d7c84941cd0a..0f3a7508996c5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ #include <linux/etherdevice.h>
+ #include <linux/platform_device.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c
+index 301668c3cc928..e432cce97640d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ #include <linux/firmware.h>
+ #include "mt7603.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7603/mcu.h
+index 30df8a3fd11a7..7debe76cd0924 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mcu.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ 
+ #ifndef __MT7603_MCU_H
+ #define __MT7603_MCU_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h b/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
+index 55a034ccbacd9..071bfab3af7c8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ 
+ #ifndef __MT7603_H
+ #define __MT7603_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/pci.c b/drivers/net/wireless/mediatek/mt76/mt7603/pci.c
+index 3d94cdb4314ae..5fee610597a4d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/pci.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/regs.h b/drivers/net/wireless/mediatek/mt76/mt7603/regs.h
+index 524bceb8e9581..97942f5ebdb45 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/regs.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ 
+ #ifndef __MT7603_REGS_H
+ #define __MT7603_REGS_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
+index 1dd3723720480..b74256efba554 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7615/Kconfig
+index 1ab1439143f41..8cc0c1b5c24ee 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/Kconfig
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: GPL-2.0-only
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ config MT7615_COMMON
+ 	tristate
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/Makefile b/drivers/net/wireless/mediatek/mt76/mt7615/Makefile
+index 2b97b9dde477b..4def3b13eae10 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/Makefile
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/Makefile
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: ISC
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ obj-$(CONFIG_MT7615_COMMON) += mt7615-common.o
+ obj-$(CONFIG_MT7615E) += mt7615e.o
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+index 2a6d317db5e01..0f7b20152279c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ #include "mt7615.h"
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/dma.c b/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
+index bcf7864312d72..59d2b3e8696bd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2019 MediaTek Inc.
+  *
+  * Author: Ryder Lee <ryder.lee@mediatek.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+index d4bc7e11e772b..d6828e1cda191 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2019 MediaTek Inc.
+  *
+  * Author: Ryder Lee <ryder.lee@mediatek.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h
+index a67fbb90f5b38..6aed52e14181a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2019 MediaTek Inc. */
+ 
+ #ifndef __MT7615_EEPROM_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index c4f5f6ee916af..e437e088b2e91 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2019 MediaTek Inc.
+  *
+  * Author: Roy Luo <royluo@google.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 6c7debe439b6c..76fbb78068b41 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2019 MediaTek Inc.
+  *
+  * Author: Ryder Lee <ryder.lee@mediatek.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
+index d08fbe64c2626..336ebce5db5f5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2019 MediaTek Inc. */
+ 
+ #ifndef __MT7615_MAC_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index 25936fb309fbd..67f56e428d9a1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2019 MediaTek Inc.
+  *
+  * Author: Roy Luo <royluo@google.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 91c9d787d553c..ff57ede87f717 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2019 MediaTek Inc.
+  *
+  * Author: Roy Luo <royluo@google.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
+index 8e9604be07925..851b0e4839b5f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2019 MediaTek Inc. */
+ 
+ #ifndef __MT7615_MCU_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
+index dbb2c82407df2..da7edd48ce2cb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include <linux/kernel.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index c655f64772de2..fac05d1b06ef5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2019 MediaTek Inc. */
+ 
+ #ifndef __MT7615_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615_trace.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615_trace.h
+index 9be5a58a4e6dc..697fc5d225deb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615_trace.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615_trace.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2019 Lorenzo Bianconi <lorenzo@kernel.org>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+index 68010e27f065e..f5018bfa317aa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2019 MediaTek Inc.
+  *
+  * Author: Ryder Lee <ryder.lee@mediatek.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
+index f607eee3fb479..a9178e077fd6d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2019 MediaTek Inc.
+  *
+  * Author: Roy Luo <royluo@google.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
+index b795d11d943d0..53cb1eed1e4fb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc.
+  *
+  * Author: Ryder Lee <ryder.lee@mediatek.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+index 9e6d55c91b269..e4133e9181d0f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2019 MediaTek Inc. */
+ 
+ #ifndef __MT7615_REGS_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+index f56038cd4d3af..46188951ad194 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc.
+  *
+  * Author: Felix Fietkau <nbd@nbd.name>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/soc.c b/drivers/net/wireless/mediatek/mt76/mt7615/soc.c
+index 06a0f2a141e8c..4bd189dd67e39 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/soc.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/soc.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2019 MediaTek Inc.
+  *
+  * Author: Ryder Lee <ryder.lee@mediatek.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
+index 03f5af84424bd..6eb97b7eba2dc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/testmode.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 Felix Fietkau <nbd@nbd.name> */
+ 
+ #include "mt7615.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/trace.c b/drivers/net/wireless/mediatek/mt76/mt7615/trace.c
+index 6c02d5aff68fd..7ec39e0b3fb2e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/trace.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/trace.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2019 Lorenzo Bianconi <lorenzo@kernel.org>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
+index d96e06b4fee18..d91feffadda95 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2019 MediaTek Inc.
+  *
+  * Author: Felix Fietkau <nbd@nbd.name>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
+index 820b395900275..f4169de939c48 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_sdio.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc.
+  *
+  * Author: Lorenzo Bianconi <lorenzo@kernel.org>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+index ba7eaf3ebe988..52a35b394f46d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #ifndef __MT76_CONNAC_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
+index eb4765365b8ce..d4e2c3140441b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2022 MediaTek Inc. */
+ 
+ #ifndef __MT76_CONNAC2_MAC_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
+index 2d300948308d9..651fcd4169f4f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include "mt76_connac.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+index c5eaedca11e09..247e2e7a47d86 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #ifndef __MT76_CONNAC3_MAC_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+index b78cfa1324f3f..55ad8fcda5611 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include "mt76_connac.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 46e337307c3d8..74d71813e26b4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include <linux/firmware.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index 0b02f34c40a40..8d59cf43f0e2d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #ifndef __MT76_CONNAC_MCU_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+index 11c16d1fc70fc..f8d206a07f993 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci_mcu.c
+index f0962507f72f4..efa549dc68ecd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci_mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb_mcu.c
+index 6dc1f51f56581..20a8f36594908 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb_mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02.h b/drivers/net/wireless/mediatek/mt76/mt76x02.h
+index 8d06ef8c7c621..3c98808ccf264 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  * Copyright (C) 2018 Stanislaw Gruszka <stf_xl@wp.pl>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
+index d570b99bccb90..7c9b16942275a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c b/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
+index 8ce4bf44733dc..d81f696b32c72 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_debugfs.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c b/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c
+index 7a07636d09c65..21c99ad7ef594 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.h b/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.h
+index 491010a322475..d400519925861 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_dfs.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2016 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_dma.h b/drivers/net/wireless/mediatek/mt76/mt76x02_dma.h
+index 23b0e7d10d578..2f6ba8cf51e81 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_dma.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_dma.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
+index a5e3392c0b48f..d16be0cb0dc7c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.h b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.h
+index 13fa70853b0db..3cbb2977f3751 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+index 06f17da2c0106..aa525adb6743c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  * Copyright (C) 2018 Stanislaw Gruszka <stf_xl@wp.pl>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.h b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.h
+index 5dc6c834111e2..778454ac89740 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  * Copyright (C) 2018 Stanislaw Gruszka <stf_xl@wp.pl>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c
+index 75978820a2604..e16f06a284caa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.h
+index e187ed52968ea..a422cdc520cbf 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
+index a683d53c7ceb8..dd71c1c95cc9b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_phy.c b/drivers/net/wireless/mediatek/mt76/mt76x02_phy.c
+index cbe7e6f0c29a4..557380c9bfab5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_phy.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_phy.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_phy.h b/drivers/net/wireless/mediatek/mt76/mt76x02_phy.h
+index 84d8a6138b3ea..09e8edee21955 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_phy.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_phy.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_regs.h b/drivers/net/wireless/mediatek/mt76/mt76x02_regs.h
+index fe0c5e3298bcc..e87d3f8a1de9f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_regs.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_trace.c b/drivers/net/wireless/mediatek/mt76/mt76x02_trace.c
+index a812c3a1e258a..a92b2b7391ff5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_trace.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_trace.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_trace.h b/drivers/net/wireless/mediatek/mt76/mt76x02_trace.h
+index 11d119cd0f6fd..56eea2f68983f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_trace.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_trace.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_txrx.c b/drivers/net/wireless/mediatek/mt76/mt76x02_txrx.c
+index d8bc4ae185f55..301b431800061 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_txrx.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_txrx.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb.h b/drivers/net/wireless/mediatek/mt76/mt76x02_usb.h
+index b5be884b3549b..49ab05c1fe73f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
+index 4840d0b500b30..3a28a8cc1338c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c
+index b2cc449142945..968c73e06a5f9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+index 7dfcb20c692cf..e5d9d1bc9415c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2018 Stanislaw Gruszka <stf_xl@wp.pl>
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/Kconfig b/drivers/net/wireless/mediatek/mt76/mt76x2/Kconfig
+index 482a32b70ddfe..d820510cb4bbd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/Kconfig
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: GPL-2.0-only
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ config MT76x2_COMMON
+ 	tristate
+ 	select MT76x02_LIB
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/Makefile b/drivers/net/wireless/mediatek/mt76/mt76x2/Makefile
+index caf089538c119..cbc90a9616a6c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/Makefile
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/Makefile
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: GPL-2.0-only
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ obj-$(CONFIG_MT76x2_COMMON) += mt76x2-common.o
+ obj-$(CONFIG_MT76x2E) += mt76x2e.o
+ obj-$(CONFIG_MT76x2U) += mt76x2u.o
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
+index 221805deb42fa..782813aadc0af 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.h
+index 43430ef98b11e..1ee8be389b241 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/init.c
+index 19c139290adb6..408dc08b6457b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/init.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/mac.c b/drivers/net/wireless/mediatek/mt76/mt76x2/mac.c
+index e08740ca3d0c9..2fa34ca69095d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/mac.h b/drivers/net/wireless/mediatek/mt76/mt76x2/mac.h
+index d5c3d26b94c1a..f8ea70074c419 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/mac.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/mcu.c b/drivers/net/wireless/mediatek/mt76/mt76x2/mcu.c
+index ac83ce5f3e8b6..769d924220e35 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/mcu.h b/drivers/net/wireless/mediatek/mt76/mt76x2/mcu.h
+index 41fd66563e823..16a4386aa7543 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/mcu.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2.h b/drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2.h
+index f051721bb00eb..984756c81bdc7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2u.h b/drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2u.h
+index f9d37c6cf1f03..27e478ab5b156 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2u.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2u.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+index 2303019670e2c..491a32921a066 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c
+index e38e8e5685c2d..bec84f932311c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
+index c5dfb06d81e8e..5506446762011 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_mcu.c
+index e5b6282d1a6c6..daba163802b6e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c
+index 8831337df23e9..dcf4328c1cac3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/phy.c b/drivers/net/wireless/mediatek/mt76/mt76x2/phy.c
+index e2b4cf30dc44f..a5efa13a892fd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/phy.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/phy.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+index 427b294423d3c..459c4044f0d10 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
+index 3b55628115115..41778a8ef02c8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_mac.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_mac.c
+index eaa622833f859..d0cb511ac6a23 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
+index 6671c53faf9f8..66b06a493d953 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_mcu.c
+index dd22d8af0901d..9102be1803b7f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c
+index a04a98f5ce1ec..b63dd7f3ee800 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7915/Kconfig
+index 193112c49bd19..c24be8227f114 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/Kconfig
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: ISC
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ config MT7915E
+ 	tristate "MediaTek MT7915E (PCIe) support"
+ 	select MT76_CONNAC_LIB
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/Makefile b/drivers/net/wireless/mediatek/mt76/mt7915/Makefile
+index e0ca638c91a5d..963fb3109af35 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/Makefile
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/Makefile
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: ISC
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ obj-$(CONFIG_MT7915E) += mt7915e.o
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/coredump.c b/drivers/net/wireless/mediatek/mt76/mt7915/coredump.c
+index 5daf2258dfe6f..6c7273e5b0bc5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/coredump.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/coredump.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2022 MediaTek Inc. */
+ 
+ #include <linux/devcoredump.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/coredump.h b/drivers/net/wireless/mediatek/mt76/mt7915/coredump.h
+index 709f8e9c795cb..eb3991eda2e5c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/coredump.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/coredump.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2022 MediaTek Inc. */
+ 
+ #ifndef _COREDUMP_H_
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index b287b7d9394e2..be83a0fb76920 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include <linux/relay.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
+index 009ef713f4379..aabd37366e86d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/dma.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include "mt7915.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+index 14c0770229bc5..fe7b29ebc0bfb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include <linux/firmware.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
+index 73611c9d26e15..1dc285c729910 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #ifndef __MT7915_EEPROM_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index f247846520138..32794fdd230f4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include <linux/etherdevice.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index dda4e7d179536..56573542d78e1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include <linux/etherdevice.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
+index 448b1b3801909..e39f96e00ba47 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #ifndef __MT7915_MAC_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 9d546eb8022ac..59047741d247d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include <linux/etherdevice.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 29b3f0cda1ce7..79e1cbfedb7fa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include <linux/fs.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+index 4c25abb0297de..03f32ee444d74 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #ifndef __MT7915_MCU_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+index 36488aa6cc201..2708b1556f40e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include <linux/kernel.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 27857347f05f4..265f6b35a56a9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #ifndef __MT7915_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
+index c24f1b12f064f..8007e620048b3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc.
+  *
+  * Author: Ryder Lee <ryder.lee@mediatek.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+index c5ec63a25a42f..307bf6a756749 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/regs.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #ifndef __MT7915_REGS_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
+index df641c1334809..97d1d60c9454a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2022 MediaTek Inc. */
+ 
+ #include <linux/kernel.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
+index 2a9e5d9ff101c..97d6b45d1da85 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include "mt7915.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.h b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.h
+index 5573ac309363d..bb1bc568751bc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #ifndef __MT7915_TESTMODE_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
+index 7ed51e057857c..37b5f46e76f49 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/Kconfig
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: ISC
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ config MT7921_COMMON
+ 	tristate
+ 	select MT792x_LIB
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
+index 849be9e848e0a..2ad3c1cc37798 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/Makefile
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: ISC
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ obj-$(CONFIG_MT7921_COMMON) += mt7921-common.o
+ obj-$(CONFIG_MT7921E) += mt7921e.o
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+index 616b66a3fde2b..4333005b3ad95 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/debugfs.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include "mt7921.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index b9098a7331b1a..d8410c77abe4a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include <linux/etherdevice.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 0d48dbb2354f3..42b23de9edce8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include <linux/devcoredump.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index ce11666a32db9..3d74fabe74085 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include <linux/etherdevice.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 8c8b35cba856c..587b96abc1174 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #include <linux/fs.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+index 2834c6c53e581..de676b83b89c6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #ifndef __MT7921_MCU_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index faa0d93982144..ad92af98e3145 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #ifndef __MT7921_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 85caa2fbb78f0..a69232ef3428c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc.
+  *
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+index 881812ba03ffa..5ec084432ae33 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2021 MediaTek Inc. */
+ 
+ #include "mt7921.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
+index 4cf1f2f0f9688..8439c849a7a66 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2021 MediaTek Inc. */
+ 
+ #include "mt7921.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h b/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
+index 43427a3a48af0..4d9eaf1e06920 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/regs.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2020 MediaTek Inc. */
+ 
+ #ifndef __MT7921_REGS_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+index d8d36b3c30688..3421e53dc948f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2021 MediaTek Inc.
+  *
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+index a9eb6252a9040..416d49e534993 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2021 MediaTek Inc. */
+ 
+ #include <linux/iopoll.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
+index 5e4501d7f1c0f..14e66f3f5aad0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2021 MediaTek Inc. */
+ 
+ #include <linux/kernel.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
+index e838d93477c19..e60ee992edf80 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/testmode.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ #include "mt7921.h"
+ #include "mcu.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+index 100bdba32ba59..17057e68bf21d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2022 MediaTek Inc.
+  *
+  * Author: Lorenzo Bianconi <lorenzo@kernel.org>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7925/Kconfig
+index 5854e95e68a58..f4f7c93c2ea72 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/Kconfig
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: ISC
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ config MT7925_COMMON
+ 	tristate
+ 	select MT792x_LIB
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/Makefile b/drivers/net/wireless/mediatek/mt76/mt7925/Makefile
+index ade5e647c9415..5d769de979c0f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/Makefile
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/Makefile
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: ISC
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ obj-$(CONFIG_MT7925_COMMON) += mt7925-common.o
+ obj-$(CONFIG_MT7925E) += mt7925e.o
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7925/debugfs.c
+index 1e2fc6577e781..e2498659c884e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/debugfs.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include "mt7925.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+index d7d5afe365edd..ea397ad48c303 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include <linux/etherdevice.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+index a8572fdba634a..3d28754653532 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include <linux/devcoredump.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.h b/drivers/net/wireless/mediatek/mt76/mt7925/mac.h
+index b10a993326b93..83ea9021daead 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #ifndef __MT7925_MAC_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 1eeb33981c743..27b6fdbaddb58 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include <linux/etherdevice.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 8b1e1d2ed2546..7372537b02d13 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include <linux/fs.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+index 148aa3c05c8c4..e09e0600534aa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #ifndef __MT7925_MCU_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+index 7f67e0a978726..56a182c8f9dce 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #ifndef __MT7925_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+index 7972111d53a44..820d99d8b75b3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include <linux/kernel.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c
+index 4578d16bf456a..3072850c27526 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include "mt7925.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c
+index f95bc5dcd830f..6cceff88c656d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci_mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include "mt7925.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/regs.h b/drivers/net/wireless/mediatek/mt76/mt7925/regs.h
+index 341987e47f67a..24985bba1b907 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/regs.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #ifndef __MT7925_REGS_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7925/testmode.c
+index 329185d72fcc5..22a8f1ddc321d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/testmode.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ #include "mt7925.h"
+ #include "mcu.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+index 95047ee48a425..c26f9d61d1dc5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include <linux/kernel.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
+index f2c8b9e4aa0f5..da7831f9efec3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x.h
++++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #ifndef __MT792X_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.c b/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.c
+index d1aebadd50aac..946dd7956e4a0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include <linux/acpi.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.h b/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.h
+index e45dcd7fbdb18..4740330738315 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.h
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_acpi_sar.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #ifndef __MT7921_ACPI_SAR_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+index 96c50a501c1a9..22d0c4ac84ad9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include <linux/module.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_debugfs.c b/drivers/net/wireless/mediatek/mt76/mt792x_debugfs.c
+index 9858d9a93851a..65c37e0cef8f8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_debugfs.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include "mt792x.h"
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_dma.c b/drivers/net/wireless/mediatek/mt76/mt792x_dma.c
+index 69217ce911307..1ddec7788b66c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_dma.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include <linux/module.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_mac.c b/drivers/net/wireless/mediatek/mt76/mt792x_mac.c
+index 3f1d9ba49076f..71dec93094ebd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include <linux/module.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
+index b0c6dfa55cc68..699a15c44df02 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_regs.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #ifndef __MT792X_REGS_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_trace.c b/drivers/net/wireless/mediatek/mt76/mt792x_trace.c
+index b6f284fb929d5..ffc77d3944bd3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_trace.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_trace.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2023 Lorenzo Bianconi <lorenzo@kernel.org>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_trace.h b/drivers/net/wireless/mediatek/mt76/mt792x_trace.h
+index 61f2aa2606562..7b0e3f00b1948 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_trace.h
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_trace.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2023 Lorenzo Bianconi <lorenzo@kernel.org>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+index 98d1d14342cd0..47827d1c5ccb1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_usb.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc.
+  *
+  * Author: Lorenzo Bianconi <lorenzo@kernel.org>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig b/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
+index bb44d4a5e2dc9..196e1cbab813f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/Kconfig
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: ISC
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ config MT7996E
+ 	tristate "MediaTek MT7996 (PCIe) support"
+ 	select MT76_CONNAC_LIB
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/Makefile b/drivers/net/wireless/mediatek/mt76/mt7996/Makefile
+index 07c8b555c1acf..19c0bc02b5843 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/Makefile
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/Makefile
+@@ -1,4 +1,4 @@
+-# SPDX-License-Identifier: ISC
++# SPDX-License-Identifier: BSD-3-Clause-Clear
+ 
+ obj-$(CONFIG_MT7996E) += mt7996e.o
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/coredump.c b/drivers/net/wireless/mediatek/mt76/mt7996/coredump.c
+index 303d6e80a6662..5c293ae965cd6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/coredump.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/coredump.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #include <linux/devcoredump.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/coredump.h b/drivers/net/wireless/mediatek/mt76/mt7996/coredump.h
+index af2ba219b1b5a..baa2f6f508324 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/coredump.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/coredump.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2023 MediaTek Inc. */
+ 
+ #ifndef _COREDUMP_H_
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
+index 1d8b8bec8e0e5..c8366a2f37a94 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2022 MediaTek Inc.
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
+index 7ed2f21b0e6db..0415b867f4f7f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2022 MediaTek Inc.
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+index 11e0a28113a2f..1b26662e92726 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2022 MediaTek Inc.
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.h
+index 7a771ca2434c5..9e6f0e04caf9c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2022 MediaTek Inc.
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index d0a4530db1cf7..8f1810a063fa8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2022 MediaTek Inc.
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index dc1a3e91218ad..7c0721bce0cee 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2022 MediaTek Inc.
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
+index e629324a5617e..4eca37b013fc9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2022 MediaTek Inc.
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index c6d7088b15cab..ad415ac6eca6d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2022 MediaTek Inc.
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 92f8a28cd4a51..43755790d5196 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2022 MediaTek Inc.
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+index 848c6c5751155..3fccee52103b8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2022 MediaTek Inc.
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+index e37b95f5b00b8..6c4ec1d23611b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2022 MediaTek Inc.
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index e371b2f174e58..a9e6a4fe0112f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2022 MediaTek Inc.
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
+index 3f49bbbba3b9c..4eb55ffdf1a04 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2022 MediaTek Inc.
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
+index a46c790550c62..4da2c72172f4a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/regs.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2022 MediaTek Inc.
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/pci.c b/drivers/net/wireless/mediatek/mt76/pci.c
+index 4c864afefe2f2..11fe62aa81136 100644
+--- a/drivers/net/wireless/mediatek/mt76/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/pci.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2019 Lorenzo Bianconi <lorenzo@kernel.org>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/scan.c b/drivers/net/wireless/mediatek/mt76/scan.c
+index 2faa84c516e7b..d5fa201e5a8a4 100644
+--- a/drivers/net/wireless/mediatek/mt76/scan.c
++++ b/drivers/net/wireless/mediatek/mt76/scan.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2024 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wireless/mediatek/mt76/sdio.c
+index e4c3dcc34f68a..ba5f123f7e39d 100644
+--- a/drivers/net/wireless/mediatek/mt76/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/sdio.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc.
+  *
+  * This file is written based on mt76/usb.c.
+diff --git a/drivers/net/wireless/mediatek/mt76/sdio.h b/drivers/net/wireless/mediatek/mt76/sdio.h
+index 27d5d2077ebae..41b89f3de86b7 100644
+--- a/drivers/net/wireless/mediatek/mt76/sdio.h
++++ b/drivers/net/wireless/mediatek/mt76/sdio.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /* Copyright (C) 2020 MediaTek Inc.
+  *
+  * Author: Sean Wang <sean.wang@mediatek.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+index f882d21c9f633..3f314e8e1e69f 100644
+--- a/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
++++ b/drivers/net/wireless/mediatek/mt76/sdio_txrx.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 MediaTek Inc.
+  *
+  * Author: Felix Fietkau <nbd@nbd.name>
+diff --git a/drivers/net/wireless/mediatek/mt76/testmode.c b/drivers/net/wireless/mediatek/mt76/testmode.c
+index ca4feccf38caf..6ee160bda882e 100644
+--- a/drivers/net/wireless/mediatek/mt76/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/testmode.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /* Copyright (C) 2020 Felix Fietkau <nbd@nbd.name> */
+ 
+ #include <linux/random.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/testmode.h b/drivers/net/wireless/mediatek/mt76/testmode.h
+index 0590c35c7126e..bed1ba40ba94d 100644
+--- a/drivers/net/wireless/mediatek/mt76/testmode.h
++++ b/drivers/net/wireless/mediatek/mt76/testmode.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2020 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/trace.c b/drivers/net/wireless/mediatek/mt76/trace.c
+index f199fcd2a63d4..f17cc01017f31 100644
+--- a/drivers/net/wireless/mediatek/mt76/trace.c
++++ b/drivers/net/wireless/mediatek/mt76/trace.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/trace.h b/drivers/net/wireless/mediatek/mt76/trace.h
+index 109a07f9733a8..794b957ac79dd 100644
+--- a/drivers/net/wireless/mediatek/mt76/trace.h
++++ b/drivers/net/wireless/mediatek/mt76/trace.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
+index 28630d75bdb21..f8278b4bd9d7a 100644
+--- a/drivers/net/wireless/mediatek/mt76/tx.c
++++ b/drivers/net/wireless/mediatek/mt76/tx.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index f9e67b8c3b3c8..632ae755c7a6e 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/usb_trace.c b/drivers/net/wireless/mediatek/mt76/usb_trace.c
+index 9942bdd6177bc..a04585b4b7786 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb_trace.c
++++ b/drivers/net/wireless/mediatek/mt76/usb_trace.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/usb_trace.h b/drivers/net/wireless/mediatek/mt76/usb_trace.h
+index 7b261ddb2ac66..93bb69c65a4f1 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb_trace.h
++++ b/drivers/net/wireless/mediatek/mt76/usb_trace.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: ISC */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2018 Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/util.c b/drivers/net/wireless/mediatek/mt76/util.c
+index 97249ebb4bc8f..83d3dc42e5341 100644
+--- a/drivers/net/wireless/mediatek/mt76/util.c
++++ b/drivers/net/wireless/mediatek/mt76/util.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  */
+diff --git a/drivers/net/wireless/mediatek/mt76/util.h b/drivers/net/wireless/mediatek/mt76/util.h
+index 260965dde94cf..60caadffd9ae0 100644
+--- a/drivers/net/wireless/mediatek/mt76/util.h
++++ b/drivers/net/wireless/mediatek/mt76/util.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
++/* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (C) 2016 Felix Fietkau <nbd@nbd.name>
+  * Copyright (C) 2004 - 2009 Ivo van Doorn <IvDoorn@gmail.com>
+diff --git a/drivers/net/wireless/mediatek/mt76/wed.c b/drivers/net/wireless/mediatek/mt76/wed.c
+index fbd7e59c73aaf..ed657d952de24 100644
+--- a/drivers/net/wireless/mediatek/mt76/wed.c
++++ b/drivers/net/wireless/mediatek/mt76/wed.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: ISC
++// SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (C) 2023 Lorenzo Bianconi <lorenzo@kernel.org>
+  */
+-- 
+2.55.0
+

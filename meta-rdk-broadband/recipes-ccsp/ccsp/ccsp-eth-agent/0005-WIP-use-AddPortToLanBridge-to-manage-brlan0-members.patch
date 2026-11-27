@@ -1,0 +1,81 @@
+From 7f039793ab1630cba37f8b30fd7278debce4e129 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Fri, 7 Aug 2026 18:20:39 +1000
+Subject: [PATCH] (WIP) use AddPortToLanBridge to manage brlan0 members on
+ generic arm
+
+---
+ source/TR-181/board_sbapi/cosa_ethernet_apis.c          | 5 +++--
+ source/TR-181/middle_layer_src/cosa_ethernet_dml.c      | 2 ++
+ source/TR-181/middle_layer_src/cosa_ethernet_internal.c | 6 ++++++
+ 3 files changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/source/TR-181/board_sbapi/cosa_ethernet_apis.c b/source/TR-181/board_sbapi/cosa_ethernet_apis.c
+index a810f95..a86a09f 100755
+--- a/source/TR-181/board_sbapi/cosa_ethernet_apis.c
++++ b/source/TR-181/board_sbapi/cosa_ethernet_apis.c
+@@ -407,6 +407,7 @@ ANSC_STATUS EthMgr_AddPortToLanBridge (PCOSA_DML_ETH_PORT_CONFIG pEthLink, BOOLE
+ 
+     char ifname[128] = {0};
+     char acPSMValue[128] = {0};
++    CcspTraceInfo(("%s %d: entry with intf %s\n",__FUNCTION__, __LINE__, pEthLink->Name));
+ #ifdef FEATURE_RDKB_AUTO_PORT_SWITCH
+ 
+     bool wanMode = TRUE;
+@@ -3706,6 +3707,7 @@ CosaDmlEthPortInit(
+     char acPSMQuery[128] = {0};
+     char acPSMValue[64]  = {0};
+ 
++    CcspTraceInfo(("%s entry\n", __func__));
+     snprintf(acPSMQuery, sizeof(acPSMQuery), PSM_ETHMANAGER_CFG_COUNT);
+     if ( CCSP_SUCCESS != DmlEthGetPSMRecordValue(acPSMQuery, acPSMValue) )
+     {
+@@ -3809,12 +3811,11 @@ CosaDmlEthPortInit(
+             CcspTraceInfo (("%s %d: Setting %d.AddToLanBridge = %d\n", __FUNCTION__, __LINE__, (iLoopCount + 1), pETHTemp->AddToLanBridge));
+         }
+ #endif  //FEATURE_RDKB_AUTO_PORT_SWITCH
+-/*
++
+         if (EthMgr_AddPortToLanBridge (pETHTemp, pETHTemp->AddToLanBridge) != ANSC_STATUS_SUCCESS)
+         {
+             CcspTraceError (("%s %d: unable to set %s with AddToLanBridge config %d to HAL\n", __FUNCTION__, __LINE__, pETHTemp->Name, pETHTemp->AddToLanBridge));
+         }
+-*/
+ 
+         pEthCxtLink->hContext = (ANSC_HANDLE)pETHTemp;
+         pEthCxtLink->bNew     = TRUE;
+diff --git a/source/TR-181/middle_layer_src/cosa_ethernet_dml.c b/source/TR-181/middle_layer_src/cosa_ethernet_dml.c
+index a1006ab..ccab1d3 100644
+--- a/source/TR-181/middle_layer_src/cosa_ethernet_dml.c
++++ b/source/TR-181/middle_layer_src/cosa_ethernet_dml.c
+@@ -1962,6 +1962,7 @@ EthRdkInterface_SetParamBoolValue
+     }
+     if (strcmp(ParamName, "AddToLanBridge") == 0)
+     {
++#if !defined(_PLATFORM_GENERICARM_)
+ #ifdef FEATURE_RDKB_AUTO_PORT_SWITCH
+         // check if port is WAN capable, before removing/adding into bridge
+         UINT WanPort = 0;
+@@ -1976,6 +1977,7 @@ EthRdkInterface_SetParamBoolValue
+             return FALSE;
+         }
+ #endif
++#endif // !_PLATFORM_GENERICARM_
+         if (ANSC_STATUS_SUCCESS == EthMgr_AddPortToLanBridge (pEthLink, bValue))
+         {
+             CcspTraceInfo(("%s %d: successfully set AddtoBridge = %d for interface %s \n", __FUNCTION__, __LINE__, bValue, pEthLink->Name));
+diff --git a/source/TR-181/middle_layer_src/cosa_ethernet_internal.c b/source/TR-181/middle_layer_src/cosa_ethernet_internal.c
+index e48d018..38b56c1 100644
+--- a/source/TR-181/middle_layer_src/cosa_ethernet_internal.c
++++ b/source/TR-181/middle_layer_src/cosa_ethernet_internal.c
+@@ -995,4 +995,10 @@ ANSC_STATUS CosaDmlSetWanOEMode (PCOSA_DML_ETH_PORT_FULL pEthernetPortFull,PCOSA
+     }
+     return ANSC_STATUS_FAILURE;
+ }
++#else
++ANSC_STATUS CosaDmlSetWanOEMode (PCOSA_DML_ETH_PORT_FULL pEthernetPortFull,PCOSA_DML_ETH_PORT_CONFIG pEthLink)
++{
++    AnscTraceWarning(("%s FIXME please implement me\n", __func__));
++    return ANSC_STATUS_SUCCESS;
++}
+ #endif

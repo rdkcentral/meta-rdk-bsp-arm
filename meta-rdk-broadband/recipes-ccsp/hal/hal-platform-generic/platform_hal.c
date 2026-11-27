@@ -568,18 +568,32 @@ INT platform_hal_GetRouterRegion(CHAR* pValue)
 }
 
 /* Utility apis to return common parameters from firewall_lib.c */
+
 char *get_current_wan_ifname()
 {
-    char *interface_names[]={"erouter0", "wwan0", NULL};//list of available wan interfaces
-    char interface_name[128]="";
-    unsigned int i;
+    static __thread char interface_name[64] = "";
 
-    execute_cmd("ip r | grep default | head -1 | cut -d ' ' -f5", interface_name);
+    interface_name[0] = '\0';
+    execute_cmd("echo $(sysevent get current_wan_ifname)", interface_name);
 
-    for(i=0; interface_names[i]!=NULL; i++)
-           if(!strcmp(interface_names[i],interface_name))
-                   return interface_names[i];
-    return "0";
+    if ('\0' == interface_name[0])
+    {
+        execute_cmd("echo $(syscfg get wan_physical_ifname)", interface_name);
+    }
+
+    if ('\0' == interface_name[0])
+    {
+        execute_cmd("ip r | grep default | head -1 | cut -d ' ' -f5", interface_name);
+    }
+
+    if ('\0' == interface_name[0])
+    {
+        // never return an empty string: firewall interpolates this into
+        // "-i %s" and it makes iptables-restore reject the whole table
+        strncpy(interface_name, "lo", sizeof(interface_name) - 1);
+    }
+
+    return interface_name;
 }
 
 INT platform_hal_GetDhcpv4_Options ( dhcp_opt_list ** req_opt_list, dhcp_opt_list ** send_opt_list)

@@ -1,0 +1,43 @@
+From d9da8f0bc429cf99a16095b74c03e7f3a4f6cc17 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Fri, 28 Aug 2026 15:29:39 +1000
+Subject: [PATCH] (meta-rdk-bsp-arm only) dhcp: move dhcp_options into
+ /var/volatile/dhcp_options
+
+This is to allow operation on a fully read-only rootfs.
+
+Resolves this errors seen in the Utopia log:
+/etc/utopia/service.d/service_dhcp_server/dhcp_server_functions.sh:
+	line 594: /var/dhcp_options: Read-only file system
+	line 1140: /var/dhcp_options: Read-only file system
+---
+ .../init/service.d/service_dhcp_server/dhcp_server_functions.sh | 2 +-
+ source/service_dhcp/dhcp_server_functions.c                     | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/source/scripts/init/service.d/service_dhcp_server/dhcp_server_functions.sh b/source/scripts/init/service.d/service_dhcp_server/dhcp_server_functions.sh
+index 09457ff..ca899a3 100755
+--- a/source/scripts/init/service.d/service_dhcp_server/dhcp_server_functions.sh
++++ b/source/scripts/init/service.d/service_dhcp_server/dhcp_server_functions.sh
+@@ -39,7 +39,7 @@ source /etc/waninfo.sh
+ 
+ DHCP_CONF=/etc/dnsmasq.conf
+ DHCP_STATIC_HOSTS_FILE=/etc/dhcp_static_hosts
+-DHCP_OPTIONS_FILE=/var/dhcp_options
++DHCP_OPTIONS_FILE=/var/volatile/dhcp_options
+ SelfHealSupport=`sysevent get SelfhelpWANConnectionDiagSupport`
+ # LANIPV6Support only used for identifying the ULA usage
+ LANIPV6Support=`sysevent get LANIPv6GUASupport`
+diff --git a/source/service_dhcp/dhcp_server_functions.c b/source/service_dhcp/dhcp_server_functions.c
+index 7a8fc49..8f82e99 100644
+--- a/source/service_dhcp/dhcp_server_functions.c
++++ b/source/service_dhcp/dhcp_server_functions.c
+@@ -51,7 +51,7 @@
+ #define HOSTS_FILE              "/etc/hosts"
+ #define HOSTNAME_FILE           "/etc/hostname"
+ #define DHCP_STATIC_HOSTS_FILE  "/etc/dhcp_static_hosts"
+-#define DHCP_OPTIONS_FILE       "/var/dhcp_options"
++#define DHCP_OPTIONS_FILE       "/var/volatile/dhcp_options"
+ #define RESOLV_CONF             "/etc/resolv.conf"
+ #define BOOL                    int
+ #define TRUE                    1

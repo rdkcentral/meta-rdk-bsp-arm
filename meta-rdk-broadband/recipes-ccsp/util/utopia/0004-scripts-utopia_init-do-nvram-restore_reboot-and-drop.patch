@@ -1,0 +1,34 @@
+From c6dc7ea22f3d0151a1512311d668b1e6668ff0b7 Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Fri, 7 Aug 2026 09:47:46 +1000
+Subject: [PATCH] scripts: utopia_init: do nvram restore_reboot and dropbear on
+ genericarm
+
+For the rpi these were implemented as a sed hack in the utopia.bbappend.
+
+---
+ source/scripts/init/system/utopia_init.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/source/scripts/init/system/utopia_init.sh b/source/scripts/init/system/utopia_init.sh
+index f7b7f31..0505144 100755
+--- a/source/scripts/init/system/utopia_init.sh
++++ b/source/scripts/init/system/utopia_init.sh
+@@ -790,7 +790,7 @@ else
+       fi
+ fi
+ 
+-if [ "$MODEL_NUM" = "DPC3939B" ] || [ "$MODEL_NUM" = "DPC3941B" ]; then
++if [ "$MODEL_NUM" = "DPC3939B" ] || [ "$MODEL_NUM" = "DPC3941B" ] || [ "${BOX_TYPE}" = "genericarm" ]; then
+     if [ -f /nvram/restore_reboot ];then
+ 	syscfg set X_RDKCENTRAL-COM_LastRebootReason "restore-reboot"
+ 	syscfg set X_RDKCENTRAL-COM_LastRebootCounter "1"
+@@ -859,7 +859,7 @@ syscfg set ntp_status 2
+ echo_t "[utopia][init] setting Multicast MAC before any switch configs"
+ $UTOPIA_PATH/service_multinet_exec set_multicast_mac &
+ 
+-if [ "$MODEL_NUM" = "DPC3939B" ] || [ "$MODEL_NUM" = "DPC3941B" ]; then
++if [ "$MODEL_NUM" = "DPC3939B" ] || [ "$MODEL_NUM" = "DPC3941B" ] || [ "${BOX_TYPE}" = "genericarm" ]; then
+ 	echo_t "[utopia][init] started dropbear process"
+ 	/etc/utopia/service.d/service_sshd.sh sshd-start &
+ fi

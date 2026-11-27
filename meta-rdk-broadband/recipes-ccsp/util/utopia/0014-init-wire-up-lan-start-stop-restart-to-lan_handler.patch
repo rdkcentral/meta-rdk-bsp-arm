@@ -1,0 +1,28 @@
+From 9eab9f1b39b6857ec82c2a95c251ea1f7ef87fdd Mon Sep 17 00:00:00 2001
+From: Mathew McBride <matt@traverse.com.au>
+Date: Fri, 7 Aug 2026 17:48:25 +1000
+Subject: [PATCH] init: wire up lan-start/stop/restart to lan_handler on
+ genericarm
+
+---
+ source/scripts/init/c_registration/02_lanHandler.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/source/scripts/init/c_registration/02_lanHandler.c b/source/scripts/init/c_registration/02_lanHandler.c
+index 6c314f9..4704bda 100644
+--- a/source/scripts/init/c_registration/02_lanHandler.c
++++ b/source/scripts/init/c_registration/02_lanHandler.c
+@@ -68,7 +68,12 @@ const char* SERVICE_CUSTOM_EVENTS[] = {
+     "erouter_mode-updated|/usr/bin/service_dhcp|NULL|"TUPLE_FLAG_EVENT,
+     NULL };
+ #else
+-const char* SERVICE_CUSTOM_EVENTS[] = { 
++const char* SERVICE_CUSTOM_EVENTS[] = {
++#if defined(_PLATFORM_GENERICARM_)
++    "lan-start|/etc/utopia/service.d/lan_handler.sh",
++    "lan-stop|/etc/utopia/service.d/lan_handler.sh",
++    "lan-restart|/etc/utopia/service.d/lan_handler.sh",
++#endif
+     "pnm-status|/etc/utopia/service.d/lan_handler.sh",
+     "bring-lan|/etc/utopia/service.d/lan_handler.sh",
+     "iot_status|/etc/utopia/service.d/lan_handler.sh",

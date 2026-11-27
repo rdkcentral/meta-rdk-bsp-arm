@@ -1,0 +1,29 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rostyslav Lesovyi <rostyslav.lesovyi@globallogic.com>
+Date: Fri, 18 Sep 2026 13:47:25 +2000
+Subject: [PATCH] firewall_ipv6: do not hardcode erouter0 in guest isolation rules
+
+These two rules stop brlan1 and br106 bridges from reaching the ports on the WAN side over IPv6.
+Replace hardcoded "erouter0" to a runtime value provided by current_wan_ifname.
+
+---
+ source/firewall/firewall_ipv6.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/source/firewall/firewall_ipv6.c b/source/firewall/firewall_ipv6.c
+--- a/source/firewall/firewall_ipv6.c
++++ b/source/firewall/firewall_ipv6.c
+@@ -686,8 +686,8 @@
+        #endif
+        fprintf(fp, "-A INPUT -p tcp -i privbr --match multiport  --dport 80,443 -j ACCEPT\n");
+        
+-       fprintf(fp, "-A FORWARD -i brlan1 -o erouter0 -p tcp -m multiport --dport 22,8080,8181 -j DROP\n");
+-       fprintf(fp, "-A FORWARD -i br106 -o erouter0 -p tcp -m multiport --dport 22,8080,8181 -j DROP\n");
++       fprintf(fp, "-A FORWARD -i brlan1 -o %s -p tcp -m multiport --dport 22,8080,8181 -j DROP\n", current_wan_ifname);
++       fprintf(fp, "-A FORWARD -i br106 -o %s -p tcp -m multiport --dport 22,8080,8181 -j DROP\n", current_wan_ifname);
+    #endif
+    if ( !bEthWANEnable )
+    {
+-- 
+2.51.0
+

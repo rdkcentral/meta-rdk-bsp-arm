@@ -11,7 +11,7 @@ specifications. This layer only sources from community upstream sources (e.g ker
 The repo command below will pull the RDK-B layers, as well as `meta-rdk-bsp-arm` for the
 `main` branch, which is based on a recent RDK-B quarterly release.
 
-At the current time, the `main` branch manifest will build RDK-B 2026.Q1 (based on Yocto `kirkstone`),
+At the current time, the `main` branch manifest will build RDK-B 2026.Q3 (based on Yocto `kirkstone`),
 and will be updated following the next major RDK-B release.
 
 If you wish to build the rolling development branch (`develop`), please switch to the
@@ -30,6 +30,13 @@ $ repo sync
 $ source meta-rdk-bsp-arm/setup-environment
 $ bitbake rdk-generic-broadband-image
 ```
+
+**ATTENTION**: The `develop` branch in the repo command above
+will pull the rolling development version of RDK-B.
+
+For the current "release" version, please switch to the `main`
+branch in this repository and follow the instructions mentioned
+there.
 
 If you need to enable features such as unified-wifi-mesh/EasyMesh, you can do this
 by creating the `conf/distro/include/local-settings.inc` (under your local
@@ -181,14 +188,32 @@ raspberrypi64-rdk-broadband
   DISTRO_FEATURES:append = " t2"
   ```
 
-* The WAN interface will be mapped to `eth6`. LAN side will always be on `eth0`.
+* The WAN interface name is board specific (`eth1` on the generic Arm machine,
+  `eth0` on Raspberry Pi, `eth6`/`eth2` on Ten64) and is configured through
+  `dmsb.wanmanager.if.1.Name` in the matching `ccsp-psm-machine-configs` file.
 
-  If a second WAN interface (like SFP) exists, it will be mapped to `eth8`.
+* USP (`usp-pa`) is the only management agent built into the image by default.
 
-  This is to keep the interface names consistent between all hardware devices
-  until it is possible to do this configuration at runtime.
+  WebPA (parodus) and Telemetry 2.0 are opt-in and configured in `conf/distro/include/local-settings.inc`:
 
-  The mapping of Ethernet interfaces is performed in `/lib/rdk/ethwan_intf.sh`.
+  ```
+  DISTRO_FEATURES:append = " webpa"
+  DISTRO_FEATURES:append = " t2"
+  ```
+
+* The `armefi64-rdk-broadband` machine image is a _universal_ image which can be booted
+  on any supported board (provided the board already has a working UEFI firmware).
+
+  On first boot it will attempt to find a matching PSM defaults file for the hardware
+  (matched by the device-tree `compatible` string, or DMI Board information for ACPI hosts)
+  if not, a "default" configuration will be applied which adds `eth0` to the LAN bridge
+  and uses `eth1` as the WAN interface.
+
+  Please see this [pull request](https://github.com/rdkcentral/meta-rdk-bsp-arm/pull/174#issue-5242719768)
+  for details about the `ccsp-psm-machine-configs` mechanism.
+
+  If you build an image for a specific platform such as `raspberrypi64-rdk-broadband`, it will
+  only contain the defaults file for that specific platform.
 
 ### SSIDs, Passwords and other configuration settings
 
